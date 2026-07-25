@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #0A1628;
+  --gold: #D4AF37;
+  --cyan: #00BCD4;
+  --cream: #F8F9FA;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--navy);
+  color: var(--cream);
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A1628;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 3px;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--navy);
+}

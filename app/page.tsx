@@ -1,0 +1,219 @@
+'use client'
+
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts'
+
+const kpis = [
+  { label: 'Ventes du Jour', value: '250 000 FCFA', sub: '+12% vs hier', color: '#D4AF37' },
+  { label: 'Produits en Stock', value: '1 248', sub: '4 en rupture', color: '#00BCD4' },
+  { label: 'Clients', value: '320', sub: '8 nouveaux ce mois', color: '#D4AF37' },
+  { label: 'Bénéfice Net', value: '75 000 FCFA', sub: 'Marge: 30%', color: '#22d98a' },
+]
+
+const salesData = [
+  { jour: 'Lun', ventes: 180000 },
+  { jour: 'Mar', ventes: 220000 },
+  { jour: 'Mer', ventes: 195000 },
+  { jour: 'Jeu', ventes: 310000 },
+  { jour: 'Ven', ventes: 280000 },
+  { jour: 'Sam', ventes: 420000 },
+  { jour: 'Dim', ventes: 250000 },
+]
+
+const topProduits = [
+  { nom: 'Huile de Palme 5L', ventes: 45, revenue: '189 000' },
+  { nom: 'Farine de Blé 50kg', ventes: 38, revenue: '836 000' },
+  { nom: 'Sucre 25kg', ventes: 32, revenue: '480 000' },
+  { nom: 'Riz Parfumé 50kg', ventes: 28, revenue: '700 000' },
+]
+
+const alertes = [
+  { message: 'Farine de Blé 50kg — stock faible (8 restants)', type: 'warn' },
+  { message: 'Sucre 25kg — stock critique (3 restants)', type: 'error' },
+  { message: 'Aminata Diallo — solde dû de 15 000 FCFA', type: 'info' },
+]
+
+export default function Dashboard() {
+  return (
+    <div>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>
+          Tableau de Bord
+        </h2>
+        <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          Vendredi 25 juillet 2026
+        </p>
+      </div>
+
+      {/* KPIs */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '1rem',
+          marginBottom: '1.5rem',
+        }}
+      >
+        {kpis.map((kpi) => (
+          <div
+            key={kpi.label}
+            style={{
+              background: '#0c1528',
+              borderRadius: 12,
+              padding: '1.25rem',
+              border: `1px solid ${kpi.color}22`,
+            }}
+          >
+            <p style={{ color: '#4e5f82', fontSize: '0.75rem', margin: '0 0 0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              {kpi.label}
+            </p>
+            <p style={{ color: kpi.color, fontSize: '1.3rem', fontWeight: 700, margin: '0 0 0.25rem' }}>
+              {kpi.value}
+            </p>
+            <p style={{ color: '#9ba8c4', fontSize: '0.72rem', margin: 0 }}>{kpi.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
+          gap: '1rem',
+          marginBottom: '1.5rem',
+        }}
+      >
+        {/* Line Chart */}
+        <div
+          style={{
+            background: '#0c1528',
+            borderRadius: 12,
+            padding: '1.25rem',
+            border: '1px solid #16233d',
+          }}
+        >
+          <h3 style={{ color: '#f5f0e8', marginBottom: '1rem', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 1rem' }}>
+            Ventes — 7 Derniers Jours
+          </h3>
+          <ResponsiveContainer width="100%" height={220}>
+            <LineChart data={salesData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#16233d" />
+              <XAxis dataKey="jour" stroke="#4e5f82" fontSize={12} />
+              <YAxis stroke="#4e5f82" fontSize={12} tickFormatter={(v: number) => `${v / 1000}k`} />
+              <Tooltip
+                formatter={(v: number) => [`${v.toLocaleString('fr-FR')} FCFA`, 'Ventes']}
+                contentStyle={{
+                  background: '#070e1f',
+                  border: '1px solid #16233d',
+                  borderRadius: 8,
+                  color: '#f5f0e8',
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="ventes"
+                stroke="#D4AF37"
+                strokeWidth={2}
+                dot={{ fill: '#D4AF37', r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Top Produits */}
+        <div
+          style={{
+            background: '#0c1528',
+            borderRadius: 12,
+            padding: '1.25rem',
+            border: '1px solid #16233d',
+          }}
+        >
+          <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 1rem' }}>
+            Top Produits
+          </h3>
+          {topProduits.map((p, i) => (
+            <div
+              key={p.nom}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '0.6rem 0',
+                borderBottom: i < topProduits.length - 1 ? '1px solid #16233d' : 'none',
+              }}
+            >
+              <div>
+                <p style={{ color: '#9ba8c4', fontSize: '0.82rem', margin: 0 }}>{p.nom}</p>
+                <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0.1rem 0 0' }}>
+                  {p.revenue} FCFA
+                </p>
+              </div>
+              <span
+                style={{
+                  background: 'rgba(0,188,212,0.1)',
+                  color: '#00BCD4',
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: 99,
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                }}
+              >
+                {p.ventes}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Alertes */}
+      <div
+        style={{
+          background: '#0c1528',
+          borderRadius: 12,
+          padding: '1.25rem',
+          border: '1px solid #16233d',
+        }}
+      >
+        <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 0.75rem' }}>
+          Alertes
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          {alertes.map((a, i) => {
+            const colors: Record<string, string> = {
+              error: '#ef4444',
+              warn: '#f0a832',
+              info: '#00BCD4',
+            }
+            const c = colors[a.type]
+            return (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.6rem 0.75rem',
+                  background: `${c}11`,
+                  borderRadius: 8,
+                  borderLeft: `3px solid ${c}`,
+                }}
+              >
+                <span style={{ color: c, fontSize: '0.82rem' }}>{a.message}</span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
