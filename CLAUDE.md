@@ -1,6 +1,6 @@
-# DUKA — Logiciel de Gestion de Boutique
+# SUGU — Logiciel de Gestion pour le Secteur Informel
 
-**FORGE Afrika** — Solution de gestion pour commerçants africains
+**FORGE Afrika** — "Sugu" = marché, en langues africaines. Outil de gestion pensé pour les vendeurs de rue, boutiquiers de quartier et commerçants informels — assez simple pour être utilisé sans formation.
 
 ---
 
@@ -28,7 +28,7 @@
 ```
 Next.js 15 (App Router) + TypeScript strict
 Tailwind CSS v4 + postcss
-Supabase (PostgreSQL + Auth + RLS)
+Persistance : localStorage (offline-first) — Supabase prévu en sync distante future
 Recharts — graphiques
 Lucide React — icônes
 Framer Motion — animations (si besoin)
@@ -39,26 +39,33 @@ Framer Motion — animations (si besoin)
 ## Architecture
 
 ```
-duka/
+sugu/ (dossier local : duka/)
 ├── app/
-│   ├── layout.tsx          — Layout avec Sidebar
-│   ├── page.tsx            — Tableau de bord
-│   ├── produits/page.tsx
-│   ├── ventes/page.tsx
-│   ├── achats/page.tsx
-│   ├── clients/page.tsx
+│   ├── layout.tsx          — Layout avec Sidebar + LangueProvider
+│   ├── page.tsx            — Tableau de bord (KPIs dynamiques)
+│   ├── produits/page.tsx   — CRUD produits
+│   ├── ventes/page.tsx     — CRUD ventes + lignes + mode de paiement
+│   ├── achats/page.tsx     — CRUD achats + incrément stock
+│   ├── clients/page.tsx    — CRUD clients + solde dû
 │   ├── fournisseurs/page.tsx
-│   ├── stock/page.tsx
-│   └── rapports/page.tsx
+│   ├── stock/page.tsx      — dérivé de produits (source unique)
+│   └── rapports/page.tsx   — agrégation dynamique ventes/achats
 ├── components/
-│   └── Sidebar.tsx
+│   ├── Sidebar.tsx         — nav i18n + sélecteur langue + statut offline
+│   ├── LangueProvider.tsx  — contexte i18n (FR/EN/Jula/Mooré)
+│   ├── EmptyState.tsx      — état vide réutilisable
+│   ├── Modal.tsx           — modal réutilisable pour formulaires
+│   └── FormField.tsx       — champs de formulaire standardisés
 ├── lib/
+│   ├── types.ts            — types partagés (Produit, Client, Vente...)
+│   ├── storage.ts          — hook usePersisted (localStorage)
+│   ├── i18n.ts             — dictionnaire de traductions
 │   └── supabase/
-│       ├── client.ts       — Browser client
-│       └── server.ts       — Server client
+│       ├── client.ts       — Browser client (sync future)
+│       └── server.ts       — Server client (sync future)
 └── supabase/
     └── migrations/
-        └── 001_init.sql    — Schéma complet + RLS
+        └── 001_init.sql    — Schéma complet + RLS (référence pour sync future)
 ```
 
 ---
@@ -75,31 +82,44 @@ duka/
 
 ## Modèle de Données
 
-### Flux principal
+### Flux principal (actuellement en localStorage, clé par entité)
 ```
-Boutique → Fournisseur → Achat → Achat_Lignes → [Trigger: +Stock]
-Boutique → Client → Vente → Vente_Lignes → [Trigger: -Stock]
+Fournisseur → Achat → [+Stock produit, +totalAchats fournisseur]
+Client → Vente (lignes multi-produits) → [-Stock produit, +totalAchats/soldeDu client]
 ```
 
-### Tables
-- `boutiques` — 1 par commerçant (lié à auth.users)
-- `categories` — catégories de produits
-- `produits` — catalogue avec stock
-- `fournisseurs` — partenaires d'approvisionnement
-- `clients` — avec suivi du solde dû (crédit)
-- `achats` + `achat_lignes` — commandes fournisseur
-- `ventes` + `vente_lignes` — transactions client
+### Clés localStorage
+- `sugu_produits` — catalogue avec stock (source unique, aussi utilisée par /stock)
+- `sugu_clients` — avec suivi du solde dû (crédit)
+- `sugu_fournisseurs` — partenaires d'approvisionnement
+- `sugu_achats` — commandes fournisseur (incrémente le stock si "Livré")
+- `sugu_ventes` — transactions client (décrémente le stock, met à jour le solde dû si "Crédit")
+- `sugu_langue` — langue choisie (fr/en/jula/more)
+
+### Tables Supabase (schéma de référence, pour sync future)
+- `boutiques`, `categories`, `produits`, `fournisseurs`, `clients`, `achats` + `achat_lignes`, `ventes` + `vente_lignes`
+
+---
+
+## Règles UX spécifiques à SUGU
+
+1. **Zéro donnée fictive** — chaque page démarre vide ; un `EmptyState` guide l'utilisateur vers sa première action.
+2. **Offline-first** — toute donnée est écrite en localStorage immédiatement (`lib/storage.ts`), jamais de perte si la connexion tombe. La Sidebar affiche le statut en ligne/hors ligne en temps réel.
+3. **i18n basique** — FR (défaut), EN, Jula, Mooré via `lib/i18n.ts` + `LangueProvider`. Le sélecteur est dans la Sidebar.
+4. **Paiement mobile** — Espèces, Orange Money, Wave, Moov Money, Crédit sont proposés comme modes de paiement dans le formulaire de vente (UI prête, intégration API à venir).
+5. **Mobile-first** — Sidebar en tiroir (hamburger) sous 768px, grilles KPI qui repassent en 1-2 colonnes, tables avec scroll horizontal. Toujours tester à 375px.
 
 ---
 
 ## Prochaines Features
 
-- [ ] Auth Supabase (inscription commerçant)
+- [ ] Auth Supabase (inscription commerçant) + sync localStorage ↔ Supabase
+- [ ] Intégration réelle Orange Money / Wave (actuellement UI seulement)
 - [ ] Caisse (POS simplifié) — écran de vente rapide
 - [ ] Impression reçus (PDF)
 - [ ] Export Excel des rapports
 - [ ] Multi-boutique (pour chaînes)
-- [ ] Mode offline (PWA)
+- [ ] PWA installable (Service Worker, icônes)
 - [ ] App mobile (React Native / Expo)
 
 ---

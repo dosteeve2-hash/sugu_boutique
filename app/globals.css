@@ -35,3 +35,76 @@ body {
   background: var(--gold);
   color: var(--navy);
 }
+
+.sugu-sidebar {
+  transition: transform 0.25s ease;
+}
+
+.sugu-mobile-toggle {
+  display: none;
+}
+
+.sugu-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sugu-sidebar {
+    position: fixed;
+    z-index: 200;
+    inset: 0 auto 0 0;
+    transform: translateX(-100%);
+  }
+
+  .sugu-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sugu-mobile-toggle {
+    display: flex;
+  }
+
+  .sugu-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 14, 31, 0.6);
+    z-index: 150;
+  }
+
+  .sugu-main {
+    padding: 1rem !important;
+    padding-top: 4.5rem !important;
+  }
+
+  .sugu-kpi-grid-4,
+  .sugu-kpi-grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .sugu-two-col {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sugu-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem;
+  }
+
+  .sugu-header-row > button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .sugu-kpi-grid-4,
+  .sugu-kpi-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.sugu-table-wrap {
+  overflow-x: auto;
+}

@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
+import { LangueProvider } from '@/components/LangueProvider'
 
 export const metadata: Metadata = {
-  title: 'DUKA — Gestion de Boutique',
-  description: 'Logiciel de gestion pour commerçants africains — FORGE Afrika',
+  title: 'SUGU — Mon Marché',
+  description: 'Logiciel de gestion pour le secteur informel africain — FORGE Afrika',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -18,12 +19,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        <div style={{ display: 'flex', minHeight: '100vh' }}>
-          <Sidebar />
-          <main style={{ flex: 1, padding: '2rem', overflowY: 'auto', minHeight: '100vh' }}>
-            {children}
-          </main>
-        </div>
+        <LangueProvider>
+          <div style={{ display: 'flex', minHeight: '100vh' }}>
+            <Sidebar />
+            <main className="sugu-main" style={{ flex: 1, padding: '2rem', overflowY: 'auto', minHeight: '100vh' }}>
+              {children}
+            </main>
+          </div>
+        </LangueProvider>
       </body>
     </html>
   )

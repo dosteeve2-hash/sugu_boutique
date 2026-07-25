@@ -1,6 +1,6 @@
 -- ============================================================
--- DUKA — Schéma initial
--- FORGE Afrika — Logiciel de gestion de boutique
+-- SUGU — Schéma initial
+-- FORGE Afrika — Logiciel de gestion pour le secteur informel
 -- ============================================================
 
 -- Extension UUID
