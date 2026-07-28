@@ -39,6 +39,32 @@ export type Traduction = {
   enLigne: string
   horsLigne: string
   langue: string
+  caisse: string
+  accueil: string
+  panier: string
+  paiement: string
+  recu: string
+  etape: string
+  rechercherProduit: string
+  panierVide: string
+  panierVideMessage: string
+  total: string
+  montantRecu: string
+  renduMonnaie: string
+  validerPayer: string
+  especes: string
+  imprimerPartager: string
+  nouvelleVente: string
+  dateHeure: string
+  modePaiementLabel: string
+  retour: string
+  suivant: string
+  clientPassage: string
+  unite: string
+  articles: string
+  recuMerci: string
+  aucunProduitCaisse: string
+  ajouterProduitsAbord: string
 }
 
 export const traductions: Record<Langue, Traduction> = {
@@ -74,6 +100,32 @@ export const traductions: Record<Langue, Traduction> = {
     enLigne: 'En ligne',
     horsLigne: 'Hors ligne — données sauvegardées',
     langue: 'Langue',
+    caisse: 'Caisse',
+    accueil: 'Accueil',
+    panier: 'Panier',
+    paiement: 'Paiement',
+    recu: 'Reçu',
+    etape: 'Étape',
+    rechercherProduit: 'Rechercher un produit...',
+    panierVide: 'Panier vide',
+    panierVideMessage: "Touchez un produit pour l'ajouter au panier.",
+    total: 'Total',
+    montantRecu: 'Montant reçu',
+    renduMonnaie: 'Monnaie à rendre',
+    validerPayer: 'Valider & Payer',
+    especes: 'Espèces',
+    imprimerPartager: 'Imprimer / Partager',
+    nouvelleVente: 'Nouvelle vente',
+    dateHeure: 'Date & heure',
+    modePaiementLabel: 'Mode de paiement',
+    retour: 'Retour',
+    suivant: 'Suivant',
+    clientPassage: 'Client de passage',
+    unite: 'Unité',
+    articles: 'article(s)',
+    recuMerci: 'Merci pour votre achat !',
+    aucunProduitCaisse: 'Aucun produit trouvé',
+    ajouterProduitsAbord: "Ajoutez d'abord des produits pour utiliser la caisse.",
   },
   en: {
     tagline: 'My Market',
@@ -107,6 +159,32 @@ export const traductions: Record<Langue, Traduction> = {
     enLigne: 'Online',
     horsLigne: 'Offline — data saved locally',
     langue: 'Language',
+    caisse: 'Register',
+    accueil: 'Home',
+    panier: 'Cart',
+    paiement: 'Payment',
+    recu: 'Receipt',
+    etape: 'Step',
+    rechercherProduit: 'Search a product...',
+    panierVide: 'Cart is empty',
+    panierVideMessage: 'Tap a product to add it to the cart.',
+    total: 'Total',
+    montantRecu: 'Amount received',
+    renduMonnaie: 'Change due',
+    validerPayer: 'Confirm & Pay',
+    especes: 'Cash',
+    imprimerPartager: 'Print / Share',
+    nouvelleVente: 'New sale',
+    dateHeure: 'Date & time',
+    modePaiementLabel: 'Payment method',
+    retour: 'Back',
+    suivant: 'Next',
+    clientPassage: 'Walk-in customer',
+    unite: 'Unit',
+    articles: 'item(s)',
+    recuMerci: 'Thank you for your purchase!',
+    aucunProduitCaisse: 'No product found',
+    ajouterProduitsAbord: 'Add products first to use the register.',
   },
   jula: {
     tagline: 'N ka Sugu',
@@ -140,6 +218,32 @@ export const traductions: Record<Langue, Traduction> = {
     enLigne: 'A be ɛntɛrinɛti kan',
     horsLigne: 'A tɛ ɛntɛrinɛti kan — kunnafoniw maraw',
     langue: 'Kan',
+    caisse: 'Wari-so',
+    accueil: 'So kɔnɔ',
+    panier: 'Sɛnɛkɛminanw',
+    paiement: 'Wari sara',
+    recu: 'Sɛbɛn',
+    etape: 'Yɔrɔ',
+    rechercherProduit: 'Nɔgɔ ɲini...',
+    panierVide: 'Panye lankolon',
+    panierVideMessage: 'Nɔgɔ dɔ digi walasa ka a fara panye kan.',
+    total: 'A bɛɛ lajɛlen',
+    montantRecu: 'Wari sɔrɔlen',
+    renduMonnaie: 'Wari segin',
+    validerPayer: 'Dafa ni sara',
+    especes: 'Wari kɛrɛnkɛrɛnnen',
+    imprimerPartager: 'Bɔ sɛbɛn na / Ci',
+    nouvelleVente: 'Fɛɛn kura',
+    dateHeure: 'Don ni waati',
+    modePaiementLabel: 'Sara sira',
+    retour: 'Segin kɔ',
+    suivant: 'Taa ɲɛ',
+    clientPassage: 'Tɛmɛnbaa jatigu',
+    unite: 'Sudon',
+    articles: 'nɔgɔ(w)',
+    recuMerci: 'I ni ce sanni na!',
+    aucunProduitCaisse: 'Nɔgɔ si ma sɔrɔ',
+    ajouterProduitsAbord: 'Aw ka nɔgɔw fara a kan fɔlɔ walasa ka wari-so kɛ.',
   },
   more: {
     tagline: 'Mam Raaga',
@@ -173,5 +277,31 @@ export const traductions: Record<Langue, Traduction> = {
     enLigne: 'Interneti pʋgẽ',
     horsLigne: 'Interneti pa be ye — võor gãda',
     langue: 'Gomd',
+    caisse: 'Ligd-gãadgo',
+    accueil: 'Zakẽ',
+    panier: 'Rɔgd-bũmb',
+    paiement: 'Yaoodo',
+    recu: 'Sɛb-kɩta',
+    etape: 'Taab-kẽedo',
+    rechercherProduit: 'Baood bilg a yembr...',
+    panierVide: 'Rɔgd-bũmb yaa zaalem',
+    panierVideMessage: 'Sɩɩs bilg a yembr n paas rɔgd-bũmb pʋgẽ.',
+    total: 'Fãa',
+    montantRecu: 'Ligdi sɩɩlga',
+    renduMonnaie: 'Ligdi lebs-b',
+    validerPayer: 'Sak la yao',
+    especes: 'Ligdi mengo',
+    imprimerPartager: 'Yiisi sɛb-kɩta / Tʋʋg',
+    nouvelleVente: 'Yood paalg',
+    dateHeure: 'Daar la wakat',
+    modePaiementLabel: 'Yaoodo manesem',
+    retour: 'Lebg poorẽ',
+    suivant: 'Tɩ taoore',
+    clientPassage: 'Ned-tʋmd sẽn kẽesd',
+    unite: 'Buud',
+    articles: 'bũmb(u)',
+    recuMerci: 'Barka ne yãmb dã!',
+    aucunProduitCaisse: 'Bilg ba a yembr ka mikame',
+    ajouterProduitsAbord: 'Paas-y bilgu deng n tõog n tũ ligd-gãadgo.',
   },
 }

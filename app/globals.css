@@ -16,6 +16,15 @@ body {
   color: var(--cream);
   margin: 0;
   padding: 0;
+  font-size: 16px;
+}
+
+button,
+input,
+select,
+textarea {
+  min-height: 48px;
+  font-size: 1rem;
 }
 
 ::-webkit-scrollbar {
@@ -96,6 +105,18 @@ body {
     width: 100%;
     justify-content: center;
   }
+
+  .sugu-bottom-nav {
+    display: flex !important;
+  }
+
+  .sugu-main {
+    padding-bottom: 6rem !important;
+  }
+
+  .sugu-caisse-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -107,4 +128,26 @@ body {
 
 .sugu-table-wrap {
   overflow-x: auto;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .sugu-recu-print,
+  .sugu-recu-print * {
+    visibility: visible;
+  }
+
+  .sugu-recu-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .no-print {
+    display: none !important;
+  }
 }

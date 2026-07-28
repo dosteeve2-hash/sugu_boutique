@@ -6,6 +6,7 @@ export type Produit = {
   prixVente: number
   stock: number
   stockMin: number
+  unite?: string
 }
 
 export type Client = {

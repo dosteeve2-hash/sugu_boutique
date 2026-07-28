@@ -17,6 +17,7 @@ const vide: Omit<Produit, 'id'> = {
   prixVente: 0,
   stock: 0,
   stockMin: 5,
+  unite: '',
 }
 
 export default function Produits() {
@@ -43,7 +44,7 @@ export default function Produits() {
 
   const ouvrirEdition = (p: Produit) => {
     setEdition(p)
-    setForm({ nom: p.nom, categorie: p.categorie, prixAchat: p.prixAchat, prixVente: p.prixVente, stock: p.stock, stockMin: p.stockMin })
+    setForm({ nom: p.nom, categorie: p.categorie, prixAchat: p.prixAchat, prixVente: p.prixVente, stock: p.stock, stockMin: p.stockMin, unite: p.unite ?? '' })
     setShowForm(true)
   }
 
@@ -237,6 +238,9 @@ export default function Produits() {
               <TextInput required type="number" min={0} value={form.prixVente || ''} onChange={(e) => setForm({ ...form, prixVente: Number(e.target.value) })} />
             </FormField>
           </div>
+          <FormField label="Unité (kg, sac, pièce...)">
+            <TextInput value={form.unite ?? ''} onChange={(e) => setForm({ ...form, unite: e.target.value })} placeholder="Ex: kg, tas, pièce" />
+          </FormField>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <FormField label="Stock actuel">
               <TextInput required type="number" min={0} value={form.stock || ''} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} />

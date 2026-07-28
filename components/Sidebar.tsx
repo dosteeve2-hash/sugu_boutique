@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import {
   LayoutDashboard,
+  Calculator,
   Package,
   ShoppingCart,
   Truck,
@@ -42,6 +43,7 @@ export default function Sidebar() {
 
   const links = [
     { href: '/', label: t.dashboard, icon: LayoutDashboard },
+    { href: '/caisse', label: t.caisse, icon: Calculator },
     { href: '/produits', label: t.produits, icon: Package },
     { href: '/ventes', label: t.ventes, icon: ShoppingCart },
     { href: '/achats', label: t.achats, icon: Truck },

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
+import BottomNav from '@/components/BottomNav'
 import { LangueProvider } from '@/components/LangueProvider'
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <main className="sugu-main" style={{ flex: 1, padding: '2rem', overflowY: 'auto', minHeight: '100vh' }}>
               {children}
             </main>
+            <BottomNav />
           </div>
         </LangueProvider>
       </body>
