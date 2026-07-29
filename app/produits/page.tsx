@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Plus, Search, Edit2, Trash2, Package } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
+import { usePersistedBoutique } from '@/lib/storage'
 import { Produit } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
@@ -21,7 +22,7 @@ const vide: Omit<Produit, 'id'> = {
 }
 
 export default function Produits() {
-  const [produits, setProduits, loaded] = usePersisted<Produit[]>('sugu_produits', [])
+  const [produits, setProduits, loaded] = usePersistedBoutique<Produit[]>('produits', [])
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [edition, setEdition] = useState<Produit | null>(null)
@@ -152,10 +153,16 @@ export default function Produits() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p) => {
+                {filtered.map((p, i) => {
                   const isLow = p.stock < p.stockMin
                   return (
-                    <tr key={p.id} style={{ borderTop: '1px solid #16233d' }}>
+                    <motion.tr
+                      key={p.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
+                      style={{ borderTop: '1px solid #16233d' }}
+                    >
                       <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>{p.nom}</td>
                       <td style={{ padding: '0.75rem 1rem' }}>
                         <span
@@ -202,7 +209,7 @@ export default function Produits() {
                           </button>
                         </div>
                       </td>
-                    </tr>
+                    </motion.tr>
                   )
                 })}
               </tbody>

@@ -1,12 +1,22 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Sidebar from '@/components/Sidebar'
-import BottomNav from '@/components/BottomNav'
 import { LangueProvider } from '@/components/LangueProvider'
+import { BoutiqueProvider } from '@/components/BoutiqueProvider'
+import AppShell from '@/components/AppShell'
 
 export const metadata: Metadata = {
-  title: 'SUGU — Mon Marché',
-  description: 'Logiciel de gestion pour le secteur informel africain — FORGE Afrika',
+  title: 'SUGU — Votre Caisse Digitale',
+  description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Multi-boutiques, offline-first, FORGE Afrika.',
+  icons: {
+    icon: '/logo-sugu-icon.svg',
+    shortcut: '/logo-sugu-icon.svg',
+    apple: '/logo-sugu-icon.svg',
+  },
+  openGraph: {
+    title: 'SUGU — Votre Caisse Digitale',
+    description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Multi-boutiques, offline-first, FORGE Afrika.',
+    images: ['/logo-sugu.svg'],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -21,13 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }}
       >
         <LangueProvider>
-          <div style={{ display: 'flex', minHeight: '100vh' }}>
-            <Sidebar />
-            <main className="sugu-main" style={{ flex: 1, padding: '2rem', overflowY: 'auto', minHeight: '100vh' }}>
-              {children}
-            </main>
-            <BottomNav />
-          </div>
+          <BoutiqueProvider>
+            <AppShell>{children}</AppShell>
+          </BoutiqueProvider>
         </LangueProvider>
       </body>
     </html>

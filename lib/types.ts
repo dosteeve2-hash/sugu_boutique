@@ -1,3 +1,14 @@
+export type TypeBoutique = 'Alimentation' | 'Vêtements' | 'Électronique' | 'Restaurant' | 'Autre'
+
+export type Boutique = {
+  id: string
+  nom: string
+  type: TypeBoutique
+  emoji: string
+  couleur: string
+  dateCreation: string
+}
+
 export type Produit = {
   id: number
   nom: string
@@ -38,6 +49,8 @@ export type VenteLigne = {
   prixUnit: number
 }
 
+export type Satisfaction = 'bien' | 'correct' | 'probleme'
+
 export type Vente = {
   id: number
   clientId: number | null
@@ -47,6 +60,7 @@ export type Vente = {
   modePaiement: ModePaiement
   statut: 'Payé' | 'Crédit'
   date: string
+  satisfaction?: Satisfaction | null
 }
 
 export type Achat = {

@@ -56,7 +56,7 @@ Auth/DB      @supabase/ssr + @supabase/supabase-js (clients prêts, intégration
 Charts       Recharts
 Icônes       Lucide React
 Animations   Framer Motion
-Déploiement  Vercel (duka.vercel.app)
+Déploiement  Vercel (sugu.vercel.app)
 ```
 
 ## Intégration écosystème FORGE Afrika

@@ -13,11 +13,13 @@ import {
   Building2,
   BarChart3,
   FileText,
+  Settings,
   Menu,
   X,
 } from 'lucide-react'
 import { useLangue } from '@/components/LangueProvider'
 import { LANGUES } from '@/lib/i18n'
+import BoutiqueSwitcher from '@/components/BoutiqueSwitcher'
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -51,31 +53,53 @@ export default function Sidebar() {
     { href: '/fournisseurs', label: t.fournisseurs, icon: Building2 },
     { href: '/stock', label: t.stock, icon: BarChart3 },
     { href: '/rapports', label: t.rapports, icon: FileText },
+    { href: '/parametres', label: t.parametres, icon: Settings },
   ]
 
   return (
     <>
-      <button
-        className="sugu-mobile-toggle"
-        onClick={() => setOpen((v) => !v)}
-        aria-label="Menu"
+      {/* Barre mobile */}
+      <div
+        className="sugu-mobile-topbar"
         style={{
+          display: 'none',
           position: 'fixed',
-          top: '0.75rem',
-          left: '0.75rem',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 56,
           zIndex: 250,
-          background: '#0c1528',
-          border: '1px solid #16233d',
-          borderRadius: 8,
-          padding: '0.5rem',
-          color: '#D4AF37',
+          background: '#070e1f',
+          borderBottom: '1px solid #16233d',
           alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
+          gap: '0.6rem',
+          padding: '0 0.75rem',
         }}
       >
-        {open ? <X size={20} /> : <Menu size={20} />}
-      </button>
+        <button
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Menu"
+          style={{
+            background: '#0c1528',
+            border: '1px solid #16233d',
+            borderRadius: 8,
+            padding: '0.5rem',
+            color: '#D4AF37',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            minHeight: 40,
+            flexShrink: 0,
+          }}
+        >
+          {open ? <X size={20} /> : <Menu size={20} />}
+        </button>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <BoutiqueSwitcher compact />
+        </div>
+      </div>
+
       <div className={`sugu-overlay${open ? ' open' : ''}`} onClick={() => setOpen(false)} />
       <aside
         className={`sugu-sidebar${open ? ' open' : ''}`}
@@ -87,28 +111,34 @@ export default function Sidebar() {
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
           overflowY: 'auto',
         }}
       >
       {/* Logo */}
-      <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid #16233d' }}>
-        <h1
-          style={{
-            color: '#D4AF37',
-            fontSize: '1.75rem',
-            fontWeight: 900,
-            margin: 0,
-            letterSpacing: '0.05em',
-          }}
-        >
-          SUGU
-        </h1>
-        <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0.25rem 0 0', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          {t.tagline}
-        </p>
+      <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid #16233d', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <img src="/logo-sugu-icon.svg" alt="SUGU" width={40} height={40} style={{ borderRadius: 10, flexShrink: 0 }} />
+        <div>
+          <h1
+            style={{
+              color: '#D4AF37',
+              fontSize: '1.75rem',
+              fontWeight: 900,
+              margin: 0,
+              letterSpacing: '0.05em',
+              fontFeatureSettings: '"kern" 1',
+            }}
+          >
+            SUGU
+          </h1>
+          <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0.25rem 0 0', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            {t.tagline}
+          </p>
+        </div>
+      </div>
+
+      {/* Sélecteur de boutique */}
+      <div style={{ padding: '0.85rem 1.25rem', borderBottom: '1px solid #16233d' }}>
+        <BoutiqueSwitcher />
       </div>
 
       {/* Statut connexion */}

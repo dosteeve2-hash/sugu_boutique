@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { useBoutique } from '@/components/BoutiqueProvider'
 
 export function usePersisted<T>(key: string, initial: T) {
   const [value, setValue] = useState<T>(initial)
@@ -9,11 +10,12 @@ export function usePersisted<T>(key: string, initial: T) {
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(key)
-      if (saved) setValue(JSON.parse(saved))
+      setValue(saved ? JSON.parse(saved) : initial)
     } catch {
-      // ignore corrupted storage
+      setValue(initial)
     }
     setLoaded(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key])
 
   const update = useCallback(
@@ -32,4 +34,11 @@ export function usePersisted<T>(key: string, initial: T) {
   )
 
   return [value, update, loaded] as const
+}
+
+export function usePersistedBoutique<T>(entite: string, initial: T) {
+  const { boutiqueActive, loaded: boutiqueLoaded } = useBoutique()
+  const key = `sugu_${boutiqueActive?.id ?? 'none'}_${entite}`
+  const [value, update, storageLoaded] = usePersisted<T>(key, initial)
+  return [value, update, boutiqueLoaded && storageLoaded] as const
 }

@@ -2,13 +2,14 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { AlertTriangle, CheckCircle, Package } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
+import { usePersistedBoutique } from '@/lib/storage'
 import { Produit } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 
 export default function Stock() {
-  const [produits, , loaded] = usePersisted<Produit[]>('sugu_produits', [])
+  const [produits, , loaded] = usePersistedBoutique<Produit[]>('produits', [])
   const [filtre, setFiltre] = useState<'tous' | 'faible' | 'ok'>('tous')
 
   const valeur = (p: Produit) => p.stock * p.prixAchat
@@ -88,12 +89,15 @@ export default function Stock() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {filtered.map((s) => {
+            {filtered.map((s, i) => {
               const isLow = s.stock < s.stockMin
               const pct = getPct(s)
               return (
-                <div
+                <motion.div
                   key={s.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
                   style={{
                     background: '#0c1528',
                     borderRadius: 10,
@@ -145,7 +149,7 @@ export default function Stock() {
                       {valeur(s).toLocaleString('fr-FR')} FCFA
                     </p>
                   </div>
-                </div>
+                </motion.div>
               )
             })}
             {filtered.length === 0 && (

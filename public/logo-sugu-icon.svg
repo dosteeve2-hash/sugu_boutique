@@ -1,0 +1,10 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+<rect width="192" height="192" rx="40" fill="#0A1628"/>
+<rect width="192" height="6" rx="3" fill="#D4AF37"/>
+<polygon points="36,68 96,44 156,68" fill="#D4AF37"/>
+<rect x="40" y="68" width="112" height="66" rx="4" fill="#162340"/>
+<rect x="52" y="76" width="36" height="30" rx="3" fill="#00BCD4" opacity="0.7"/>
+<rect x="104" y="76" width="36" height="30" rx="3" fill="#00BCD4" opacity="0.7"/>
+<rect x="34" y="132" width="124" height="10" rx="3" fill="#D4AF37"/>
+<text x="96" y="172" font-family="Arial, sans-serif" font-size="28" font-weight="800" fill="#FFFFFF" text-anchor="middle">SUGU</text>
+</svg>

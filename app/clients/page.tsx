@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Phone, AlertCircle, CheckCircle, Edit2, Trash2, Users } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
-import { Client } from '@/lib/types'
+import { motion } from 'framer-motion'
+import { Plus, Phone, AlertCircle, CheckCircle, Edit2, Trash2, Users, Smile, Meh, Frown } from 'lucide-react'
+import { usePersistedBoutique } from '@/lib/storage'
+import { Client, Vente } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
 import { FormField, TextInput, SubmitRow } from '@/components/FormField'
+import { useLangue } from '@/components/LangueProvider'
 
 const vide: Omit<Client, 'id'> = {
   nom: '',
@@ -18,10 +20,13 @@ const vide: Omit<Client, 'id'> = {
 }
 
 export default function Clients() {
-  const [clients, setClients, loaded] = usePersisted<Client[]>('sugu_clients', [])
+  const { t } = useLangue()
+  const [clients, setClients, loaded] = usePersistedBoutique<Client[]>('clients', [])
+  const [ventes] = usePersistedBoutique<Vente[]>('ventes', [])
   const [showForm, setShowForm] = useState(false)
   const [edition, setEdition] = useState<Client | null>(null)
   const [form, setForm] = useState(vide)
+  const [profil, setProfil] = useState<Client | null>(null)
 
   const totalSoldeDu = clients.reduce((a, c) => a + c.soldeDu, 0)
 
@@ -136,8 +141,15 @@ export default function Clients() {
                 </tr>
               </thead>
               <tbody>
-                {clients.map((c) => (
-                  <tr key={c.id} style={{ borderTop: '1px solid #16233d' }}>
+                {clients.map((c, i) => (
+                  <motion.tr
+                    key={c.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
+                    onClick={() => setProfil(c)}
+                    style={{ borderTop: '1px solid #16233d', cursor: 'pointer' }}
+                  >
                     <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 600 }}>{c.nom}</td>
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#9ba8c4', fontSize: '0.875rem' }}>
@@ -160,7 +172,7 @@ export default function Clients() {
                       )}
                     </td>
                     <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{c.derniereVisite}</td>
-                    <td style={{ padding: '0.75rem 1rem' }}>
+                    <td style={{ padding: '0.75rem 1rem' }} onClick={(e) => e.stopPropagation()}>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button
                           onClick={() => ouvrirEdition(c)}
@@ -176,7 +188,7 @@ export default function Clients() {
                         </button>
                       </div>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
@@ -200,6 +212,46 @@ export default function Clients() {
           </FormField>
           <SubmitRow onCancel={() => setShowForm(false)} submitLabel={edition ? 'Enregistrer' : 'Ajouter'} />
         </form>
+      </Modal>
+
+      <Modal open={!!profil} onClose={() => setProfil(null)} title={profil?.nom ?? ''}>
+        {profil && (() => {
+          const historique = ventes.filter((v) => v.clientId === profil.id).sort((a, b) => b.id - a.id)
+          const avecSatisfaction = historique.filter((v) => v.satisfaction)
+          const pctBien = avecSatisfaction.length > 0
+            ? Math.round((avecSatisfaction.filter((v) => v.satisfaction === 'bien').length / avecSatisfaction.length) * 100)
+            : null
+          const iconeSatisf = { bien: <Smile size={15} color="#22d98a" />, correct: <Meh size={15} color="#f0a832" />, probleme: <Frown size={15} color="#ef4444" /> }
+          return (
+            <div>
+              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem' }}>
+                <div style={{ flex: 1, background: '#070e1f', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
+                  <p style={{ color: '#4e5f82', fontSize: '0.68rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Total Achats</p>
+                  <p style={{ color: '#D4AF37', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>{profil.totalAchats.toLocaleString('fr-FR')} FCFA</p>
+                </div>
+                <div style={{ flex: 1, background: '#070e1f', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
+                  <p style={{ color: '#4e5f82', fontSize: '0.68rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>{t.satisfaction}</p>
+                  <p style={{ color: pctBien !== null ? '#22d98a' : '#4e5f82', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
+                    {pctBien !== null ? `${pctBien}%` : '—'}
+                  </p>
+                </div>
+              </div>
+              <p style={{ color: '#9ba8c4', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Historique des ventes</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: 280, overflowY: 'auto' }}>
+                {historique.length === 0 && <p style={{ color: '#4e5f82', fontSize: '0.82rem' }}>Aucune vente encore.</p>}
+                {historique.map((v) => (
+                  <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070e1f', borderRadius: 8, padding: '0.6rem 0.75rem' }}>
+                    <div>
+                      <p style={{ color: '#f5f0e8', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>{v.total.toLocaleString('fr-FR')} FCFA</p>
+                      <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0.1rem 0 0' }}>{v.date}</p>
+                    </div>
+                    {v.satisfaction && iconeSatisf[v.satisfaction]}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        })()}
       </Modal>
     </div>
   )

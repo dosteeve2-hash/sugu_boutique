@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search,
   Plus,
@@ -12,9 +13,12 @@ import {
   RotateCcw,
   CheckCircle2,
   Package,
+  Smile,
+  Meh,
+  Frown,
 } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
-import { Produit, Vente, VenteLigne, ModePaiement } from '@/lib/types'
+import { usePersistedBoutique } from '@/lib/storage'
+import { Produit, Vente, VenteLigne, ModePaiement, Satisfaction } from '@/lib/types'
 import { useLangue } from '@/components/LangueProvider'
 import EmptyState from '@/components/EmptyState'
 import Recu from '@/components/Recu'
@@ -36,8 +40,8 @@ const today = () => new Date().toISOString().slice(0, 10)
 export default function Caisse() {
   const { t } = useLangue()
   const router = useRouter()
-  const [produits, setProduits, loadedP] = usePersisted<Produit[]>('sugu_produits', [])
-  const [, setVentes, loadedV] = usePersisted<Vente[]>('sugu_ventes', [])
+  const [produits, setProduits, loadedP] = usePersistedBoutique<Produit[]>('produits', [])
+  const [, setVentes, loadedV] = usePersistedBoutique<Vente[]>('ventes', [])
   const loaded = loadedP && loadedV
 
   const [etape, setEtape] = useState<Etape>('panier')
@@ -110,6 +114,12 @@ export default function Caisse() {
     setVenteFinaleMontantRecu(modePaiement === 'Espèces' ? montantRecu : undefined)
     setVenteFinaleRendu(modePaiement === 'Espèces' ? renduMonnaie : undefined)
     setEtape('recu')
+  }
+
+  const choisirSatisfaction = (s: Satisfaction) => {
+    if (!venteFinale) return
+    setVenteFinale({ ...venteFinale, satisfaction: s })
+    setVentes((prev) => prev.map((v) => (v.id === venteFinale.id ? { ...v, satisfaction: s } : v)))
   }
 
   const nouvelleVente = () => {
@@ -309,17 +319,27 @@ export default function Caisse() {
               <p style={{ color: '#4e5f82', fontSize: '0.75rem', margin: 0, textTransform: 'uppercase' }}>
                 {nbArticles} {t.articles}
               </p>
-              <p style={{ color: '#D4AF37', fontWeight: 800, fontSize: '1.3rem', margin: '0.15rem 0 0' }}>
-                {total.toLocaleString('fr-FR')} FCFA
-              </p>
+              <AnimatePresence mode="popLayout">
+                <motion.p
+                  key={total}
+                  initial={{ scale: 1.15, opacity: 0.4 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  style={{ color: '#D4AF37', fontWeight: 800, fontSize: '1.3rem', margin: '0.15rem 0 0' }}
+                >
+                  {total.toLocaleString('fr-FR')} FCFA
+                </motion.p>
+              </AnimatePresence>
             </div>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               onClick={allerPaiement}
               disabled={cart.length === 0}
+              className={cart.length > 0 ? 'sugu-gold-fab' : undefined}
               style={{
                 minHeight: 56,
                 minWidth: 160,
-                background: cart.length > 0 ? '#D4AF37' : '#4e5f82',
+                background: cart.length > 0 ? undefined : '#4e5f82',
                 color: '#0A1628',
                 border: 'none',
                 borderRadius: 12,
@@ -334,7 +354,7 @@ export default function Caisse() {
               }}
             >
               {t.suivant} <ShoppingCart size={20} />
-            </button>
+            </motion.button>
           </div>
         </>
       ) : etape === 'paiement' ? (
@@ -434,7 +454,8 @@ export default function Caisse() {
             </div>
           )}
 
-          <button
+          <motion.button
+            whileTap={{ scale: 0.97 }}
             onClick={valider}
             disabled={!peutValider}
             style={{
@@ -454,12 +475,53 @@ export default function Caisse() {
             }}
           >
             <CheckCircle2 size={22} /> {t.validerPayer}
-          </button>
+          </motion.button>
         </div>
       ) : (
         venteFinale && (
-          <div style={{ maxWidth: 480, margin: '0 auto' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+            style={{ maxWidth: 480, margin: '0 auto' }}
+          >
             <Recu vente={venteFinale} montantRecu={venteFinaleMontantRecu} rendu={venteFinaleRendu} />
+
+            <div className="no-print" style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 14, padding: '1.1rem', marginTop: '1.25rem', textAlign: 'center' }}>
+              <p style={{ color: '#9ba8c4', fontSize: '0.88rem', fontWeight: 600, margin: '0 0 0.75rem' }}>{t.commentSestPasseeVente}</p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem' }}>
+                {([
+                  { s: 'bien' as Satisfaction, icon: Smile, label: t.satisfBien, color: '#22d98a' },
+                  { s: 'correct' as Satisfaction, icon: Meh, label: t.satisfCorrect, color: '#f0a832' },
+                  { s: 'probleme' as Satisfaction, icon: Frown, label: t.satisfProbleme, color: '#ef4444' },
+                ]).map(({ s, icon: Icon, label, color }) => {
+                  const selectionne = venteFinale.satisfaction === s
+                  return (
+                    <motion.button
+                      key={s}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => choisirSatisfaction(s)}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        minWidth: 76,
+                        padding: '0.6rem 0.5rem',
+                        borderRadius: 12,
+                        border: selectionne ? `2px solid ${color}` : '1px solid #16233d',
+                        background: selectionne ? `${color}18` : 'transparent',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Icon size={24} color={color} />
+                      <span style={{ fontSize: '0.72rem', fontWeight: 600, color: selectionne ? color : '#9ba8c4' }}>{label}</span>
+                    </motion.button>
+                  )
+                })}
+              </div>
+            </div>
+
             <div className="no-print" style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
               <button
                 onClick={imprimerPartager}
@@ -502,7 +564,7 @@ export default function Caisse() {
                 <RotateCcw size={18} /> {t.nouvelleVente}
               </button>
             </div>
-          </div>
+          </motion.div>
         )
       )}
 

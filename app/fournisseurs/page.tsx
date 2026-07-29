@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Plus, Phone, MapPin, Edit2, Trash2, Building2 } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
+import { usePersistedBoutique } from '@/lib/storage'
 import { Fournisseur } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
@@ -18,7 +19,7 @@ const vide: Omit<Fournisseur, 'id'> = {
 }
 
 export default function Fournisseurs() {
-  const [fournisseurs, setFournisseurs, loaded] = usePersisted<Fournisseur[]>('sugu_fournisseurs', [])
+  const [fournisseurs, setFournisseurs, loaded] = usePersistedBoutique<Fournisseur[]>('fournisseurs', [])
   const [showForm, setShowForm] = useState(false)
   const [edition, setEdition] = useState<Fournisseur | null>(null)
   const [form, setForm] = useState(vide)
@@ -93,9 +94,12 @@ export default function Fournisseurs() {
         />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
-          {fournisseurs.map((f) => (
-            <div
+          {fournisseurs.map((f, i) => (
+            <motion.div
               key={f.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: Math.min(i, 10) * 0.05 }}
               style={{
                 background: '#0c1528',
                 borderRadius: 12,
@@ -147,7 +151,7 @@ export default function Fournisseurs() {
                   <p style={{ color: '#9ba8c4', fontSize: '0.82rem', margin: 0 }}>{f.derniereCommande}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

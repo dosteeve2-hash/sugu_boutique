@@ -11,15 +11,15 @@ import {
   Legend,
 } from 'recharts'
 import { FileText } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
+import { usePersistedBoutique } from '@/lib/storage'
 import { Vente, Achat } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 
 const MOIS_LABEL = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc']
 
 export default function Rapports() {
-  const [ventes, , loadedV] = usePersisted<Vente[]>('sugu_ventes', [])
-  const [achats, , loadedA] = usePersisted<Achat[]>('sugu_achats', [])
+  const [ventes, , loadedV] = usePersistedBoutique<Vente[]>('ventes', [])
+  const [achats, , loadedA] = usePersistedBoutique<Achat[]>('achats', [])
   const loaded = loadedV && loadedA
 
   if (!loaded) return null

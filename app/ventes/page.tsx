@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Plus, ShoppingCart, Trash2 } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
+import { usePersistedBoutique } from '@/lib/storage'
 import { Vente, VenteLigne, Produit, Client, ModePaiement } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
@@ -22,9 +23,9 @@ const MODE_STYLE: Record<ModePaiement, { bg: string; color: string }> = {
 const today = () => new Date().toISOString().slice(0, 10)
 
 export default function Ventes() {
-  const [ventes, setVentes, loaded] = usePersisted<Vente[]>('sugu_ventes', [])
-  const [produits, setProduits] = usePersisted<Produit[]>('sugu_produits', [])
-  const [clients, setClients] = usePersisted<Client[]>('sugu_clients', [])
+  const [ventes, setVentes, loaded] = usePersistedBoutique<Vente[]>('ventes', [])
+  const [produits, setProduits] = usePersistedBoutique<Produit[]>('produits', [])
+  const [clients, setClients] = usePersistedBoutique<Client[]>('clients', [])
   const [showForm, setShowForm] = useState(false)
 
   const [clientId, setClientId] = useState<number | 'passage'>('passage')
@@ -189,8 +190,14 @@ export default function Ventes() {
                 </tr>
               </thead>
               <tbody>
-                {ventes.map((v) => (
-                  <tr key={v.id} style={{ borderTop: '1px solid #16233d' }}>
+                {ventes.map((v, i) => (
+                  <motion.tr
+                    key={v.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
+                    style={{ borderTop: '1px solid #16233d' }}
+                  >
                     <td style={{ padding: '0.75rem 1rem', color: '#4e5f82', fontSize: '0.8rem' }}>#{v.id.toString().slice(-4)}</td>
                     <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>{v.client}</td>
                     <td style={{ padding: '0.75rem 1rem', color: '#D4AF37', fontWeight: 700 }}>
@@ -230,7 +237,7 @@ export default function Ventes() {
                       </span>
                     </td>
                     <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{v.date}</td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>

@@ -46,10 +46,13 @@ textarea {
 }
 
 .sugu-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   transition: transform 0.25s ease;
 }
 
-.sugu-mobile-toggle {
+.sugu-mobile-topbar {
   display: none;
 }
 
@@ -69,7 +72,7 @@ textarea {
     transform: translateX(0);
   }
 
-  .sugu-mobile-toggle {
+  .sugu-mobile-topbar {
     display: flex;
   }
 
@@ -128,6 +131,21 @@ textarea {
 
 .sugu-table-wrap {
   overflow-x: auto;
+}
+
+.sugu-kente-bg {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.05) 0, rgba(212, 175, 55, 0.05) 2px, transparent 2px, transparent 14px),
+    repeating-linear-gradient(-45deg, rgba(0, 188, 212, 0.04) 0, rgba(0, 188, 212, 0.04) 2px, transparent 2px, transparent 14px);
+}
+
+.sugu-gold-fab {
+  background: linear-gradient(135deg, #D4AF37, #f7c060);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.35);
+}
+
+h1, h2, h3 {
+  font-feature-settings: "kern" 1;
 }
 
 @media print {

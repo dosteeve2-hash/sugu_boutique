@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Calculator, Package, ShoppingCart, FileText } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { LayoutDashboard, Calculator, Package, ShoppingCart, Settings } from 'lucide-react'
 import { useLangue } from '@/components/LangueProvider'
 
 export default function BottomNav() {
@@ -16,7 +17,7 @@ export default function BottomNav() {
     { href: '/produits', label: t.produits, icon: Package },
     { href: '/caisse', label: t.caisse, icon: Calculator, central: true },
     { href: '/ventes', label: t.ventes, icon: ShoppingCart },
-    { href: '/rapports', label: t.rapports, icon: FileText },
+    { href: '/parametres', label: t.parametres, icon: Settings },
   ]
 
   return (
@@ -53,21 +54,35 @@ export default function BottomNav() {
               color: active ? '#D4AF37' : '#4e5f82',
             }}
           >
-            <span
+            <motion.span
+              whileTap={{ scale: 0.9 }}
               style={{
+                position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: central ? 44 : 28,
                 height: central ? 44 : 28,
                 borderRadius: 12,
-                background: central ? (active ? '#D4AF37' : '#D4AF37') : active ? 'rgba(212,175,55,0.12)' : 'transparent',
+                background: central ? '#D4AF37' : 'transparent',
                 marginTop: central ? -18 : 0,
                 boxShadow: central ? '0 4px 14px rgba(212,175,55,0.4)' : 'none',
               }}
             >
-              <Icon size={central ? 22 : 18} color={central ? '#0A1628' : active ? '#D4AF37' : '#4e5f82'} />
-            </span>
+              {!central && active && (
+                <motion.span
+                  layoutId="nav-indicator"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: 12,
+                    background: 'rgba(212,175,55,0.12)',
+                  }}
+                />
+              )}
+              <Icon size={central ? 22 : 18} color={central ? '#0A1628' : active ? '#D4AF37' : '#4e5f82'} style={{ position: 'relative' }} />
+            </motion.span>
             <span style={{ fontSize: '0.65rem', fontWeight: active ? 700 : 500, whiteSpace: 'nowrap' }}>{label}</span>
           </Link>
         )

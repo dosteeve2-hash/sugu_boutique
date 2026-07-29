@@ -2,17 +2,18 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Plus, Truck } from 'lucide-react'
-import { usePersisted } from '@/lib/storage'
+import { usePersistedBoutique } from '@/lib/storage'
 import { Achat, Produit, Fournisseur } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
 import { FormField, TextInput, SelectInput, SubmitRow } from '@/components/FormField'
 
 export default function Achats() {
-  const [achats, setAchats, loaded] = usePersisted<Achat[]>('sugu_achats', [])
-  const [produits, setProduits] = usePersisted<Produit[]>('sugu_produits', [])
-  const [fournisseurs, setFournisseurs] = usePersisted<Fournisseur[]>('sugu_fournisseurs', [])
+  const [achats, setAchats, loaded] = usePersistedBoutique<Achat[]>('achats', [])
+  const [produits, setProduits] = usePersistedBoutique<Produit[]>('produits', [])
+  const [fournisseurs, setFournisseurs] = usePersistedBoutique<Fournisseur[]>('fournisseurs', [])
   const [showForm, setShowForm] = useState(false)
 
   const [fournisseurId, setFournisseurId] = useState<number | ''>('')
@@ -161,8 +162,14 @@ export default function Achats() {
                 </tr>
               </thead>
               <tbody>
-                {achats.map((a) => (
-                  <tr key={a.id} style={{ borderTop: '1px solid #16233d' }}>
+                {achats.map((a, i) => (
+                  <motion.tr
+                    key={a.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
+                    style={{ borderTop: '1px solid #16233d' }}
+                  >
                     <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>{a.fournisseur}</td>
                     <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4' }}>{a.produit}</td>
                     <td style={{ padding: '0.75rem 1rem', color: '#00BCD4', fontWeight: 600 }}>{a.quantite}</td>
@@ -187,7 +194,7 @@ export default function Achats() {
                       </span>
                     </td>
                     <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{a.date}</td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>

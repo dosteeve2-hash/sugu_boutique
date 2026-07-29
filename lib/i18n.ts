@@ -65,6 +65,28 @@ export type Traduction = {
   recuMerci: string
   aucunProduitCaisse: string
   ajouterProduitsAbord: string
+  ajouterBoutique: string
+  modifierBoutique: string
+  nomBoutique: string
+  typeBoutique: string
+  couleurBoutique: string
+  bienvenueSugu: string
+  bienvenueSuguMessage: string
+  creerPremiereBoutique: string
+  mesBoutiques: string
+  confirmerSuppressionBoutique: string
+  parametres: string
+  aPropos: string
+  version: string
+  bonjour: string
+  commentSestPasseeVente: string
+  satisfBien: string
+  satisfCorrect: string
+  satisfProbleme: string
+  satisfaction: string
+  satisfactionSemaine: string
+  gererBoutiques: string
+  aucuneBoutique: string
 }
 
 export const traductions: Record<Langue, Traduction> = {
@@ -126,6 +148,28 @@ export const traductions: Record<Langue, Traduction> = {
     recuMerci: 'Merci pour votre achat !',
     aucunProduitCaisse: 'Aucun produit trouvé',
     ajouterProduitsAbord: "Ajoutez d'abord des produits pour utiliser la caisse.",
+    ajouterBoutique: 'Ajouter une boutique',
+    modifierBoutique: 'Modifier la boutique',
+    nomBoutique: 'Nom de la boutique',
+    typeBoutique: "Type d'activité",
+    couleurBoutique: 'Couleur',
+    bienvenueSugu: 'Bienvenue sur SUGU',
+    bienvenueSuguMessage: 'Créez votre première boutique pour commencer à gérer vos ventes, produits et clients.',
+    creerPremiereBoutique: 'Créer ma première boutique',
+    mesBoutiques: 'Mes Boutiques',
+    confirmerSuppressionBoutique: 'Supprimer cette boutique et toutes ses données ?',
+    parametres: 'Paramètres',
+    aPropos: 'À propos',
+    version: 'Version',
+    bonjour: 'Bonjour',
+    commentSestPasseeVente: 'Comment s\'est passée cette vente ?',
+    satisfBien: 'Bien',
+    satisfCorrect: 'Correct',
+    satisfProbleme: 'Problème',
+    satisfaction: 'Satisfaction',
+    satisfactionSemaine: 'satisfaction cette semaine',
+    gererBoutiques: 'Gérer mes boutiques',
+    aucuneBoutique: 'Aucune boutique — créez-en une pour commencer.',
   },
   en: {
     tagline: 'My Market',
@@ -185,6 +229,28 @@ export const traductions: Record<Langue, Traduction> = {
     recuMerci: 'Thank you for your purchase!',
     aucunProduitCaisse: 'No product found',
     ajouterProduitsAbord: 'Add products first to use the register.',
+    ajouterBoutique: 'Add a shop',
+    modifierBoutique: 'Edit shop',
+    nomBoutique: 'Shop name',
+    typeBoutique: 'Business type',
+    couleurBoutique: 'Color',
+    bienvenueSugu: 'Welcome to SUGU',
+    bienvenueSuguMessage: 'Create your first shop to start managing your sales, products and customers.',
+    creerPremiereBoutique: 'Create my first shop',
+    mesBoutiques: 'My Shops',
+    confirmerSuppressionBoutique: 'Delete this shop and all its data?',
+    parametres: 'Settings',
+    aPropos: 'About',
+    version: 'Version',
+    bonjour: 'Hello',
+    commentSestPasseeVente: 'How did this sale go?',
+    satisfBien: 'Good',
+    satisfCorrect: 'Okay',
+    satisfProbleme: 'Issue',
+    satisfaction: 'Satisfaction',
+    satisfactionSemaine: 'satisfaction this week',
+    gererBoutiques: 'Manage my shops',
+    aucuneBoutique: 'No shop yet — create one to get started.',
   },
   jula: {
     tagline: 'N ka Sugu',
@@ -244,6 +310,28 @@ export const traductions: Record<Langue, Traduction> = {
     recuMerci: 'I ni ce sanni na!',
     aucunProduitCaisse: 'Nɔgɔ si ma sɔrɔ',
     ajouterProduitsAbord: 'Aw ka nɔgɔw fara a kan fɔlɔ walasa ka wari-so kɛ.',
+    ajouterBoutique: 'Sugu dɔ fara a kan',
+    modifierBoutique: 'Sugu yɛlɛma',
+    nomBoutique: 'Sugu tɔgɔ',
+    typeBoutique: 'Baara suguya',
+    couleurBoutique: 'Kulɛri',
+    bienvenueSugu: 'I bisimila SUGU la',
+    bienvenueSuguMessage: 'I ka sugu fɔlɔ dilan walasa ka i ka fɛɛnw, nɔgɔw ni jatiguew mara.',
+    creerPremiereBoutique: 'N ka sugu fɔlɔ dilan',
+    mesBoutiques: 'N ka Suguw',
+    confirmerSuppressionBoutique: 'I b\'a fɛ ka sugu in ni a kunnafoniw bɛɛ bɔ wa ?',
+    parametres: 'Labɛnw',
+    aPropos: 'A kan kunnafoni',
+    version: 'Bɔnɛ',
+    bonjour: 'I ni sɔgɔma',
+    commentSestPasseeVente: 'Fɛɛn in kɛra cogo di ?',
+    satisfBien: 'A ka ɲi',
+    satisfCorrect: 'A bɛnnen don',
+    satisfProbleme: 'Gɛlɛya bɛ a la',
+    satisfaction: 'Diyanyeko',
+    satisfactionSemaine: 'diyanyeko dɔgɔkun in na',
+    gererBoutiques: 'N ka suguw mara',
+    aucuneBoutique: 'Sugu si tɛ — dɔ dilan walasa ka daminɛ.',
   },
   more: {
     tagline: 'Mam Raaga',
@@ -303,5 +391,27 @@ export const traductions: Record<Langue, Traduction> = {
     recuMerci: 'Barka ne yãmb dã!',
     aucunProduitCaisse: 'Bilg ba a yembr ka mikame',
     ajouterProduitsAbord: 'Paas-y bilgu deng n tõog n tũ ligd-gãadgo.',
+    ajouterBoutique: 'Paas raaga a yembr',
+    modifierBoutique: 'Toeem raaga',
+    nomBoutique: 'Raaga yʋʋr',
+    typeBoutique: 'Tʋʋm buudu',
+    couleurBoutique: 'Melgre',
+    bienvenueSugu: 'Yaa sõma ne yãmb SUGU pʋgẽ',
+    bienvenueSuguMessage: 'Naan-y y raaga a yembr n paas n tõog n mao ne y yoodo, bilgu la ned-tʋmba.',
+    creerPremiereBoutique: 'Naan mam raaga a yembr',
+    mesBoutiques: 'Mam raadã',
+    confirmerSuppressionBoutique: 'Yiisi raaga kãnga ne a võorã fãa ?',
+    parametres: 'Naaneg-toaaga',
+    aPropos: 'A yell-gomde',
+    version: 'Versiõ',
+    bonjour: 'Ne y yibeoogo',
+    commentSestPasseeVente: 'Yood kãnga maana wãn to ?',
+    satisfBien: 'Sõma',
+    satisfCorrect: 'Zemsa',
+    satisfProbleme: 'Zu-loees',
+    satisfaction: 'Sũ-noogo',
+    satisfactionSemaine: 'sũ-noog yʋʋmd-kãseng kãnga pʋgẽ',
+    gererBoutiques: 'Maan m raadã',
+    aucuneBoutique: 'Raaga ka be ye — naan-y a yembr n sɩɩs.',
   },
 }
