@@ -11,13 +11,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
-import { Store, Smile } from 'lucide-react'
+import { Store, Smile, TrendingUp, TrendingDown, Minus as MinusIcon, Calendar } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Produit, Vente, Client, Achat } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 import { useLangue } from '@/components/LangueProvider'
 import { useBoutique } from '@/components/BoutiqueProvider'
 import CountUp from '@/components/CountUp'
+import { fadeInUp, staggerContainer } from '@/lib/animations'
 
 const JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
 const today = () => new Date().toISOString().slice(0, 10)
@@ -38,10 +39,37 @@ export default function Dashboard() {
   const dateAujourdhui = new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   const ventesAujourdhui = ventes.filter((v) => v.date === today()).reduce((a, v) => a + v.total, 0)
+  const nbTransactionsJour = ventes.filter((v) => v.date === today()).length
   const achatsAujourdhui = achats.filter((a) => a.date === today()).reduce((a, c) => a + c.total, 0)
   const beneficeJour = ventesAujourdhui - achatsAujourdhui
   const stockFaible = produits.filter((p) => p.stock < p.stockMin).length
   const clientsCredit = clients.filter((c) => c.soldeDu > 0).length
+
+  // ── Comparaison avec hier ──
+  const hier = (() => {
+    const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().slice(0, 10)
+  })()
+  const ventesHier = ventes.filter((v) => v.date === hier).reduce((a, v) => a + v.total, 0)
+  const deltaVentes = ventesHier > 0
+    ? Math.round(((ventesAujourdhui - ventesHier) / ventesHier) * 100)
+    : ventesAujourdhui > 0 ? 100 : 0
+  const deltaSign = deltaVentes > 0 ? 'hausse' : deltaVentes < 0 ? 'baisse' : 'stable'
+
+  // ── Top produits du jour ──
+  const topProduitsJour = (() => {
+    const map = new Map<number, { nom: string; qte: number; revenue: number }>()
+    ventes
+      .filter((v) => v.date === today())
+      .forEach((v) =>
+        v.lignes.forEach((l) => {
+          const e = map.get(l.produitId) ?? { nom: l.nom, qte: 0, revenue: 0 }
+          e.qte += l.quantite
+          e.revenue += l.quantite * l.prixUnit
+          map.set(l.produitId, e)
+        })
+      )
+    return Array.from(map.values()).sort((a, b) => b.qte - a.qte).slice(0, 3)
+  })()
 
   const septJoursAgo = new Date()
   septJoursAgo.setDate(septJoursAgo.getDate() - 7)
@@ -106,6 +134,134 @@ export default function Dashboard() {
         />
       ) : (
         <>
+          {/* ── Résumé du Jour ── */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            style={{
+              background: '#0c1528',
+              borderRadius: 14,
+              padding: '1.1rem 1.25rem',
+              border: '1px solid #16233d',
+              marginBottom: '1.5rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.85rem' }}>
+              <Calendar size={16} color="#D4AF37" />
+              <h3 style={{ color: '#f5f0e8', fontSize: '0.9rem', fontWeight: 700, margin: 0 }}>Résumé du Jour</h3>
+              <span style={{ color: '#4e5f82', fontSize: '0.75rem', marginLeft: 'auto' }}>
+                {new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '0.85rem' }}>
+              {/* Ventes du jour */}
+              <div style={{ background: '#070e1f', borderRadius: 10, padding: '0.75rem 1rem' }}>
+                <p style={{ color: '#4e5f82', fontSize: '0.7rem', textTransform: 'uppercase', margin: '0 0 0.3rem', letterSpacing: '0.04em' }}>Ventes</p>
+                <p style={{ color: '#D4AF37', fontWeight: 800, fontSize: '1.1rem', margin: '0 0 0.15rem' }}>
+                  {ventesAujourdhui.toLocaleString('fr-FR')} <span style={{ fontSize: '0.7rem', fontWeight: 400 }}>FCFA</span>
+                </p>
+                <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: 0 }}>{nbTransactionsJour} transaction{nbTransactionsJour !== 1 ? 's' : ''}</p>
+              </div>
+
+              {/* Bénéfice du jour */}
+              <div style={{ background: '#070e1f', borderRadius: 10, padding: '0.75rem 1rem' }}>
+                <p style={{ color: '#4e5f82', fontSize: '0.7rem', textTransform: 'uppercase', margin: '0 0 0.3rem', letterSpacing: '0.04em' }}>Bénéfice</p>
+                <p style={{ color: beneficeJour >= 0 ? '#22d98a' : '#ef4444', fontWeight: 800, fontSize: '1.1rem', margin: '0 0 0.15rem' }}>
+                  {beneficeJour.toLocaleString('fr-FR')} <span style={{ fontSize: '0.7rem', fontWeight: 400 }}>FCFA</span>
+                </p>
+                <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: 0 }}>
+                  {ventesAujourdhui > 0 ? `Marge: ${Math.round((beneficeJour / ventesAujourdhui) * 100)}%` : '—'}
+                </p>
+              </div>
+
+              {/* Comparaison avec hier */}
+              <div style={{ background: '#070e1f', borderRadius: 10, padding: '0.75rem 1rem' }}>
+                <p style={{ color: '#4e5f82', fontSize: '0.7rem', textTransform: 'uppercase', margin: '0 0 0.3rem', letterSpacing: '0.04em' }}>vs Hier</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.15rem' }}>
+                  {deltaSign === 'hausse' && <TrendingUp size={16} color="#22d98a" />}
+                  {deltaSign === 'baisse' && <TrendingDown size={16} color="#ef4444" />}
+                  {deltaSign === 'stable' && <MinusIcon size={16} color="#4e5f82" />}
+                  <p style={{
+                    color: deltaSign === 'hausse' ? '#22d98a' : deltaSign === 'baisse' ? '#ef4444' : '#4e5f82',
+                    fontWeight: 800,
+                    fontSize: '1.1rem',
+                    margin: 0,
+                  }}>
+                    {deltaSign === 'stable' ? '—' : `${deltaSign === 'hausse' ? '+' : ''}${deltaVentes}%`}
+                  </p>
+                </div>
+                <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: 0 }}>
+                  Hier : {ventesHier.toLocaleString('fr-FR')} FCFA
+                </p>
+              </div>
+            </div>
+
+            {/* Top produits du jour */}
+            {topProduitsJour.length > 0 && (
+              <div>
+                <p style={{ color: '#4e5f82', fontSize: '0.7rem', textTransform: 'uppercase', margin: '0 0 0.5rem', letterSpacing: '0.04em' }}>
+                  Meilleurs produits du jour
+                </p>
+                <motion.div
+                  variants={staggerContainer}
+                  initial="hidden"
+                  animate="visible"
+                  style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}
+                >
+                  {topProduitsJour.map((p, i) => (
+                    <motion.div
+                      key={p.nom}
+                      variants={fadeInUp}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        padding: '0.4rem 0.75rem',
+                        background: '#0A1628',
+                        borderRadius: 8,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                        <span style={{
+                          background: i === 0 ? '#D4AF37' : i === 1 ? '#9ba8c4' : '#f0a832',
+                          color: '#0A1628',
+                          width: 20,
+                          height: 20,
+                          borderRadius: 99,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.65rem',
+                          fontWeight: 800,
+                          flexShrink: 0,
+                        }}>
+                          {i + 1}
+                        </span>
+                        <span style={{ color: '#9ba8c4', fontSize: '0.82rem' }}>{p.nom}</span>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <span style={{ color: '#00BCD4', fontWeight: 700, fontSize: '0.82rem' }}>
+                          ×{p.qte}
+                        </span>
+                        <span style={{ color: '#4e5f82', fontSize: '0.72rem', marginLeft: '0.5rem' }}>
+                          {p.revenue.toLocaleString('fr-FR')} FCFA
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            )}
+
+            {topProduitsJour.length === 0 && ventesAujourdhui === 0 && (
+              <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: 0, textAlign: 'center' }}>
+                Aucune vente enregistrée aujourd&apos;hui encore.
+              </p>
+            )}
+          </motion.div>
+
           <div className="sugu-kpi-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
             {kpis.map((kpi, i) => (
               <motion.div
