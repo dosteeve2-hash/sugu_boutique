@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Plus, ShoppingCart, Trash2 } from 'lucide-react'
+import { Plus, ShoppingCart, Trash2, Download } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Vente, VenteLigne, Produit, Client, ModePaiement } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
@@ -34,6 +34,36 @@ export default function Ventes() {
 
   const totalJour = ventes.filter((v) => v.date === today()).reduce((acc, v) => acc + v.total, 0)
   const peutAjouter = produits.length > 0
+
+  // ── Export CSV ventes du mois courant ──
+  const exporterCSV = useCallback(() => {
+    const maintenant = new Date()
+    const moisCourant = `${maintenant.getFullYear()}-${String(maintenant.getMonth() + 1).padStart(2, '0')}`
+    const ventesMois = ventes.filter((v) => v.date.startsWith(moisCourant))
+
+    const lignes: string[] = [
+      ['ID', 'Date', 'Client', 'Produits', 'Quantités', 'Total (FCFA)', 'Mode de paiement', 'Statut'].join(';'),
+      ...ventesMois.map((v) => [
+        `#${v.id.toString().slice(-4)}`,
+        v.date,
+        v.client,
+        v.lignes.map((l) => l.nom).join(' | '),
+        v.lignes.map((l) => l.quantite).join(' | '),
+        v.total,
+        v.modePaiement,
+        v.statut,
+      ].join(';')),
+    ]
+
+    const bom = '﻿' // BOM pour Excel (UTF-8)
+    const blob = new Blob([bom + lignes.join('\n')], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `ventes_${moisCourant}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }, [ventes])
 
   const ouvrirAjout = () => {
     setClientId('passage')
@@ -107,32 +137,54 @@ export default function Ventes() {
 
   return (
     <div>
-      <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Ventes</h2>
           <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             Aujourd&apos;hui : <span style={{ color: '#22d98a', fontWeight: 600 }}>{totalJour.toLocaleString('fr-FR')} FCFA</span>
           </p>
         </div>
-        <button
-          onClick={ouvrirAjout}
-          disabled={!peutAjouter}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            background: peutAjouter ? '#D4AF37' : '#4e5f82',
-            color: '#0A1628',
-            border: 'none',
-            borderRadius: 8,
-            padding: '0.65rem 1.1rem',
-            fontWeight: 700,
-            cursor: peutAjouter ? 'pointer' : 'not-allowed',
-            fontSize: '0.875rem',
-          }}
-        >
-          <Plus size={16} /> Nouvelle Vente
-        </button>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {ventes.length > 0 && (
+            <button
+              onClick={exporterCSV}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                background: 'rgba(0,188,212,0.12)',
+                color: '#00BCD4',
+                border: '1px solid rgba(0,188,212,0.3)',
+                borderRadius: 8,
+                padding: '0.65rem 1.1rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+              }}
+            >
+              <Download size={15} /> Exporter CSV
+            </button>
+          )}
+          <button
+            onClick={ouvrirAjout}
+            disabled={!peutAjouter}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              background: peutAjouter ? '#D4AF37' : '#4e5f82',
+              color: '#0A1628',
+              border: 'none',
+              borderRadius: 8,
+              padding: '0.65rem 1.1rem',
+              fontWeight: 700,
+              cursor: peutAjouter ? 'pointer' : 'not-allowed',
+              fontSize: '0.875rem',
+            }}
+          >
+            <Plus size={16} /> Nouvelle Vente
+          </button>
+        </div>
       </div>
 
       {!peutAjouter && (
