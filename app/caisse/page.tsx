@@ -16,6 +16,7 @@ import {
   Smile,
   Meh,
   Frown,
+  Filter,
 } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Produit, Vente, VenteLigne, ModePaiement, Satisfaction } from '@/lib/types'
@@ -46,6 +47,7 @@ export default function Caisse() {
 
   const [etape, setEtape] = useState<Etape>('panier')
   const [search, setSearch] = useState('')
+  const [categorieFiltre, setCategorieFiltre] = useState<string>('Toutes')
   const [cart, setCart] = useState<VenteLigne[]>([])
   const [modePaiement, setModePaiement] = useState<ModePaiement>('Espèces')
   const [montantRecuStr, setMontantRecuStr] = useState('')
@@ -53,15 +55,22 @@ export default function Caisse() {
   const [venteFinaleRendu, setVenteFinaleRendu] = useState<number | undefined>(undefined)
   const [venteFinaleMontantRecu, setVenteFinaleMontantRecu] = useState<number | undefined>(undefined)
 
-  const produitsFiltres = useMemo(
-    () =>
-      produits.filter(
-        (p) =>
-          p.nom.toLowerCase().includes(search.toLowerCase()) ||
-          p.categorie.toLowerCase().includes(search.toLowerCase())
-      ),
-    [produits, search]
+  const categoriesDisponibles = useMemo(
+    () => ['Toutes', ...Array.from(new Set(produits.map((p) => p.categorie))).sort()],
+    [produits]
   )
+
+  const produitsFiltres = useMemo(() => {
+    const q = search.toLowerCase()
+    return produits.filter((p) => {
+      const matchSearch =
+        !q ||
+        p.nom.toLowerCase().includes(q) ||
+        p.categorie.toLowerCase().includes(q)
+      const matchCat = categorieFiltre === 'Toutes' || p.categorie === categorieFiltre
+      return matchSearch && matchCat
+    })
+  }, [produits, search, categorieFiltre])
 
   const total = cart.reduce((a, l) => a + l.quantite * l.prixUnit, 0)
   const nbArticles = cart.reduce((a, l) => a + l.quantite, 0)
@@ -179,25 +188,54 @@ export default function Caisse() {
         <EmptyState icon={Package} title={t.aucunDonnee} message={t.ajouterProduitsAbord} actionLabel={t.ajouterProduit} onAction={() => router.push('/produits')} />
       ) : etape === 'panier' ? (
         <>
-          <div style={{ position: 'relative', marginBottom: '1rem' }}>
-            <Search size={18} style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }} />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t.rechercherProduit}
-              style={{
-                width: '100%',
-                minHeight: 52,
-                background: '#0c1528',
-                border: '1px solid #16233d',
-                borderRadius: 12,
-                padding: '0.75rem 0.75rem 0.75rem 2.75rem',
-                color: '#f5f0e8',
-                fontSize: '1rem',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
-            />
+          <div style={{ marginBottom: '1rem' }}>
+            {/* Barre de recherche */}
+            <div style={{ position: 'relative', marginBottom: '0.6rem' }}>
+              <Search size={18} style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }} />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={t.rechercherProduit}
+                style={{
+                  width: '100%',
+                  minHeight: 52,
+                  background: '#0c1528',
+                  border: '1px solid #16233d',
+                  borderRadius: 12,
+                  padding: '0.75rem 0.75rem 0.75rem 2.75rem',
+                  color: '#f5f0e8',
+                  fontSize: '1rem',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+            {/* Pills filtre catégorie */}
+            {categoriesDisponibles.length > 2 && (
+              <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
+                <Filter size={14} color="#4e5f82" style={{ flexShrink: 0, marginTop: '0.35rem' }} />
+                {categoriesDisponibles.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setCategorieFiltre(cat)}
+                    style={{
+                      flexShrink: 0,
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: 99,
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      background: categorieFiltre === cat ? '#D4AF37' : '#0c1528',
+                      color: categorieFiltre === cat ? '#0A1628' : '#9ba8c4',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {produitsFiltres.length === 0 ? (

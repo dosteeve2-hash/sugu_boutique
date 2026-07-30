@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Search, Edit2, Trash2, Package } from 'lucide-react'
+import { Plus, Search, Edit2, Trash2, Package, Filter } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Produit } from '@/lib/types'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
 import { FormField, TextInput, SubmitRow } from '@/components/FormField'
+import { fadeInUp, staggerContainer } from '@/lib/animations'
 
 const CATEGORIES = ['Alimentaire', 'Hygiène', 'Boissons', 'Textile', 'Électronique', 'Autre']
 
@@ -24,14 +25,30 @@ const vide: Omit<Produit, 'id'> = {
 export default function Produits() {
   const [produits, setProduits, loaded] = usePersistedBoutique<Produit[]>('produits', [])
   const [search, setSearch] = useState('')
+  const [categorieFiltre, setCategorieFiltre] = useState<string>('Toutes')
   const [showForm, setShowForm] = useState(false)
   const [edition, setEdition] = useState<Produit | null>(null)
   const [form, setForm] = useState(vide)
 
-  const filtered = produits.filter(
-    (p) =>
-      p.nom.toLowerCase().includes(search.toLowerCase()) ||
-      p.categorie.toLowerCase().includes(search.toLowerCase())
+  // Catégories présentes dans le catalogue
+  const categoriesDisponibles = useMemo(
+    () => ['Toutes', ...Array.from(new Set(produits.map((p) => p.categorie))).sort()],
+    [produits]
+  )
+
+  const filtered = useMemo(
+    () =>
+      produits.filter((p) => {
+        const q = search.toLowerCase()
+        const matchSearch =
+          !q ||
+          p.nom.toLowerCase().includes(q) ||
+          p.categorie.toLowerCase().includes(q) ||
+          String(p.id).includes(q)
+        const matchCat = categorieFiltre === 'Toutes' || p.categorie === categorieFiltre
+        return matchSearch && matchCat
+      }),
+    [produits, search, categorieFiltre]
   )
 
   const marge = (p: Produit) =>
@@ -76,6 +93,9 @@ export default function Produits() {
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Produits</h2>
           <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {produits.length} produit{produits.length !== 1 ? 's' : ''} enregistré{produits.length !== 1 ? 's' : ''}
+            {filtered.length !== produits.length && (
+              <span style={{ color: '#00BCD4' }}> — {filtered.length} affiché{filtered.length !== 1 ? 's' : ''}</span>
+            )}
           </p>
         </div>
         <button
@@ -108,25 +128,51 @@ export default function Produits() {
         />
       ) : (
         <>
-          {/* Recherche */}
-          <div style={{ position: 'relative', marginBottom: '1rem' }}>
-            <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }} />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Rechercher un produit..."
-              style={{
-                width: '100%',
-                background: '#0c1528',
-                border: '1px solid #16233d',
-                borderRadius: 8,
-                padding: '0.6rem 0.75rem 0.6rem 2.25rem',
-                color: '#f5f0e8',
-                fontSize: '0.875rem',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
-            />
+          {/* Recherche + Filtres */}
+          <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+            {/* Barre de recherche */}
+            <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
+              <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }} />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Rechercher par nom, catégorie, ID..."
+                style={{
+                  width: '100%',
+                  background: '#0c1528',
+                  border: '1px solid #16233d',
+                  borderRadius: 8,
+                  padding: '0.6rem 0.75rem 0.6rem 2.25rem',
+                  color: '#f5f0e8',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+
+            {/* Filtre catégorie */}
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Filter size={14} color="#4e5f82" />
+              <select
+                value={categorieFiltre}
+                onChange={(e) => setCategorieFiltre(e.target.value)}
+                style={{
+                  background: '#0c1528',
+                  border: '1px solid #16233d',
+                  borderRadius: 8,
+                  padding: '0.6rem 0.75rem',
+                  color: categorieFiltre === 'Toutes' ? '#4e5f82' : '#D4AF37',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                {categoriesDisponibles.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Table */}
@@ -152,18 +198,36 @@ export default function Produits() {
                   ))}
                 </tr>
               </thead>
-              <tbody>
-                {filtered.map((p, i) => {
+              <motion.tbody
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+              >
+                {filtered.map((p) => {
                   const isLow = p.stock < p.stockMin
                   return (
                     <motion.tr
                       key={p.id}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
+                      variants={fadeInUp}
                       style={{ borderTop: '1px solid #16233d' }}
                     >
-                      <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>{p.nom}</td>
+                      <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>
+                        {p.nom}
+                        {isLow && (
+                          <span style={{
+                            marginLeft: '0.5rem',
+                            background: '#ef4444',
+                            color: '#fff',
+                            borderRadius: 99,
+                            fontSize: '0.62rem',
+                            fontWeight: 800,
+                            padding: '0.1rem 0.4rem',
+                            verticalAlign: 'middle',
+                          }}>
+                            FAIBLE
+                          </span>
+                        )}
+                      </td>
                       <td style={{ padding: '0.75rem 1rem' }}>
                         <span
                           style={{
@@ -212,10 +276,14 @@ export default function Produits() {
                     </motion.tr>
                   )
                 })}
-              </tbody>
+              </motion.tbody>
             </table>
             {filtered.length === 0 && (
-              <p style={{ textAlign: 'center', color: '#4e5f82', padding: '2rem' }}>Aucun produit trouvé.</p>
+              <p style={{ textAlign: 'center', color: '#4e5f82', padding: '2rem' }}>
+                {search || categorieFiltre !== 'Toutes'
+                  ? 'Aucun produit trouvé pour cette recherche.'
+                  : 'Aucun produit dans le catalogue.'}
+              </p>
             )}
           </div>
         </>
