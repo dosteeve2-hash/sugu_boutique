@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, Phone, AlertCircle, CheckCircle, Edit2, Trash2, Users, Smile, Meh, Frown } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
@@ -23,12 +23,23 @@ export default function Clients() {
   const { t } = useLangue()
   const [clients, setClients, loaded] = usePersistedBoutique<Client[]>('clients', [])
   const [ventes] = usePersistedBoutique<Vente[]>('ventes', [])
+  const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [edition, setEdition] = useState<Client | null>(null)
   const [form, setForm] = useState(vide)
   const [profil, setProfil] = useState<Client | null>(null)
 
   const totalSoldeDu = clients.reduce((a, c) => a + c.soldeDu, 0)
+
+  const clientsFiltres = useMemo(() => {
+    const q = search.toLowerCase().trim()
+    if (!q) return clients
+    return clients.filter(
+      (c) =>
+        c.nom.toLowerCase().includes(q) ||
+        c.telephone.toLowerCase().includes(q)
+    )
+  }, [clients, search])
 
   const ouvrirAjout = () => {
     setEdition(null)
@@ -95,6 +106,35 @@ export default function Clients() {
         </button>
       </div>
 
+      {/* Barre de recherche */}
+      {clients.length > 0 && (
+        <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
+          <svg
+            style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }}
+            width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+          >
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+          </svg>
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Rechercher par nom ou téléphone…"
+            style={{
+              width: '100%',
+              minHeight: 48,
+              background: '#0c1528',
+              border: '1px solid #16233d',
+              borderRadius: 12,
+              padding: '0.65rem 0.75rem 0.65rem 2.75rem',
+              color: '#f5f0e8',
+              fontSize: '0.95rem',
+              outline: 'none',
+              boxSizing: 'border-box',
+            }}
+          />
+        </div>
+      )}
+
       {clients.length === 0 ? (
         <EmptyState
           icon={Users}
@@ -141,7 +181,7 @@ export default function Clients() {
                 </tr>
               </thead>
               <tbody>
-                {clients.map((c, i) => (
+                {clientsFiltres.map((c, i) => (
                   <motion.tr
                     key={c.id}
                     initial={{ opacity: 0, y: 8 }}
