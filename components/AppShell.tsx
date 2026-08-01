@@ -6,6 +6,7 @@ import Sidebar from '@/components/Sidebar'
 import BottomNav from '@/components/BottomNav'
 import BoutiqueWelcome from '@/components/BoutiqueWelcome'
 import { useBoutique } from '@/components/BoutiqueProvider'
+import ScrollToTop from '@/components/ScrollToTop'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { loaded, boutiqueActive, boutiques } = useBoutique()
@@ -34,6 +35,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </AnimatePresence>
       </main>
       <BottomNav />
+      <ScrollToTop />
     </div>
   )
 }
