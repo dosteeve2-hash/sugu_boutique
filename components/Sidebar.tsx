@@ -12,6 +12,7 @@ import {
   Users,
   Building2,
   BarChart3,
+  BarChart2,
   FileText,
   Settings,
   Menu,
@@ -55,6 +56,7 @@ export default function Sidebar() {
     { href: '/fournisseurs', label: t.fournisseurs, icon: Building2 },
     { href: '/stock', label: t.stock, icon: BarChart3 },
     { href: '/rapports', label: t.rapports, icon: FileText },
+    { href: '/analytics', label: 'Analytics', icon: BarChart2 },
     { href: '/parametres', label: t.parametres, icon: Settings },
   ]
 
