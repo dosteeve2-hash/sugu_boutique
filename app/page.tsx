@@ -18,6 +18,7 @@ import EmptyState from '@/components/EmptyState'
 import { useLangue } from '@/components/LangueProvider'
 import { useBoutique } from '@/components/BoutiqueProvider'
 import CountUp from '@/components/CountUp'
+import RapportJour from '@/components/RapportJour'
 
 const JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
 const today = () => new Date().toISOString().slice(0, 10)
@@ -223,6 +224,9 @@ export default function Dashboard() {
           <Link href="/produits" style={{ color: '#00BCD4' }}>Ajoutez vos produits</Link> pour activer le suivi de stock.
         </p>
       )}
+
+      {/* Rapport journalier */}
+      <RapportJour />
     </div>
   )
 }
