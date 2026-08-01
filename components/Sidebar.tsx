@@ -16,6 +16,7 @@ import {
   Settings,
   Menu,
   X,
+  History,
 } from 'lucide-react'
 import { useLangue } from '@/components/LangueProvider'
 import { LANGUES } from '@/lib/i18n'
@@ -48,6 +49,7 @@ export default function Sidebar() {
     { href: '/caisse', label: t.caisse, icon: Calculator },
     { href: '/produits', label: t.produits, icon: Package },
     { href: '/ventes', label: t.ventes, icon: ShoppingCart },
+    { href: '/historique', label: 'Historique', icon: History },
     { href: '/achats', label: t.achats, icon: Truck },
     { href: '/clients', label: t.clients, icon: Users },
     { href: '/fournisseurs', label: t.fournisseurs, icon: Building2 },
