@@ -18,10 +18,11 @@ import {
   Frown,
 } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
-import { Produit, Vente, VenteLigne, ModePaiement, Satisfaction } from '@/lib/types'
+import { Client, Produit, Vente, VenteLigne, ModePaiement, Satisfaction } from '@/lib/types'
 import { useLangue } from '@/components/LangueProvider'
 import EmptyState from '@/components/EmptyState'
 import Recu from '@/components/Recu'
+import BoutonTicketPDF from '@/components/TicketCaisse'
 
 type Etape = 'panier' | 'paiement' | 'recu'
 
@@ -42,6 +43,7 @@ export default function Caisse() {
   const router = useRouter()
   const [produits, setProduits, loadedP] = usePersistedBoutique<Produit[]>('produits', [])
   const [, setVentes, loadedV] = usePersistedBoutique<Vente[]>('ventes', [])
+  const [clients, setClients] = usePersistedBoutique<Client[]>('clients', [])
   const loaded = loadedP && loadedV
 
   const [etape, setEtape] = useState<Etape>('panier')
@@ -49,6 +51,7 @@ export default function Caisse() {
   const [cart, setCart] = useState<VenteLigne[]>([])
   const [modePaiement, setModePaiement] = useState<ModePaiement>('Espèces')
   const [montantRecuStr, setMontantRecuStr] = useState('')
+  const [clientSelectionneId, setClientSelectionneId] = useState<number | null>(null)
   const [venteFinale, setVenteFinale] = useState<Vente | null>(null)
   const [venteFinaleRendu, setVenteFinaleRendu] = useState<number | undefined>(undefined)
   const [venteFinaleMontantRecu, setVenteFinaleMontantRecu] = useState<number | undefined>(undefined)
@@ -93,10 +96,11 @@ export default function Caisse() {
 
   const valider = () => {
     if (!peutValider || cart.length === 0) return
+    const clientChoisi = clients.find((c) => c.id === clientSelectionneId) ?? null
     const vente: Vente = {
       id: Date.now(),
-      clientId: null,
-      client: t.clientPassage,
+      clientId: clientSelectionneId,
+      client: clientChoisi?.nom ?? t.clientPassage,
       lignes: cart,
       total,
       modePaiement,
@@ -110,6 +114,15 @@ export default function Caisse() {
         return ligne ? { ...p, stock: Math.max(0, p.stock - ligne.quantite) } : p
       })
     )
+    if (clientChoisi) {
+      setClients((prev) =>
+        prev.map((c) =>
+          c.id === clientChoisi.id
+            ? { ...c, totalAchats: c.totalAchats + total, derniereVisite: today() }
+            : c
+        )
+      )
+    }
     setVenteFinale(vente)
     setVenteFinaleMontantRecu(modePaiement === 'Espèces' ? montantRecu : undefined)
     setVenteFinaleRendu(modePaiement === 'Espèces' ? renduMonnaie : undefined)
@@ -126,6 +139,7 @@ export default function Caisse() {
     setCart([])
     setModePaiement('Espèces')
     setMontantRecuStr('')
+    setClientSelectionneId(null)
     setVenteFinale(null)
     setSearch('')
     setEtape('panier')
@@ -420,6 +434,36 @@ export default function Caisse() {
             })}
           </div>
 
+          {/* Associer un client */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.6rem' }}>
+              Client (optionnel)
+            </label>
+            <select
+              value={clientSelectionneId ?? ''}
+              onChange={(e) => setClientSelectionneId(e.target.value ? Number(e.target.value) : null)}
+              style={{
+                width: '100%',
+                minHeight: 52,
+                background: '#0c1528',
+                border: '1px solid #16233d',
+                borderRadius: 12,
+                padding: '0.75rem 1rem',
+                color: clientSelectionneId ? '#f5f0e8' : '#4e5f82',
+                fontSize: '0.95rem',
+                outline: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <option value="">— Client de passage —</option>
+              {clients.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.nom}{c.telephone ? ` · ${c.telephone}` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {modePaiement === 'Espèces' && (
             <div style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 14, padding: '1.25rem', marginBottom: '1.25rem' }}>
               <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.5rem' }}>
@@ -522,7 +566,11 @@ export default function Caisse() {
               </div>
             </div>
 
-            <div className="no-print" style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <div className="no-print" style={{ marginTop: '1.25rem' }}>
+              <BoutonTicketPDF vente={venteFinale} montantRecu={venteFinaleMontantRecu} rendu={venteFinaleRendu} />
+            </div>
+
+            <div className="no-print" style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
               <button
                 onClick={imprimerPartager}
                 style={{
