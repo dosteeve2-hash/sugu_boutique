@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Search, Package, Edit2, Trash2, AlertTriangle, RefreshCw } from 'lucide-react'
+import { Plus, Search, Package, Edit2, Trash2, AlertTriangle, RefreshCw, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Produit } from '@/lib/types'
@@ -27,20 +27,22 @@ const CAT_BG: Record<string, string> = {
   Divers:      'linear-gradient(135deg,#2d1a5c 0%,#110a26 100%)',
 }
 
+const QUICK_RESTOCK = [10, 25, 50]
+
 // ─── 12 Produits fictifs Burkina Faso ─────────────────────────────────────────
 const PRODUITS_DEMO: Produit[] = [
-  { id: 1001, nom: 'Riz local (sac 50 kg)',    categorie: 'Alimentaire', prixAchat: 18000, prixVente: 22000, stock: 12, stockMin: 5, unite: 'sac' },
-  { id: 1002, nom: 'Huile de palme 5 L',       categorie: 'Alimentaire', prixAchat: 3500,  prixVente: 4500,  stock: 3,  stockMin: 5, unite: 'bidon' },
-  { id: 1003, nom: 'Farine de blé 25 kg',      categorie: 'Alimentaire', prixAchat: 8000,  prixVente: 10000, stock: 8,  stockMin: 3, unite: 'sac' },
-  { id: 1004, nom: 'Cube Maggi (boîte 100)',    categorie: 'Alimentaire', prixAchat: 2500,  prixVente: 3500,  stock: 2,  stockMin: 5, unite: 'boîte' },
-  { id: 1005, nom: 'Sucre granulé 10 kg',       categorie: 'Alimentaire', prixAchat: 5500,  prixVente: 7000,  stock: 6,  stockMin: 4, unite: 'sac' },
+  { id: 1001, nom: 'Riz local (sac 50 kg)',    categorie: 'Alimentaire', prixAchat: 18000, prixVente: 22000, stock: 12, stockMin: 5,  unite: 'sac' },
+  { id: 1002, nom: 'Huile de palme 5 L',       categorie: 'Alimentaire', prixAchat: 3500,  prixVente: 4500,  stock: 3,  stockMin: 5,  unite: 'bidon' },
+  { id: 1003, nom: 'Farine de blé 25 kg',      categorie: 'Alimentaire', prixAchat: 8000,  prixVente: 10000, stock: 8,  stockMin: 3,  unite: 'sac' },
+  { id: 1004, nom: 'Cube Maggi (boîte 100)',    categorie: 'Alimentaire', prixAchat: 2500,  prixVente: 3500,  stock: 2,  stockMin: 5,  unite: 'boîte' },
+  { id: 1005, nom: 'Sucre granulé 10 kg',       categorie: 'Alimentaire', prixAchat: 5500,  prixVente: 7000,  stock: 6,  stockMin: 4,  unite: 'sac' },
   { id: 1006, nom: 'Savon de Marseille 400 g',  categorie: 'Hygiène',     prixAchat: 400,   prixVente: 600,   stock: 0,  stockMin: 10, unite: 'pièce' },
-  { id: 1007, nom: 'Shampooing Tahiti 500 ml',  categorie: 'Hygiène',     prixAchat: 800,   prixVente: 1200,  stock: 14, stockMin: 5, unite: 'flacon' },
-  { id: 1008, nom: 'Dentifrice Colgate 75 ml',  categorie: 'Hygiène',     prixAchat: 600,   prixVente: 900,   stock: 4,  stockMin: 5, unite: 'tube' },
+  { id: 1007, nom: 'Shampooing Tahiti 500 ml',  categorie: 'Hygiène',     prixAchat: 800,   prixVente: 1200,  stock: 14, stockMin: 5,  unite: 'flacon' },
+  { id: 1008, nom: 'Dentifrice Colgate 75 ml',  categorie: 'Hygiène',     prixAchat: 600,   prixVente: 900,   stock: 4,  stockMin: 5,  unite: 'tube' },
   { id: 1009, nom: 'Eau minérale 1,5 L',        categorie: 'Boissons',    prixAchat: 350,   prixVente: 500,   stock: 48, stockMin: 12, unite: 'bouteille' },
-  { id: 1010, nom: 'Bière Brakina 65 cl',       categorie: 'Boissons',    prixAchat: 500,   prixVente: 750,   stock: 1,  stockMin: 6, unite: 'bouteille' },
+  { id: 1010, nom: 'Bière Brakina 65 cl',       categorie: 'Boissons',    prixAchat: 500,   prixVente: 750,   stock: 1,  stockMin: 6,  unite: 'bouteille' },
   { id: 1011, nom: 'Jus Jaffa Orange 50 cl',    categorie: 'Boissons',    prixAchat: 300,   prixVente: 500,   stock: 22, stockMin: 10, unite: 'bouteille' },
-  { id: 1012, nom: 'Allumettes Super (carton)', categorie: 'Divers',      prixAchat: 1500,  prixVente: 2500,  stock: 3,  stockMin: 5, unite: 'carton' },
+  { id: 1012, nom: 'Allumettes Super (carton)', categorie: 'Divers',      prixAchat: 1500,  prixVente: 2500,  stock: 3,  stockMin: 5,  unite: 'carton' },
 ]
 
 const vide: Omit<Produit, 'id'> = {
@@ -48,15 +50,8 @@ const vide: Omit<Produit, 'id'> = {
 }
 
 // ─── Composant Card ────────────────────────────────────────────────────────────
-function ProduitCard({
-  p,
-  index,
-  onEdit,
-  onDelete,
-  onModifStock,
-}: {
-  p: Produit
-  index: number
+function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
+  p: Produit; index: number
   onEdit: (p: Produit) => void
   onDelete: (id: number) => void
   onModifStock: (p: Produit) => void
@@ -72,18 +67,13 @@ function ProduitCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: Math.min(index, 11) * 0.04 }}
       style={{
-        background: '#0c1528',
-        borderRadius: 14,
+        background: '#0c1528', borderRadius: 14,
         border: `1px solid ${(isCritique || isBas) ? '#ef444444' : '#16233d'}`,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
+        overflow: 'hidden', display: 'flex', flexDirection: 'column',
       }}
     >
-      {/* Image placeholder colorée */}
       <div style={{ height: 110, background: catBg, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Package size={40} color={cat.dot} style={{ opacity: 0.45 }} />
-        {/* Badge stock critique */}
         {(isCritique || isBas) && (
           <div style={{
             position: 'absolute', top: 10, right: 10,
@@ -93,21 +83,33 @@ function ProduitCard({
             display: 'flex', alignItems: 'center', gap: 4,
           }}>
             <AlertTriangle size={11} />
-            {isCritique ? 'Critique' : 'Stock Bas'}
+            {isCritique ? 'Critique' : '⚠ Stock faible'}
           </div>
         )}
-        {/* Badge catégorie */}
         <div style={{
           position: 'absolute', bottom: 10, left: 10,
           background: cat.bg, color: cat.text,
-          fontSize: '0.68rem', fontWeight: 700,
-          padding: '0.15rem 0.5rem', borderRadius: 99,
+          fontSize: '0.68rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: 99,
         }}>
           {p.categorie}
         </div>
+        {(isCritique || isBas) && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onModifStock(p) }}
+            style={{
+              position: 'absolute', bottom: 10, right: 10,
+              background: '#D4AF37', color: '#0A1628', border: 'none',
+              borderRadius: 99, width: 26, height: 26,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontWeight: 800, fontSize: '1rem', cursor: 'pointer',
+            }}
+            title="Réapprovisionner rapidement"
+          >
+            +
+          </button>
+        )}
       </div>
 
-      {/* Corps de la card */}
       <div style={{ padding: '0.9rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
         <p style={{ color: '#f5f0e8', fontWeight: 700, fontSize: '0.88rem', margin: 0, lineHeight: 1.3 }}>{p.nom}</p>
         <p style={{ color: '#D4AF37', fontWeight: 700, fontSize: '1rem', margin: 0 }}>
@@ -116,17 +118,12 @@ function ProduitCard({
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ color: '#4e5f82', fontSize: '0.75rem' }}>Stock :</span>
-          <span style={{
-            color: isCritique ? '#ef4444' : isBas ? '#f0a832' : '#22d98a',
-            fontWeight: 700, fontSize: '0.85rem',
-          }}>
+          <span style={{ color: isCritique ? '#ef4444' : isBas ? '#f0a832' : '#22d98a', fontWeight: 700, fontSize: '0.85rem' }}>
             {p.stock} {p.unite ?? ''}
           </span>
-          <span style={{ color: '#4e5f82', fontSize: '0.7rem' }}>/ min {p.stockMin}</span>
+          <span style={{ color: '#4e5f82', fontSize: '0.7rem' }}>/ seuil {p.stockMin}</span>
         </div>
       </div>
-
-      {/* Actions */}
       <div style={{ borderTop: '1px solid #16233d', padding: '0.65rem 0.9rem', display: 'flex', gap: '0.4rem' }}>
         <button
           onClick={() => onModifStock(p)}
@@ -139,22 +136,10 @@ function ProduitCard({
         >
           <RefreshCw size={13} /> Stock
         </button>
-        <button
-          onClick={() => onEdit(p)}
-          style={{
-            background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)',
-            borderRadius: 7, padding: '0.4rem 0.6rem', color: '#D4AF37', cursor: 'pointer',
-          }}
-        >
+        <button onClick={() => onEdit(p)} style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', color: '#D4AF37', cursor: 'pointer' }}>
           <Edit2 size={14} />
         </button>
-        <button
-          onClick={() => onDelete(p.id)}
-          style={{
-            background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
-            borderRadius: 7, padding: '0.4rem 0.6rem', color: '#ef4444', cursor: 'pointer',
-          }}
-        >
+        <button onClick={() => onDelete(p.id)} style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', color: '#ef4444', cursor: 'pointer' }}>
           <Trash2 size={14} />
         </button>
       </div>
@@ -167,34 +152,28 @@ export default function ProduitsPage() {
   const [produits, setProduits, loaded] = usePersistedBoutique<Produit[]>('produits', [])
   const [search, setSearch] = useState('')
   const [catActive, setCatActive] = useState<Categorie>('Tous')
+  const [alertesSeul, setAlertesSeul] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [edition, setEdition] = useState<Produit | null>(null)
   const [form, setForm] = useState(vide)
   const [modifStockProduit, setModifStockProduit] = useState<Produit | null>(null)
   const [deltaStock, setDeltaStock] = useState<string>('')
+  const [showAlerteBanner, setShowAlerteBanner] = useState(true)
 
-  // Charger les produits démo si le catalogue est vide
   useEffect(() => {
-    if (loaded && produits.length === 0) {
-      setProduits(PRODUITS_DEMO)
-    }
+    if (loaded && produits.length === 0) setProduits(PRODUITS_DEMO)
   }, [loaded]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const produitsFaibles = produits.filter((p) => p.stock <= p.stockMin)
+
   const filtered = produits.filter((p) => {
-    const matchSearch =
-      p.nom.toLowerCase().includes(search.toLowerCase()) ||
-      p.categorie.toLowerCase().includes(search.toLowerCase())
+    const matchSearch = p.nom.toLowerCase().includes(search.toLowerCase()) || p.categorie.toLowerCase().includes(search.toLowerCase())
     const matchCat = catActive === 'Tous' || p.categorie === catActive
-    return matchSearch && matchCat
+    const matchAlerte = !alertesSeul || p.stock <= p.stockMin
+    return matchSearch && matchCat && matchAlerte
   })
 
-  const stockFaible = produits.filter((p) => p.stock < p.stockMin).length
-
-  const ouvrirAjout = () => {
-    setEdition(null)
-    setForm(vide)
-    setShowForm(true)
-  }
+  const ouvrirAjout = () => { setEdition(null); setForm(vide); setShowForm(true) }
 
   const ouvrirEdition = (p: Produit) => {
     setEdition(p)
@@ -213,7 +192,7 @@ export default function ProduitsPage() {
     e.preventDefault()
     if (!form.nom.trim()) return
     if (edition) {
-      setProduits((prev) => prev.map((p) => (p.id === edition.id ? { ...edition, ...form } : p)))
+      setProduits((prev) => prev.map((p) => p.id === edition.id ? { ...edition, ...form } : p))
       toast.success(`${form.nom} mis à jour`)
     } else {
       setProduits((prev) => [...prev, { ...form, id: Date.now() }])
@@ -222,9 +201,14 @@ export default function ProduitsPage() {
     setShowForm(false)
   }
 
-  const ouvrirModifStock = (p: Produit) => {
-    setModifStockProduit(p)
-    setDeltaStock('')
+  const ouvrirModifStock = (p: Produit) => { setModifStockProduit(p); setDeltaStock('') }
+
+  const appliquerQuickRestock = (batch: number) => {
+    if (!modifStockProduit) return
+    const newStock = modifStockProduit.stock + batch
+    setProduits((prev) => prev.map((p) => p.id === modifStockProduit.id ? { ...p, stock: newStock } : p))
+    toast.success(`+${batch} ${modifStockProduit.unite ?? ''} → stock : ${newStock}`)
+    setModifStockProduit(null)
   }
 
   const soumettreModifStock = (e: React.FormEvent) => {
@@ -234,7 +218,7 @@ export default function ProduitsPage() {
     if (isNaN(delta)) return
     const newStock = Math.max(0, modifStockProduit.stock + delta)
     setProduits((prev) => prev.map((p) => p.id === modifStockProduit.id ? { ...p, stock: newStock } : p))
-    toast.success(`Stock de "${modifStockProduit.nom}" mis à jour : ${newStock} ${modifStockProduit.unite ?? ''}`)
+    toast.success(`Stock mis à jour : ${newStock} ${modifStockProduit.unite ?? ''}`)
     setModifStockProduit(null)
   }
 
@@ -242,14 +226,42 @@ export default function ProduitsPage() {
 
   return (
     <div>
+      {/* Bannière alertes stock */}
+      {showAlerteBanner && produitsFaibles.length > 0 && (
+        <div style={{
+          background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)',
+          borderRadius: 10, padding: '0.85rem 1rem', marginBottom: '1.25rem',
+          display: 'flex', gap: '0.75rem', alignItems: 'flex-start',
+        }}>
+          <AlertTriangle size={18} color="#ef4444" style={{ flexShrink: 0, marginTop: 2 }} />
+          <div style={{ flex: 1 }}>
+            <p style={{ color: '#ef4444', fontWeight: 700, fontSize: '0.88rem', margin: '0 0 0.4rem' }}>
+              {produitsFaibles.length} produit{produitsFaibles.length > 1 ? 's' : ''} en rupture ou stock faible
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+              {produitsFaibles.map((p) => (
+                <span key={p.id} style={{
+                  background: p.stock === 0 ? 'rgba(239,68,68,0.2)' : 'rgba(240,168,50,0.15)',
+                  color: p.stock === 0 ? '#ef4444' : '#f0a832',
+                  fontSize: '0.72rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: 99,
+                }}>
+                  {p.nom} ({p.stock === 0 ? 'Rupture' : `${p.stock}/${p.stockMin}`})
+                </span>
+              ))}
+            </div>
+          </div>
+          <button onClick={() => setShowAlerteBanner(false)} style={{ background: 'none', border: 'none', color: '#4e5f82', cursor: 'pointer', fontSize: '1.1rem', padding: 0, flexShrink: 0 }}>×</button>
+        </div>
+      )}
+
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Catalogue Produits</h2>
           <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {produits.length} produit{produits.length !== 1 ? 's' : ''}
-            {stockFaible > 0 && (
-              <span style={{ color: '#f0a832', marginLeft: 8 }}>· {stockFaible} en alerte stock</span>
+            {produitsFaibles.length > 0 && (
+              <span style={{ color: '#f0a832', marginLeft: 8 }}>· {produitsFaibles.length} en alerte stock</span>
             )}
           </p>
         </div>
@@ -258,8 +270,7 @@ export default function ProduitsPage() {
           style={{
             display: 'flex', alignItems: 'center', gap: '0.5rem',
             background: '#D4AF37', color: '#0A1628', border: 'none',
-            borderRadius: 8, padding: '0.65rem 1.1rem',
-            fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem',
+            borderRadius: 8, padding: '0.65rem 1.1rem', fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem',
           }}
         >
           <Plus size={16} /> Ajouter produit
@@ -274,33 +285,44 @@ export default function ProduitsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Rechercher un produit..."
-            style={{
-              width: '100%', background: '#0c1528', border: '1px solid #16233d',
-              borderRadius: 8, padding: '0.6rem 0.75rem 0.6rem 2.25rem',
-              color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box',
-            }}
+            style={{ width: '100%', background: '#0c1528', border: '1px solid #16233d', borderRadius: 8, padding: '0.6rem 0.75rem 0.6rem 2.25rem', color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
           />
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           {CATEGORIES.map((cat) => {
-            const active = catActive === cat
+            const active = catActive === cat && !alertesSeul
             const cc = cat !== 'Tous' ? CAT_COLORS[cat] : null
             return (
-              <button
-                key={cat}
-                onClick={() => setCatActive(cat)}
-                style={{
-                  padding: '0.35rem 0.85rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 600,
-                  border: active ? `1px solid ${cc?.dot ?? '#D4AF37'}` : '1px solid #16233d',
-                  background: active ? (cc?.bg ?? 'rgba(212,175,55,0.12)') : '#0c1528',
-                  color: active ? (cc?.text ?? '#D4AF37') : '#9ba8c4',
-                  cursor: 'pointer', transition: 'all 0.15s',
-                }}
-              >
+              <button key={cat} onClick={() => { setCatActive(cat); setAlertesSeul(false) }} style={{
+                padding: '0.35rem 0.85rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 600,
+                border: active ? `1px solid ${cc?.dot ?? '#D4AF37'}` : '1px solid #16233d',
+                background: active ? (cc?.bg ?? 'rgba(212,175,55,0.12)') : '#0c1528',
+                color: active ? (cc?.text ?? '#D4AF37') : '#9ba8c4',
+                cursor: 'pointer', transition: 'all 0.15s',
+              }}>
                 {cat}
               </button>
             )
           })}
+          <button
+            onClick={() => setAlertesSeul((v) => !v)}
+            style={{
+              padding: '0.35rem 0.85rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 600,
+              border: alertesSeul ? '1px solid #ef4444' : '1px solid #16233d',
+              background: alertesSeul ? 'rgba(239,68,68,0.12)' : '#0c1528',
+              color: alertesSeul ? '#ef4444' : '#9ba8c4',
+              cursor: 'pointer', transition: 'all 0.15s',
+              display: 'flex', alignItems: 'center', gap: 5,
+            }}
+          >
+            <AlertTriangle size={12} />
+            Alertes seulement
+            {produitsFaibles.length > 0 && (
+              <span style={{ background: '#ef4444', color: '#fff', borderRadius: 99, fontSize: '0.65rem', fontWeight: 800, padding: '0.05rem 0.35rem', marginLeft: 2 }}>
+                {produitsFaibles.length}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
@@ -311,19 +333,9 @@ export default function ProduitsPage() {
             Aucun produit trouvé.
           </motion.p>
         ) : (
-          <motion.div
-            key="grid"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' }}
-          >
+          <motion.div key="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' }}>
             {filtered.map((p, i) => (
-              <ProduitCard
-                key={p.id}
-                p={p}
-                index={i}
-                onEdit={ouvrirEdition}
-                onDelete={supprimer}
-                onModifStock={ouvrirModifStock}
-              />
+              <ProduitCard key={p.id} p={p} index={i} onEdit={ouvrirEdition} onDelete={supprimer} onModifStock={ouvrirModifStock} />
             ))}
           </motion.div>
         )}
@@ -336,9 +348,7 @@ export default function ProduitsPage() {
             <TextInput required value={form.nom} onChange={(e) => setForm({ ...form, nom: e.target.value })} placeholder="Ex: Huile de Palme 5L" />
           </FormField>
           <FormField label="Catégorie">
-            <select
-              value={form.categorie}
-              onChange={(e) => setForm({ ...form, categorie: e.target.value })}
+            <select value={form.categorie} onChange={(e) => setForm({ ...form, categorie: e.target.value })}
               style={{ width: '100%', background: '#070e1f', border: '1px solid #16233d', borderRadius: 8, padding: '0.6rem 0.75rem', color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
             >
               {['Alimentaire', 'Hygiène', 'Boissons', 'Divers', 'Textile', 'Électronique', 'Autre'].map((c) => (
@@ -361,7 +371,7 @@ export default function ProduitsPage() {
             <FormField label="Stock actuel">
               <TextInput required type="number" min={0} value={form.stock || ''} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} />
             </FormField>
-            <FormField label="Seuil critique">
+            <FormField label="Seuil d&apos;alerte">
               <TextInput required type="number" min={0} value={form.stockMin || ''} onChange={(e) => setForm({ ...form, stockMin: Number(e.target.value) })} />
             </FormField>
           </div>
@@ -372,28 +382,44 @@ export default function ProduitsPage() {
       {/* Modal : Modifier stock */}
       <Modal open={!!modifStockProduit} onClose={() => setModifStockProduit(null)} title="Modifier le stock">
         {modifStockProduit && (
-          <form onSubmit={soumettreModifStock}>
+          <div>
             <p style={{ color: '#9ba8c4', fontSize: '0.85rem', marginBottom: '1rem' }}>
-              <strong style={{ color: '#f5f0e8' }}>{modifStockProduit.nom}</strong>
-              <br />
+              <strong style={{ color: '#f5f0e8' }}>{modifStockProduit.nom}</strong><br />
               Stock actuel : <span style={{ color: '#D4AF37', fontWeight: 700 }}>{modifStockProduit.stock} {modifStockProduit.unite ?? ''}</span>
             </p>
-            <FormField label="Variation (+ réception / − sortie)">
-              <TextInput
-                required
-                type="number"
-                value={deltaStock}
-                onChange={(e) => setDeltaStock(e.target.value)}
-                placeholder="Ex: +20 ou -5"
-              />
-            </FormField>
-            {deltaStock !== '' && !isNaN(parseInt(deltaStock)) && (
-              <p style={{ color: '#00D4FF', fontSize: '0.82rem', margin: '0.5rem 0 1rem' }}>
-                Nouveau stock : <strong>{Math.max(0, modifStockProduit.stock + parseInt(deltaStock))} {modifStockProduit.unite ?? ''}</strong>
+            {/* Quick restock */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <p style={{ color: '#4e5f82', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem', marginTop: 0 }}>
+                Réapprovisionnement rapide
               </p>
-            )}
-            <SubmitRow onCancel={() => setModifStockProduit(null)} submitLabel="Confirmer" />
-          </form>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                {QUICK_RESTOCK.map((batch) => (
+                  <button key={batch} onClick={() => appliquerQuickRestock(batch)} style={{
+                    flex: 1, padding: '0.65rem', borderRadius: 8, fontWeight: 700,
+                    background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.25)',
+                    color: '#00D4FF', cursor: 'pointer', fontSize: '0.9rem',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+                  }}>
+                    <Zap size={13} /> +{batch}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Variation manuelle */}
+            <div style={{ borderTop: '1px solid #16233d', paddingTop: '1rem' }}>
+              <form onSubmit={soumettreModifStock}>
+                <FormField label="Variation manuelle (+ réception / − sortie)">
+                  <TextInput required type="number" value={deltaStock} onChange={(e) => setDeltaStock(e.target.value)} placeholder="Ex: +20 ou -5" />
+                </FormField>
+                {deltaStock !== '' && !isNaN(parseInt(deltaStock)) && (
+                  <p style={{ color: '#00D4FF', fontSize: '0.82rem', margin: '0.5rem 0 1rem' }}>
+                    Nouveau stock : <strong>{Math.max(0, modifStockProduit.stock + parseInt(deltaStock))} {modifStockProduit.unite ?? ''}</strong>
+                  </p>
+                )}
+                <SubmitRow onCancel={() => setModifStockProduit(null)} submitLabel="Confirmer" />
+              </form>
+            </div>
+          </div>
         )}
       </Modal>
     </div>
