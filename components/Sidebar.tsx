@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   History,
+  TrendingUp,
 } from 'lucide-react'
 import { useLangue } from '@/components/LangueProvider'
 import { LANGUES } from '@/lib/i18n'
@@ -59,6 +60,7 @@ export default function Sidebar() {
     { href: '/stock', label: t.stock, icon: BarChart3 },
     { href: '/rapports', label: t.rapports, icon: FileText },
     { href: '/analytics', label: 'Analytics', icon: BarChart2 },
+    { href: '/statistiques', label: 'Statistiques', icon: TrendingUp },
     { href: '/parametres', label: t.parametres, icon: Settings },
   ]
 
