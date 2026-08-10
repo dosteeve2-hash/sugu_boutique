@@ -9,10 +9,11 @@ export const metadata: Metadata = {
   title: 'SUGU — Votre Caisse Digitale',
   description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Multi-boutiques, offline-first, FORGE Afrika.',
   icons: {
-    icon: '/logo-sugu-icon.svg',
+    icon: '/android-chrome-192x192.png',
     shortcut: '/logo-sugu-icon.svg',
-    apple: '/logo-sugu-icon.svg',
+    apple: '/apple-touch-icon.png',
   },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: 'SUGU — Votre Caisse Digitale',
     description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Multi-boutiques, offline-first, FORGE Afrika.',
