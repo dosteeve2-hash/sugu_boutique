@@ -7,23 +7,23 @@ import type { Produit } from '@/lib/types'
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: any) =>
+    div: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: Record<string, unknown> & { children?: React.ReactNode }) =>
       <div {...rest}>{children}</div>,
-    tr: ({ children, initial, animate, exit, transition, ...rest }: any) =>
+    tr: ({ children, initial, animate, exit, transition, ...rest }: Record<string, unknown> & { children?: React.ReactNode }) =>
       <tr {...rest}>{children}</tr>,
-    p: ({ children, initial, animate, exit, transition, ...rest }: any) =>
+    p: ({ children, initial, animate, exit, transition, ...rest }: Record<string, unknown> & { children?: React.ReactNode }) =>
       <p {...rest}>{children}</p>,
   },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
+  AnimatePresence: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  BarChart: ({ children }: any) => <div>{children}</div>,
+  ResponsiveContainer: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
+  BarChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Bar: () => null,
-  LineChart: ({ children }: any) => <div>{children}</div>,
+  LineChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Line: () => null,
-  PieChart: ({ children }: any) => <div>{children}</div>,
+  PieChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Pie: () => null,
   Cell: () => null,
   XAxis: () => null,
@@ -31,7 +31,7 @@ vi.mock('recharts', () => ({
   CartesianGrid: () => null,
   Tooltip: () => null,
   Legend: () => null,
-  ComposedChart: ({ children }: any) => <div>{children}</div>,
+  ComposedChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 }))
 
 vi.mock('sonner', () => ({
@@ -71,7 +71,7 @@ const PRODUITS_ALERTES: Produit[] = [
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function setupMock(produits: Produit[] = PRODUITS_OK) {
-  vi.mocked(usePersistedBoutique).mockReturnValue([produits, mockSetProduits, true] as any)
+  vi.mocked(usePersistedBoutique).mockReturnValue([produits, mockSetProduits, true] as ReturnType<typeof usePersistedBoutique>)
 }
 
 /**
@@ -117,7 +117,7 @@ describe('ProduitsPage', () => {
   })
 
   it('03 — retourne null quand loaded=false', () => {
-    vi.mocked(usePersistedBoutique).mockReturnValue([PRODUITS_OK, mockSetProduits, false] as any)
+    vi.mocked(usePersistedBoutique).mockReturnValue([PRODUITS_OK, mockSetProduits, false] as ReturnType<typeof usePersistedBoutique>)
     const { container } = render(<ProduitsPage />)
     expect(container.firstChild).toBeNull()
   })
@@ -237,7 +237,8 @@ describe('ProduitsPage', () => {
   it('19 — badge "Critique" affiché pour produit à stock 0', () => {
     setupMock(PRODUITS_ALERTES)
     render(<ProduitsPage />)
-    expect(screen.getByText('Critique')).toBeInTheDocument()
+    // Plusieurs produits sont en rupture : le badge apparaît autant de fois.
+    expect(screen.getAllByText('Critique').length).toBeGreaterThan(0)
   })
 
   it('20 — badge "Stock faible" affiché pour produit sous le seuil', () => {
@@ -284,7 +285,7 @@ describe('ProduitsPage', () => {
   it('25 — modal stock : affiche le nom du produit', () => {
     render(<ProduitsPage />)
     clickFirstStockButton()
-    expect(screen.getByText('Riz local (sac 50 kg)')).toBeInTheDocument()
+    expect(within(screen.getByRole('dialog')).getByText('Riz local (sac 50 kg)')).toBeInTheDocument()
   })
 
   it('26 — modal stock : boutons de restock rapide +10, +25, +50', () => {
