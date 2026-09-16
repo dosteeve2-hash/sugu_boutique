@@ -1,28 +1,28 @@
 import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 
 // ─── Mocks (hoistés par Vitest avant les imports) ────────────────────────────
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: any) =>
+    div: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: Record<string, unknown> & { children?: React.ReactNode }) =>
       <div {...rest}>{children}</div>,
-    tr: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: any) =>
+    tr: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: Record<string, unknown> & { children?: React.ReactNode }) =>
       <tr {...rest}>{children}</tr>,
-    p: ({ children, initial, animate, exit, transition, ...rest }: any) =>
+    p: ({ children, initial, animate, exit, transition, ...rest }: Record<string, unknown> & { children?: React.ReactNode }) =>
       <p {...rest}>{children}</p>,
   },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
+  AnimatePresence: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  BarChart: ({ children }: any) => <div>{children}</div>,
+  ResponsiveContainer: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
+  BarChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Bar: () => null,
-  LineChart: ({ children }: any) => <div>{children}</div>,
+  LineChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Line: () => null,
-  PieChart: ({ children }: any) => <div>{children}</div>,
+  PieChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Pie: () => null,
   Cell: () => null,
   XAxis: () => null,
@@ -30,7 +30,7 @@ vi.mock('recharts', () => ({
   CartesianGrid: () => null,
   Tooltip: () => null,
   Legend: () => null,
-  ComposedChart: ({ children }: any) => <div>{children}</div>,
+  ComposedChart: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
 }))
 
 vi.mock('sonner', () => ({
@@ -109,7 +109,7 @@ const COMMANDES_TEST = [
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function setupMock(commandes = COMMANDES_TEST) {
-  vi.mocked(usePersistedBoutique).mockReturnValue([commandes, mockSetCommandes, true] as any)
+  vi.mocked(usePersistedBoutique).mockReturnValue([commandes, mockSetCommandes, true] as ReturnType<typeof usePersistedBoutique>)
 }
 
 /**
@@ -147,7 +147,7 @@ describe('CommandesPage', () => {
   })
 
   it('03 — retourne null quand loaded=false', () => {
-    vi.mocked(usePersistedBoutique).mockReturnValue([COMMANDES_TEST, mockSetCommandes, false] as any)
+    vi.mocked(usePersistedBoutique).mockReturnValue([COMMANDES_TEST, mockSetCommandes, false] as ReturnType<typeof usePersistedBoutique>)
     const { container } = render(<CommandesPage />)
     expect(container.firstChild).toBeNull()
   })
@@ -258,7 +258,7 @@ describe('CommandesPage', () => {
   })
 
   it('19 — liste vide : affiche le message "Aucune commande pour ce filtre"', () => {
-    vi.mocked(usePersistedBoutique).mockReturnValue([[], mockSetCommandes, true] as any)
+    vi.mocked(usePersistedBoutique).mockReturnValue([[], mockSetCommandes, true] as ReturnType<typeof usePersistedBoutique>)
     render(<CommandesPage />)
     expect(screen.getByText(/aucune commande pour ce filtre/i)).toBeInTheDocument()
   })
@@ -280,8 +280,9 @@ describe('CommandesPage', () => {
   it('22 — modal détail : affiche les produits de la commande', () => {
     render(<CommandesPage />)
     fireEvent.click(screen.getByText('Aminata Ouédraogo'))
-    expect(screen.getByText(/riz local 50 kg/i)).toBeInTheDocument()
-    expect(screen.getByText(/huile de palme 5 l/i)).toBeInTheDocument()
+    const modal = within(screen.getByRole('dialog'))
+    expect(modal.getByText(/riz local 50 kg/i)).toBeInTheDocument()
+    expect(modal.getByText(/huile de palme 5 l/i)).toBeInTheDocument()
   })
 
   it('23 — modal : commande "En attente" → bouton "Passer à : Confirmée"', () => {
@@ -334,8 +335,9 @@ describe('CommandesPage', () => {
   it('30 — formulaire propose les modes de paiement mobile money', () => {
     render(<CommandesPage />)
     fireEvent.click(screen.getByText(/nouvelle commande/i))
-    expect(screen.getByText('Orange Money')).toBeInTheDocument()
-    expect(screen.getByText('Wave')).toBeInTheDocument()
-    expect(screen.getByText('Moov Money')).toBeInTheDocument()
+    const modal = within(screen.getByRole('dialog'))
+    expect(modal.getByText('Orange Money')).toBeInTheDocument()
+    expect(modal.getByText('Wave')).toBeInTheDocument()
+    expect(modal.getByText('Moov Money')).toBeInTheDocument()
   })
 })

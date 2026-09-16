@@ -62,7 +62,12 @@ export default function Modal({
             padding: isMobile ? 0 : '1rem',
           }}
         >
+          {/* Sans role/aria-modal, un lecteur d'écran n'annonce pas une boîte de
+              dialogue — et rien ne permet de cibler le contenu du modal. */}
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={title}
             onClick={(e) => e.stopPropagation()}
             initial={isMobile ? { y: '100%' } : { y: 24, opacity: 0, scale: 0.97 }}
             animate={isMobile ? { y: 0 } : { y: 0, opacity: 1, scale: 1 }}
