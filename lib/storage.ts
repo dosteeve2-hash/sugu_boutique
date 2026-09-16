@@ -1,34 +1,45 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBoutique } from '@/components/BoutiqueProvider'
+import { ecrireLocal, signalerEchec } from '@/lib/persistance'
 
 export function usePersisted<T>(key: string, initial: T) {
   const [value, setValue] = useState<T>(initial)
   const [loaded, setLoaded] = useState(false)
 
+  // La valeur courante, tenue à jour hors du rendu : elle permet d'appliquer
+  // une mise à jour fonctionnelle sans passer par l'updater de `setValue`.
+  const valeurRef = useRef<T>(initial)
+
   useEffect(() => {
+    let chargee: T
     try {
       const saved = window.localStorage.getItem(key)
-      setValue(saved ? JSON.parse(saved) : initial)
+      chargee = saved ? (JSON.parse(saved) as T) : initial
     } catch {
-      setValue(initial)
+      chargee = initial
     }
+    valeurRef.current = chargee
+    setValue(chargee)
     setLoaded(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key])
 
   const update = useCallback(
     (updater: T | ((prev: T) => T)) => {
-      setValue((prev) => {
-        const next = typeof updater === 'function' ? (updater as (p: T) => T)(prev) : updater
-        try {
-          window.localStorage.setItem(key, JSON.stringify(next))
-        } catch {
-          // storage full or unavailable — data stays in memory for this session
-        }
-        return next
-      })
+      const next =
+        typeof updater === 'function'
+          ? (updater as (p: T) => T)(valeurRef.current)
+          : updater
+
+      valeurRef.current = next
+      setValue(next)
+
+      // L'écriture a lieu ici et non dans l'updater de `setValue` : React peut
+      // rejouer un updater, et un effet de bord n'a rien à y faire.
+      const echec = ecrireLocal(key, next)
+      if (echec) signalerEchec(echec)
     },
     [key]
   )
