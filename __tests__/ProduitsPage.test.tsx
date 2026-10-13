@@ -5,17 +5,17 @@ import type { Produit } from '@/lib/types'
 
 // ─── Mocks (hoistés avant les imports) ───────────────────────────────────────
 
-vi.mock('framer-motion', () => ({
-  motion: {
+vi.mock('framer-motion', () => {
+  const motion = {
     div: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: any) =>
       <div {...rest}>{children}</div>,
     tr: ({ children, initial, animate, exit, transition, ...rest }: any) =>
       <tr {...rest}>{children}</tr>,
     p: ({ children, initial, animate, exit, transition, ...rest }: any) =>
       <p {...rest}>{children}</p>,
-  },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}))
+  }
+  return { motion, m: motion, AnimatePresence: ({ children }: any) => <>{children}</> }
+})
 
 vi.mock('recharts', () => ({
   ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
@@ -237,7 +237,7 @@ describe('ProduitsPage', () => {
   it('19 — badge "Critique" affiché pour produit à stock 0', () => {
     setupMock(PRODUITS_ALERTES)
     render(<ProduitsPage />)
-    expect(screen.getByText('Critique')).toBeInTheDocument()
+    expect(screen.getAllByText('Critique').length).toBeGreaterThan(0)
   })
 
   it('20 — badge "Stock faible" affiché pour produit sous le seuil', () => {
@@ -284,7 +284,7 @@ describe('ProduitsPage', () => {
   it('25 — modal stock : affiche le nom du produit', () => {
     render(<ProduitsPage />)
     clickFirstStockButton()
-    expect(screen.getByText('Riz local (sac 50 kg)')).toBeInTheDocument()
+    expect(screen.getAllByText('Riz local (sac 50 kg)').length).toBeGreaterThan(0)
   })
 
   it('26 — modal stock : boutons de restock rapide +10, +25, +50', () => {
@@ -346,5 +346,24 @@ describe('ProduitsPage', () => {
     render(<ProduitsPage />)
     fireEvent.click(screen.getByText(/ajouter produit/i))
     expect(screen.getByPlaceholderText(/huile de palme 5l/i)).toBeInTheDocument()
+  })
+})
+
+describe('ProduitsPage — catalogue vide honnête', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('ne injecte aucun produit fictif quand le catalogue est vide', () => {
+    vi.mocked(usePersistedBoutique).mockReturnValue([[], mockSetProduits, true] as any)
+    render(<ProduitsPage />)
+    expect(mockSetProduits).not.toHaveBeenCalled()
+    expect(screen.queryByText('Riz local (sac 50 kg)')).not.toBeInTheDocument()
+  })
+
+  it('affiche un grand bouton "Ajoutez votre premier produit"', () => {
+    vi.mocked(usePersistedBoutique).mockReturnValue([[], mockSetProduits, true] as any)
+    render(<ProduitsPage />)
+    expect(screen.getByRole('button', { name: /ajoutez votre premier produit/i })).toBeInTheDocument()
   })
 })

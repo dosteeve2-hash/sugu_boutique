@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { AlertTriangle, CheckCircle, Package } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Produit } from '@/lib/types'
@@ -28,7 +28,7 @@ export default function Stock() {
     <div>
       <div style={{ marginBottom: '1.5rem' }}>
         <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Stock</h2>
-        <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+        <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
           Valeur totale du stock :{' '}
           <span style={{ color: '#D4AF37', fontWeight: 600 }}>{valeurTotale.toLocaleString('fr-FR')} FCFA</span>
         </p>
@@ -46,21 +46,21 @@ export default function Stock() {
             <div style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #22d98a33', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <CheckCircle size={28} color="#22d98a" />
               <div>
-                <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: '0 0 0.2rem', textTransform: 'uppercase' }}>Stock OK</p>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.2rem', textTransform: 'uppercase' }}>Stock OK</p>
                 <p style={{ color: '#22d98a', fontWeight: 800, fontSize: '1.5rem', margin: 0 }}>{ok.length}</p>
               </div>
             </div>
             <div style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #ef444433', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <AlertTriangle size={28} color="#ef4444" />
               <div>
-                <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: '0 0 0.2rem', textTransform: 'uppercase' }}>Stock Faible</p>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.2rem', textTransform: 'uppercase' }}>Stock Faible</p>
                 <p style={{ color: '#ef4444', fontWeight: 800, fontSize: '1.5rem', margin: 0 }}>{alertes.length}</p>
               </div>
             </div>
             <div style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #D4AF3733', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <Package size={28} color="#D4AF37" />
               <div>
-                <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: '0 0 0.2rem', textTransform: 'uppercase' }}>Total Produits</p>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.2rem', textTransform: 'uppercase' }}>Total Produits</p>
                 <p style={{ color: '#D4AF37', fontWeight: 800, fontSize: '1.5rem', margin: 0 }}>{produits.length}</p>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function Stock() {
                           color: isLow ? '#ef4444' : '#22d98a',
                           padding: '0.15rem 0.55rem',
                           borderRadius: 99,
-                          fontSize: '0.72rem',
+                          fontSize: '0.75rem',
                           fontWeight: 700,
                         }}
                       >
@@ -137,14 +137,14 @@ export default function Stock() {
                       />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.35rem' }}>
-                      <span style={{ color: '#4e5f82', fontSize: '0.72rem' }}>{s.categorie}</span>
-                      <span style={{ color: '#9ba8c4', fontSize: '0.72rem' }}>
+                      <span style={{ color: '#7b89a8', fontSize: '0.75rem' }}>{s.categorie}</span>
+                      <span style={{ color: '#9ba8c4', fontSize: '0.75rem' }}>
                         Min : {s.stockMin} | Stock : <strong style={{ color: isLow ? '#ef4444' : '#22d98a' }}>{s.stock}</strong>
                       </span>
                     </div>
                   </div>
                   <div style={{ textAlign: 'right', minWidth: 110 }}>
-                    <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0 0 0.15rem', textTransform: 'uppercase' }}>Valeur</p>
+                    <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.15rem', textTransform: 'uppercase' }}>Valeur</p>
                     <p style={{ color: '#D4AF37', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
                       {valeur(s).toLocaleString('fr-FR')} FCFA
                     </p>
@@ -153,7 +153,7 @@ export default function Stock() {
               )
             })}
             {filtered.length === 0 && (
-              <p style={{ textAlign: 'center', color: '#4e5f82', padding: '2rem' }}>
+              <p style={{ textAlign: 'center', color: '#7b89a8', padding: '2rem' }}>
                 Aucun produit dans cette catégorie. <Link href="/produits" style={{ color: '#00BCD4' }}>Gérer les produits</Link>
               </p>
             )}

@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { Store, Plus, Edit2, Trash2, Check, Info } from 'lucide-react'
 import { useBoutique } from '@/components/BoutiqueProvider'
 import BoutiqueFormModal from '@/components/BoutiqueFormModal'
 import { useLangue } from '@/components/LangueProvider'
 import { LANGUES } from '@/lib/i18n'
+import SauvegardePanel from '@/components/SauvegardePanel'
 import { Boutique } from '@/lib/types'
 
 export default function Parametres() {
@@ -47,6 +48,8 @@ export default function Parametres() {
         <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>{t.parametres}</h2>
       </div>
 
+      <SauvegardePanel />
+
       {/* Mes Boutiques */}
       <section style={{ marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -83,10 +86,10 @@ export default function Parametres() {
                   <span style={{ fontSize: '1.5rem' }}>{b.emoji}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ color: '#f5f0e8', fontWeight: 700, margin: 0, fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.nom}</p>
-                    <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: '0.15rem 0 0' }}>{b.type}</p>
+                    <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.15rem 0 0' }}>{b.type}</p>
                   </div>
                   {active && (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#22d98a', fontSize: '0.7rem', fontWeight: 700, background: 'rgba(34,217,138,0.1)', padding: '0.2rem 0.5rem', borderRadius: 99 }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#22d98a', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(34,217,138,0.1)', padding: '0.2rem 0.5rem', borderRadius: 99 }}>
                       <Check size={12} /> Actif
                     </span>
                   )}
@@ -102,14 +105,16 @@ export default function Parametres() {
                   )}
                   <button
                     onClick={() => ouvrirEdition(b)}
-                    style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#00BCD4', width: active ? '100%' : 36, flex: active ? 1 : undefined }}
+                    aria-label={`Modifier la boutique ${b.nom}`}
+                    style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#00BCD4', width: active ? '100%' : 48, flex: active ? 1 : undefined }}
                   >
                     <Edit2 size={14} style={{ margin: '0 auto' }} />
                   </button>
                   {boutiques.length > 1 && (
                     <button
                       onClick={() => supprimer(b)}
-                      style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#ef4444', width: 36 }}
+                      aria-label={`Supprimer la boutique ${b.nom}`}
+                      style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#ef4444', width: 48 }}
                     >
                       <Trash2 size={14} style={{ margin: '0 auto' }} />
                     </button>
@@ -159,7 +164,7 @@ export default function Parametres() {
         </h3>
         <p style={{ color: '#D4AF37', fontWeight: 900, fontSize: '1.3rem', margin: '0 0 0.25rem', fontFeatureSettings: '"kern" 1' }}>SUGU</p>
         <p style={{ color: '#9ba8c4', fontSize: '0.85rem', margin: '0 0 0.75rem' }}>{t.tagline} — FORGE Afrika</p>
-        <p style={{ color: '#4e5f82', fontSize: '0.78rem', margin: 0 }}>{t.version} 1.0.0</p>
+        <p style={{ color: '#7b89a8', fontSize: '0.78rem', margin: 0 }}>{t.version} 1.0.0</p>
       </section>
 
       <BoutiqueFormModal open={showForm} onClose={() => setShowForm(false)} onSubmit={soumettre} edition={edition} />

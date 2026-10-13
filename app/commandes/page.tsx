@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { ShoppingBag, Plus, ChevronRight } from 'lucide-react'
 import { toast } from 'sonner'
 import { usePersistedBoutique } from '@/lib/storage'
@@ -34,27 +34,13 @@ const SC: Record<StatutCommande, { bg: string; text: string; border: string }> =
   'Annulée':    { bg: 'rgba(239,68,68,0.10)',   text: '#ef4444', border: 'rgba(239,68,68,0.3)' },
 }
 
-// ─── Mock data ────────────────────────────────────────────────────────────────
-const COMMANDES_DEMO: Commande[] = [
-  { id: 1001, client: 'Aminata Ouédraogo', produits: [{ nom: 'Riz local 50 kg', qte: 2, prix: 22000 }, { nom: 'Huile de palme 5 L', qte: 3, prix: 4500 }], total: 57500, statut: 'Livrée', date: '2026-07-28', modePaiement: 'Wave', adresseLivraison: 'Secteur 15, Ouagadougou' },
-  { id: 1002, client: 'Moussa Traoré', produits: [{ nom: 'Farine de blé 25 kg', qte: 4, prix: 10000 }], total: 40000, statut: 'En cours', date: '2026-07-30', modePaiement: 'Orange Money', adresseLivraison: 'Gounghin, Ouagadougou' },
-  { id: 1003, client: 'Fatoumata Diallo', produits: [{ nom: 'Sucre granulé 10 kg', qte: 5, prix: 7000 }, { nom: 'Cube Maggi boîte 100', qte: 2, prix: 3500 }], total: 42000, statut: 'Confirmée', date: '2026-08-01', modePaiement: 'Espèces', adresseLivraison: 'Pissy, Ouagadougou' },
-  { id: 1004, client: 'Ibrahim Sawadogo', produits: [{ nom: 'Eau minérale 1,5 L', qte: 24, prix: 500 }], total: 12000, statut: 'En attente', date: '2026-08-02', modePaiement: 'Moov Money', adresseLivraison: 'Zone du Bois, Ouagadougou' },
-  { id: 1005, client: 'Mariam Compaoré', produits: [{ nom: 'Savon de Marseille 400 g', qte: 50, prix: 600 }, { nom: 'Shampooing Tahiti', qte: 10, prix: 1200 }], total: 42000, statut: 'Livrée', date: '2026-07-25', modePaiement: 'Wave', adresseLivraison: 'Cissin, Ouagadougou' },
-  { id: 1006, client: 'Boukary Kaboré', produits: [{ nom: 'Bière Brakina 65 cl', qte: 48, prix: 750 }], total: 36000, statut: 'Annulée', date: '2026-07-22', modePaiement: 'Espèces', adresseLivraison: 'Ouaga 2000' },
-  { id: 1007, client: 'Zénabou Ouédraogo', produits: [{ nom: 'Jus Jaffa Orange', qte: 30, prix: 500 }, { nom: 'Eau minérale 1,5 L', qte: 12, prix: 500 }], total: 21000, statut: 'En cours', date: '2026-08-01', modePaiement: 'Orange Money', adresseLivraison: 'Tampouy, Ouagadougou' },
-  { id: 1008, client: 'Adama Yaméogo', produits: [{ nom: 'Allumettes Super (carton)', qte: 10, prix: 2500 }], total: 25000, statut: 'En attente', date: '2026-08-02', modePaiement: 'Espèces', adresseLivraison: 'Karpala, Ouagadougou' },
-  { id: 1009, client: 'Salimata Ouattara', produits: [{ nom: 'Dentifrice Colgate', qte: 20, prix: 900 }, { nom: 'Savon de Marseille', qte: 30, prix: 600 }], total: 36000, statut: 'Confirmée', date: '2026-08-01', modePaiement: 'Wave', adresseLivraison: 'Dapoya, Ouagadougou' },
-  { id: 1010, client: 'Hamidou Zongo', produits: [{ nom: 'Riz local 50 kg', qte: 5, prix: 22000 }], total: 110000, statut: 'Livrée', date: '2026-07-20', modePaiement: 'Virement', adresseLivraison: 'Secteur 30, Ouagadougou' },
-]
-
 const VIDE_FORM = { client: '', modePaiement: 'Espèces', adresseLivraison: '', produit1Nom: '', produit1Qte: 1, produit1Prix: 0 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 function StatutBadge({ statut }: { statut: StatutCommande }) {
   const c = SC[statut]
   return (
-    <span style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}`, fontSize: '0.72rem', fontWeight: 700, padding: '0.2rem 0.65rem', borderRadius: 99, whiteSpace: 'nowrap' }}>
+    <span style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}`, fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.65rem', borderRadius: 99, whiteSpace: 'nowrap' }}>
       {statut}
     </span>
   )
@@ -63,16 +49,16 @@ function StatutBadge({ statut }: { statut: StatutCommande }) {
 function KpiCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
   return (
     <div style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 12, padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-      <span style={{ color: '#4e5f82', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
+      <span style={{ color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
       <span style={{ color, fontSize: '1.6rem', fontWeight: 800, lineHeight: 1 }}>{value}</span>
-      {sub && <span style={{ color: '#4e5f82', fontSize: '0.72rem' }}>{sub}</span>}
+      {sub && <span style={{ color: '#7b89a8', fontSize: '0.75rem' }}>{sub}</span>}
     </div>
   )
 }
 
 // ─── Page principale ──────────────────────────────────────────────────────────
 export default function CommandesPage() {
-  const [commandes, setCommandes, loaded] = usePersistedBoutique<Commande[]>('commandes', COMMANDES_DEMO)
+  const [commandes, setCommandes, loaded] = usePersistedBoutique<Commande[]>('commandes', [])
   const [statutActif, setStatutActif] = useState<StatutCommande | 'Toutes'>('Toutes')
   const [selectedCommande, setSelectedCommande] = useState<Commande | null>(null)
   const [showForm, setShowForm] = useState(false)
@@ -134,7 +120,7 @@ export default function CommandesPage() {
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <ShoppingBag size={22} color="#D4AF37" /> Commandes
           </h2>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {commandes.length} commande{commandes.length !== 1 ? 's' : ''} au total
           </p>
         </div>
@@ -171,7 +157,7 @@ export default function CommandesPage() {
               display: 'flex', alignItems: 'center', gap: 5,
             }}>
               {s}
-              <span style={{ background: active ? 'rgba(255,255,255,0.15)' : '#16233d', color: active ? (c?.text ?? '#D4AF37') : '#4e5f82', fontSize: '0.65rem', fontWeight: 700, borderRadius: 99, padding: '0.05rem 0.35rem' }}>
+              <span style={{ background: active ? 'rgba(255,255,255,0.15)' : '#16233d', color: active ? (c?.text ?? '#D4AF37') : '#7b89a8', fontSize: '0.75rem', fontWeight: 700, borderRadius: 99, padding: '0.05rem 0.35rem' }}>
                 {count}
               </span>
             </button>
@@ -186,14 +172,14 @@ export default function CommandesPage() {
             <thead>
               <tr style={{ background: '#07111f' }}>
                 {['#', 'Client', 'Produits', 'Total', 'Mode', 'Date', 'Statut', ''].map((h) => (
-                  <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', color: '#4e5f82', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+                  <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', color: '#7b89a8', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <AnimatePresence>
                 {filtered.length === 0 ? (
-                  <tr><td colSpan={8} style={{ padding: '2.5rem', textAlign: 'center', color: '#4e5f82', fontSize: '0.9rem' }}>Aucune commande pour ce filtre.</td></tr>
+                  <tr><td colSpan={8} style={{ padding: '2.5rem', textAlign: 'center', color: '#7b89a8', fontSize: '0.9rem' }}>{commandes.length === 0 ? 'Aucune commande enregistrée. Notez ici les commandes à livrer à vos clients.' : 'Aucune commande pour ce filtre.'}</td></tr>
                 ) : (
                   filtered.map((c, i) => (
                     <motion.tr key={c.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.03 }}
@@ -212,7 +198,7 @@ export default function CommandesPage() {
                       <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.8rem' }}>{c.modePaiement}</td>
                       <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{c.date}</td>
                       <td style={{ padding: '0.75rem 1rem' }}><StatutBadge statut={c.statut} /></td>
-                      <td style={{ padding: '0.75rem 0.75rem' }}><ChevronRight size={16} color="#4e5f82" /></td>
+                      <td style={{ padding: '0.75rem 0.75rem' }}><ChevronRight size={16} color="#7b89a8" /></td>
                     </motion.tr>
                   ))
                 )}
@@ -228,19 +214,19 @@ export default function CommandesPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <StatutBadge statut={selectedCommande.statut} />
-              <span style={{ color: '#4e5f82', fontSize: '0.8rem' }}>{selectedCommande.date}</span>
+              <span style={{ color: '#7b89a8', fontSize: '0.8rem' }}>{selectedCommande.date}</span>
             </div>
             <div style={{ background: '#070e1f', borderRadius: 10, padding: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <p style={{ margin: 0, color: '#4e5f82', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Client</p>
+              <p style={{ margin: 0, color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Client</p>
               <p style={{ margin: 0, color: '#f5f0e8', fontWeight: 700 }}>{selectedCommande.client}</p>
               <p style={{ margin: 0, color: '#9ba8c4', fontSize: '0.8rem' }}>{selectedCommande.adresseLivraison}</p>
               <p style={{ margin: 0, color: '#9ba8c4', fontSize: '0.8rem' }}>Paiement : {selectedCommande.modePaiement}</p>
             </div>
             <div style={{ background: '#070e1f', borderRadius: 10, padding: '0.85rem' }}>
-              <p style={{ margin: '0 0 0.75rem', color: '#4e5f82', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Produits</p>
+              <p style={{ margin: '0 0 0.75rem', color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Produits</p>
               {selectedCommande.produits.map((p, i) => (
                 <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: i < selectedCommande.produits.length - 1 ? '1px solid #16233d' : 'none' }}>
-                  <span style={{ color: '#f5f0e8', fontSize: '0.85rem' }}>{p.nom} <span style={{ color: '#4e5f82' }}>×{p.qte}</span></span>
+                  <span style={{ color: '#f5f0e8', fontSize: '0.85rem' }}>{p.nom} <span style={{ color: '#7b89a8' }}>×{p.qte}</span></span>
                   <span style={{ color: '#D4AF37', fontWeight: 700, fontSize: '0.85rem' }}>{(p.qte * p.prix).toLocaleString('fr-FR')} F</span>
                 </div>
               ))}
@@ -289,7 +275,7 @@ export default function CommandesPage() {
             </select>
           </FormField>
           <div style={{ borderTop: '1px solid #16233d', paddingTop: '1rem', marginTop: '0.5rem' }}>
-            <p style={{ color: '#4e5f82', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.75rem' }}>Premier article</p>
+            <p style={{ color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.75rem' }}>Premier article</p>
             <FormField label="Produit">
               <TextInput required value={form.produit1Nom} onChange={(e) => setForm({ ...form, produit1Nom: e.target.value })} placeholder="Nom du produit" />
             </FormField>

@@ -39,7 +39,7 @@ export default function Recu({
         <p style={{ color: '#0A1628', fontSize: '1.75rem', fontWeight: 900, margin: 0, letterSpacing: '0.05em' }}>SUGU</p>
         <p style={{ fontSize: '0.75rem', margin: '0.25rem 0 0', opacity: 0.7 }}>{t.tagline}</p>
         <p style={{ fontSize: '0.8rem', margin: '0.5rem 0 0' }}>{dateHeure}</p>
-        <p style={{ fontSize: '0.7rem', margin: '0.15rem 0 0', opacity: 0.6 }}>#{vente.id.toString().slice(-6)}</p>
+        <p style={{ fontSize: '0.75rem', margin: '0.15rem 0 0', opacity: 0.6 }}>#{vente.id.toString().slice(-6)}</p>
       </div>
 
       <div style={{ marginBottom: '1rem' }}>

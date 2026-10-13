@@ -195,7 +195,7 @@ export default function Analytics() {
                     <span style={{ color: GOLD, fontWeight: 700, fontSize: '0.8rem', width: 20, textAlign: 'right', flexShrink: 0 }}>#{i+1}</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: '0.85rem', color: '#f5f0e8', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.nom}</div>
-                      <div style={{ fontSize: '0.7rem', color: '#9ba8c4' }}>{p.categorie} · {p.qte} unités vendues</div>
+                      <div style={{ fontSize: '0.75rem', color: '#9ba8c4' }}>{p.categorie} · {p.qte} unités vendues</div>
                     </div>
                     <span style={{ fontSize: '0.85rem', fontWeight: 700, color: GREEN, flexShrink: 0 }}>{p.revenu.toLocaleString('fr-FR')} F</span>
                   </div>

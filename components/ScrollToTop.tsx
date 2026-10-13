@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 
 export default function ScrollToTop() {
@@ -27,14 +27,15 @@ export default function ScrollToTop() {
           exit={{ opacity: 0, y: 16 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
           onClick={scrollToTop}
+          className="sugu-scrolltop no-print"
           aria-label="Retour en haut"
           style={{
             position: 'fixed',
             bottom: '1.5rem',
             right: '1.5rem',
             zIndex: 50,
-            width: '2.75rem',
-            height: '2.75rem',
+            width: '3rem',
+            height: '3rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

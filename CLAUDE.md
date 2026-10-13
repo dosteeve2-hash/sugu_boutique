@@ -15,7 +15,7 @@
 | Cyan | `#00BCD4` | Accent secondaire |
 | Cream | `#F8F9FA` | Texte principal |
 | Gray | `#9ba8c4` | Texte secondaire |
-| Muted | `#4e5f82` | Labels, placeholders |
+| Muted | `#7b89a8` | Labels, placeholders (contraste >= 4,5:1) |
 | Border | `#16233d` | Bordures légères |
 | Green | `#22d98a` | Succès, stock OK |
 | Red | `#ef4444` | Erreur, stock faible |

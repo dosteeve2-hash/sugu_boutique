@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { Plus, Truck } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Achat, Produit, Fournisseur } from '@/lib/types'
@@ -82,7 +82,7 @@ export default function Achats() {
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Achats</h2>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             Total dépensé : <span style={{ color: '#9ba8c4', fontWeight: 600 }}>{totalDepenses.toLocaleString('fr-FR')} FCFA</span>
           </p>
         </div>
@@ -93,7 +93,7 @@ export default function Achats() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: peutAjouter ? '#D4AF37' : '#4e5f82',
+            background: peutAjouter ? '#D4AF37' : '#7b89a8',
             color: '#0A1628',
             border: 'none',
             borderRadius: 8,
@@ -110,9 +110,9 @@ export default function Achats() {
       {!peutAjouter && (
         <p style={{ color: '#f0a832', fontSize: '0.8rem', marginBottom: '1rem' }}>
           Ajoutez d&apos;abord un{' '}
-          {produits.length === 0 && <Link href="/produits" style={{ color: '#00BCD4' }}>produit</Link>}
+          {produits.length === 0 && <Link href="/produits" style={{ color: '#00BCD4', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>produit</Link>}
           {produits.length === 0 && fournisseurs.length === 0 && ' et un '}
-          {fournisseurs.length === 0 && <Link href="/fournisseurs" style={{ color: '#00BCD4' }}>fournisseur</Link>} pour enregistrer un achat.
+          {fournisseurs.length === 0 && <Link href="/fournisseurs" style={{ color: '#00BCD4', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>fournisseur</Link>} pour enregistrer un achat.
         </p>
       )}
 
@@ -133,7 +133,7 @@ export default function Achats() {
               { label: 'En Attente', value: `${achats.filter((a) => a.statut === 'En attente').length}`, color: '#f0a832' },
             ].map((k) => (
               <div key={k.label} style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #16233d' }}>
-                <p style={{ color: '#4e5f82', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
                 <p style={{ color: k.color, fontWeight: 700, fontSize: '1.1rem', margin: 0 }}>{k.value}</p>
               </div>
             ))}
@@ -149,7 +149,7 @@ export default function Achats() {
                       style={{
                         padding: '0.75rem 1rem',
                         textAlign: 'left',
-                        color: '#4e5f82',
+                        color: '#7b89a8',
                         fontSize: '0.75rem',
                         fontWeight: 600,
                         textTransform: 'uppercase',
@@ -232,7 +232,7 @@ export default function Achats() {
               <option value="En attente">En attente</option>
             </SelectInput>
           </FormField>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem' }}>
             Total : <strong style={{ color: '#D4AF37' }}>{(quantite * prixUnit).toLocaleString('fr-FR')} FCFA</strong>
           </p>
           <SubmitRow onCancel={() => setShowForm(false)} submitLabel="Enregistrer l'achat" />

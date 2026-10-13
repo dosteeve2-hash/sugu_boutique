@@ -1,16 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import { useBoutique } from '@/components/BoutiqueProvider'
 import BoutiqueFormModal from '@/components/BoutiqueFormModal'
 import { useLangue } from '@/components/LangueProvider'
+import { useBoutonImport } from '@/components/SauvegardePanel'
 
 export default function BoutiqueWelcome() {
   const { t } = useLangue()
   const { ajouterBoutique } = useBoutique()
   const [showForm, setShowForm] = useState(false)
+  const { ouvrir, input } = useBoutonImport()
 
   return (
     <div
@@ -78,6 +80,17 @@ export default function BoutiqueWelcome() {
         >
           <Plus size={20} /> {t.creerPremiereBoutique}
         </motion.button>
+
+        <p style={{ color: '#f0a832', fontSize: '0.85rem', fontWeight: 600, margin: '1.75rem auto 0.5rem', maxWidth: 320, lineHeight: 1.5 }}>
+          Vos données sont enregistrées sur ce téléphone seulement.
+        </p>
+        <button
+          onClick={ouvrir}
+          style={{ background: 'transparent', border: '1px solid #1f3054', color: '#f5f0e8', borderRadius: 12, minHeight: 52, padding: '0 1.25rem', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
+        >
+          J&apos;ai déjà une sauvegarde : l&apos;importer
+        </button>
+        {input}
       </motion.div>
 
       <BoutiqueFormModal open={showForm} onClose={() => setShowForm(false)} onSubmit={(data) => ajouterBoutique(data)} />

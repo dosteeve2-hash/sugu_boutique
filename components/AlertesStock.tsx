@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { AlertTriangle, CheckCircle, ShoppingCart, Package } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
@@ -73,7 +73,7 @@ export default function AlertesStock() {
               style={{
                 background: '#ef4444',
                 color: '#fff',
-                fontSize: '0.68rem',
+                fontSize: '0.75rem',
                 fontWeight: 700,
                 padding: '0.1rem 0.45rem',
                 borderRadius: 99,
@@ -95,6 +95,8 @@ export default function AlertesStock() {
             display: 'flex',
             alignItems: 'center',
             gap: 4,
+            minHeight: 44,
+            padding: '0 0.5rem',
           }}
         >
           <Package size={13} /> Voir catalogue
@@ -143,7 +145,7 @@ export default function AlertesStock() {
                     <p style={{ color: '#f5f0e8', fontSize: '0.82rem', fontWeight: 600, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {p.nom}
                     </p>
-                    <p style={{ color: '#9ba8c4', fontSize: '0.72rem', margin: '0.15rem 0 0' }}>
+                    <p style={{ color: '#9ba8c4', fontSize: '0.75rem', margin: '0.15rem 0 0' }}>
                       Stock : <strong style={{ color: style.dot }}>{p.stock}</strong> / min {p.stockMin} {p.unite ?? ''}
                     </p>
                   </div>
@@ -153,7 +155,7 @@ export default function AlertesStock() {
                     style={{
                       background: style.badge.bg,
                       color: style.badge.text,
-                      fontSize: '0.65rem',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
                       padding: '0.15rem 0.5rem',
                       borderRadius: 99,
@@ -177,7 +179,7 @@ export default function AlertesStock() {
                       borderRadius: 6,
                       padding: '0.3rem 0.6rem',
                       color: '#00D4FF',
-                      fontSize: '0.72rem',
+                      fontSize: '0.75rem',
                       fontWeight: 600,
                       cursor: 'pointer',
                       flexShrink: 0,

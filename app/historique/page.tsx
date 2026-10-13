@@ -1,39 +1,10 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { Download, Search, X, Calendar, Filter } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
-import { Vente, ModePaiement } from '@/lib/types'
-
-// ─── Mock data (affiché si aucune vente réelle) ───────────────────────────────
-const NOMS_CLIENTS = ['Aminata Koné', 'Ibrahim Traoré', 'Fatou Diallo', 'Moussa Ouédraogo', 'Aïssa Sawadogo', 'Seydou Bah']
-const MODES: ModePaiement[] = ['Espèces', 'Orange Money', 'Wave', 'Moov Money', 'Crédit']
-const ARTICLES_MOCK = [
-  [{ produitId: 1, nom: 'Savon de Marseille', quantite: 3, prixUnit: 500 }, { produitId: 2, nom: 'Huile de palme 1L', quantite: 1, prixUnit: 1200 }],
-  [{ produitId: 3, nom: 'Riz importé 5kg', quantite: 2, prixUnit: 3200 }],
-  [{ produitId: 4, nom: 'Tomates concentrées', quantite: 4, prixUnit: 400 }, { produitId: 5, nom: 'Sucre 1kg', quantite: 2, prixUnit: 700 }],
-  [{ produitId: 6, nom: 'Lait en poudre 400g', quantite: 1, prixUnit: 2500 }],
-  [{ produitId: 7, nom: 'Farine de blé 5kg', quantite: 1, prixUnit: 2800 }, { produitId: 1, nom: 'Savon de Marseille', quantite: 2, prixUnit: 500 }],
-]
-const TOTAUX_MOCK = [2200, 6400, 3800, 2500, 8500, 4100, 1700, 9200, 3300, 5600, 7800, 2900, 4500, 6700, 3100, 8900, 2600, 5200, 4800, 7100]
-
-const MOCK_VENTES: Vente[] = Array.from({ length: 20 }, (_, i) => {
-  const d = new Date()
-  d.setDate(d.getDate() - i)
-  const mode = MODES[i % MODES.length]
-  return {
-    id: i + 1,
-    clientId: i % 3 === 0 ? (i + 1) : null,
-    client: i % 3 === 0 ? NOMS_CLIENTS[Math.floor(i / 3) % NOMS_CLIENTS.length] : '',
-    lignes: ARTICLES_MOCK[i % ARTICLES_MOCK.length],
-    total: TOTAUX_MOCK[i],
-    modePaiement: mode,
-    statut: mode === 'Crédit' ? 'Crédit' : 'Payé',
-    date: d.toISOString().slice(0, 10),
-    satisfaction: null,
-  }
-})
+import { Vente } from '@/lib/types'
 
 // ─── Types filtres ─────────────────────────────────────────────────────────────
 type FiltrePeriode = 'tout' | 'aujourdhui' | 'semaine' | 'mois'
@@ -91,13 +62,12 @@ function exportCSV(ventes: Vente[]) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function HistoriquePage() {
-  const [ventesReelles, , loaded] = usePersistedBoutique<Vente[]>('ventes', [])
+  const [ventesReelles] = usePersistedBoutique<Vente[]>('ventes', [])
   const [periode, setPeriode] = useState<FiltrePeriode>('tout')
   const [modeFiltre, setModeFiltre] = useState<FiltreMode>('tout')
   const [search, setSearch] = useState('')
 
-  const sourceVentes: Vente[] = loaded && ventesReelles.length > 0 ? ventesReelles : MOCK_VENTES
-  const isMock = !loaded || ventesReelles.length === 0
+  const sourceVentes: Vente[] = ventesReelles
 
   const filtered = useMemo(() => {
     return sourceVentes
@@ -139,8 +109,8 @@ export default function HistoriquePage() {
           <h1 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>
             Historique des ventes
           </h1>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
-            {filtered.length} vente(s) affichée(s){isMock ? ' · données d\'exemple' : ''}
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+            {filtered.length} vente(s) affichée(s)
           </p>
         </div>
         <button
@@ -168,7 +138,7 @@ export default function HistoriquePage() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.25rem' }}>
         {/* Période */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Calendar size={14} style={{ color: '#4e5f82' }} />
+          <Calendar size={14} style={{ color: '#7b89a8' }} />
           <div style={{ display: 'flex', gap: '0.25rem' }}>
             {PERIODES.map(({ key, label }) => (
               <button
@@ -193,7 +163,7 @@ export default function HistoriquePage() {
 
         {/* Mode paiement */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Filter size={14} style={{ color: '#4e5f82' }} />
+          <Filter size={14} style={{ color: '#7b89a8' }} />
           <div style={{ display: 'flex', gap: '0.25rem' }}>
             {MODES_FILTRE.map(({ key, label }) => (
               <button
@@ -229,7 +199,7 @@ export default function HistoriquePage() {
             minWidth: 200,
           }}
         >
-          <Search size={14} style={{ color: '#4e5f82', flexShrink: 0 }} />
+          <Search size={14} style={{ color: '#7b89a8', flexShrink: 0 }} />
           <input
             type="text"
             placeholder="Client, article…"
@@ -238,7 +208,7 @@ export default function HistoriquePage() {
             style={{ background: 'transparent', border: 'none', outline: 'none', color: '#f5f0e8', fontSize: '0.8rem', flex: 1 }}
           />
           {search && (
-            <button onClick={() => setSearch('')} style={{ cursor: 'pointer', display: 'flex', color: '#4e5f82' }}>
+            <button onClick={() => setSearch('')} aria-label="Effacer la recherche" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, color: '#7b89a8' }}>
               <X size={13} />
             </button>
           )}
@@ -259,8 +229,8 @@ export default function HistoriquePage() {
             gridTemplateColumns: '1fr 1.4fr 1.8fr 1fr 0.8fr 0.9fr',
             padding: '0.75rem 1.25rem',
             borderBottom: '1px solid #16233d',
-            color: '#4e5f82',
-            fontSize: '0.7rem',
+            color: '#7b89a8',
+            fontSize: '0.75rem',
             fontWeight: 700,
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
@@ -276,8 +246,8 @@ export default function HistoriquePage() {
 
         {/* Lignes */}
         {filtered.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#4e5f82', fontSize: '0.85rem' }}>
-            Aucune vente pour cette période.
+          <div style={{ padding: '3rem', textAlign: 'center', color: '#7b89a8', fontSize: '0.85rem' }}>
+            {ventesReelles.length === 0 ? 'Aucune vente enregistrée pour le moment. Faites votre première vente à la caisse.' : 'Aucune vente pour cette période.'}
           </div>
         ) : (
           filtered.map((v, i) => {
@@ -304,7 +274,7 @@ export default function HistoriquePage() {
 
                 {/* Client */}
                 <span style={{ color: '#f5f0e8', fontSize: '0.82rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {v.client || <span style={{ color: '#4e5f82', fontStyle: 'italic' }}>Client anonyme</span>}
+                  {v.client || <span style={{ color: '#7b89a8', fontStyle: 'italic' }}>Client anonyme</span>}
                 </span>
 
                 {/* Articles */}
@@ -318,7 +288,7 @@ export default function HistoriquePage() {
                 </span>
 
                 {/* Rendu monnaie */}
-                <span style={{ color: '#4e5f82', fontSize: '0.8rem' }}>—</span>
+                <span style={{ color: '#7b89a8', fontSize: '0.8rem' }}>—</span>
 
                 {/* Mode */}
                 <span
@@ -327,7 +297,7 @@ export default function HistoriquePage() {
                     alignItems: 'center',
                     padding: '0.2rem 0.6rem',
                     borderRadius: 99,
-                    fontSize: '0.72rem',
+                    fontSize: '0.75rem',
                     fontWeight: 700,
                     background: isCredit ? 'rgba(240,168,50,0.12)' : 'rgba(34,217,138,0.1)',
                     color: isCredit ? '#f0a832' : '#22d98a',

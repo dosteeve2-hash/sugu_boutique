@@ -10,7 +10,7 @@ Outil pensé pour les vendeurs de rue, les boutiquiers de quartier et les commer
 
 - Tableau de bord avec KPIs dynamiques
 - Produits, ventes, achats, clients, fournisseurs, stock, rapports
-- Offline-first (localStorage) — aucune perte de donnée hors connexion
+- Données enregistrées sur le téléphone (localStorage), export/import JSON dans Paramètres ; pas de synchronisation ni de compte pour l'instant
 - Multi-langue : Français, Anglais, Jula, Mooré
 - Modes de paiement : Espèces, Orange Money, Wave, Moov Money, Crédit
 - Mobile-first

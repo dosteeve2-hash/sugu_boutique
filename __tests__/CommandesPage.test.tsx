@@ -4,17 +4,17 @@ import { render, screen, fireEvent } from '@testing-library/react'
 
 // ─── Mocks (hoistés par Vitest avant les imports) ────────────────────────────
 
-vi.mock('framer-motion', () => ({
-  motion: {
+vi.mock('framer-motion', () => {
+  const motion = {
     div: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: any) =>
       <div {...rest}>{children}</div>,
     tr: ({ children, initial, animate, exit, transition, whileHover, whileTap, ...rest }: any) =>
       <tr {...rest}>{children}</tr>,
     p: ({ children, initial, animate, exit, transition, ...rest }: any) =>
       <p {...rest}>{children}</p>,
-  },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}))
+  }
+  return { motion, m: motion, AnimatePresence: ({ children }: any) => <>{children}</> }
+})
 
 vi.mock('recharts', () => ({
   ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
@@ -257,10 +257,10 @@ describe('CommandesPage', () => {
     expect(screen.getByText('Moussa Traoré')).toBeInTheDocument()
   })
 
-  it('19 — liste vide : affiche le message "Aucune commande pour ce filtre"', () => {
+  it('19 — liste vide : affiche un état vide honnête', () => {
     vi.mocked(usePersistedBoutique).mockReturnValue([[], mockSetCommandes, true] as any)
     render(<CommandesPage />)
-    expect(screen.getByText(/aucune commande pour ce filtre/i)).toBeInTheDocument()
+    expect(screen.getByText(/aucune commande enregistrée/i)).toBeInTheDocument()
   })
 
   // ── 6. Modal détail ───────────────────────────────────────────────────────
@@ -280,8 +280,8 @@ describe('CommandesPage', () => {
   it('22 — modal détail : affiche les produits de la commande', () => {
     render(<CommandesPage />)
     fireEvent.click(screen.getByText('Aminata Ouédraogo'))
-    expect(screen.getByText(/riz local 50 kg/i)).toBeInTheDocument()
-    expect(screen.getByText(/huile de palme 5 l/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/riz local 50 kg/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/huile de palme 5 l/i).length).toBeGreaterThan(0)
   })
 
   it('23 — modal : commande "En attente" → bouton "Passer à : Confirmée"', () => {
@@ -334,8 +334,8 @@ describe('CommandesPage', () => {
   it('30 — formulaire propose les modes de paiement mobile money', () => {
     render(<CommandesPage />)
     fireEvent.click(screen.getByText(/nouvelle commande/i))
-    expect(screen.getByText('Orange Money')).toBeInTheDocument()
-    expect(screen.getByText('Wave')).toBeInTheDocument()
-    expect(screen.getByText('Moov Money')).toBeInTheDocument()
+    expect(screen.getAllByText('Orange Money').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Wave').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Moov Money').length).toBeGreaterThan(0)
   })
 })
