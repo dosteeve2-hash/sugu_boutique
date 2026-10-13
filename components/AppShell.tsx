@@ -7,6 +7,7 @@ import BottomNav from '@/components/BottomNav'
 import BoutiqueWelcome from '@/components/BoutiqueWelcome'
 import { useBoutique } from '@/components/BoutiqueProvider'
 import ScrollToTop from '@/components/ScrollToTop'
+import ExampleDataBanner from '@/components/ExampleDataBanner'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { loaded, boutiqueActive, boutiques } = useBoutique()
@@ -30,6 +31,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
           >
+            <ExampleDataBanner />
             {children}
           </motion.div>
         </AnimatePresence>

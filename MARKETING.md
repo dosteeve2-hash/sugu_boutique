@@ -64,13 +64,9 @@ Chaque transaction est tracée. Chaque paiement mobile est confirmé.
 
 ---
 
-## Ce Que Disent Nos Commerçants
+## Pilotes recherchés
 
-> *"Je savais jamais combien j'avais vraiment vendu dans la journée. Maintenant c'est affiché direct."*
-> — Mariam S., épicerie de quartier, Bobo-Dioulasso
-
-> *"J'ai ouvert une deuxième boutique. Sans SUGU, j'aurais pas pu gérer les deux."*
-> — Moussa T., boutique de téléphonie, Ouagadougou
+Aucun témoignage pour l'instant : le produit est en phase pilote et nous cherchons nos premiers utilisateurs. Contactez-nous pour l'essayer et nous dire ce qui manque.
 
 ---
 
