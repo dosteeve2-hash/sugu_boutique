@@ -73,7 +73,7 @@ export default function BoutiqueFormModal({ open, onClose, onSubmit, edition }: 
                   }}
                 >
                   <span style={{ fontSize: '1.4rem' }}>{tb.emoji}</span>
-                  <span style={{ fontSize: '0.68rem', color: selectionne ? '#D4AF37' : '#9ba8c4', fontWeight: 600, textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.75rem', color: selectionne ? '#D4AF37' : '#9ba8c4', fontWeight: 600, textAlign: 'center' }}>
                     {tb.type}
                   </span>
                 </button>
@@ -87,16 +87,17 @@ export default function BoutiqueFormModal({ open, onClose, onSubmit, edition }: 
             {t.couleurBoutique}
           </label>
           <div style={{ display: 'flex', gap: '0.6rem' }}>
-            {COULEURS_BOUTIQUE.map((c) => (
+            {COULEURS_BOUTIQUE.map((c, i) => (
               <button
                 type="button"
                 key={c}
                 onClick={() => setCouleur(c)}
-                aria-label={c}
+                aria-label={`Couleur ${i + 1}`}
+                aria-pressed={couleur === c}
                 style={{
-                  width: 34,
-                  height: 34,
-                  minHeight: 34,
+                  width: 44,
+                  height: 44,
+                  minHeight: 44,
                   borderRadius: '50%',
                   background: c,
                   border: couleur === c ? '3px solid #f5f0e8' : '3px solid transparent',

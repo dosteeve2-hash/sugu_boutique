@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { TrendingUp, ShoppingBag, BarChart2, CreditCard, FileDown } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Vente, Client } from '@/lib/types'
@@ -150,7 +150,7 @@ export default function RapportJour() {
           <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
             Rapport du Jour
           </h3>
-          <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: '0.2rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.2rem 0 0' }}>
             {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
           </p>
         </div>
@@ -206,7 +206,7 @@ export default function RapportJour() {
               <Icon size={15} style={{ color }} />
             </div>
             <p style={{ color, fontSize: '1rem', fontWeight: 800, margin: '0 0 0.2rem' }}>{value}</p>
-            <p style={{ color: '#4e5f82', fontSize: '0.68rem', margin: 0, lineHeight: 1.3 }}>{label}</p>
+            <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: 0, lineHeight: 1.3 }}>{label}</p>
           </motion.div>
         ))}
       </div>

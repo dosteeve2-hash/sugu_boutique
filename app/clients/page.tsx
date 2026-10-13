@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { Plus, Phone, AlertCircle, CheckCircle, Edit2, Trash2, Users, Smile, Meh, Frown } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Client, Vente } from '@/lib/types'
@@ -77,7 +77,7 @@ export default function Clients() {
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Clients</h2>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {clients.length} client{clients.length !== 1 ? 's' : ''}
             {totalSoldeDu > 0 && (
               <>
@@ -110,7 +110,7 @@ export default function Clients() {
       {clients.length > 0 && (
         <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
           <svg
-            style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }}
+            style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#7b89a8' }}
             width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
           >
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
@@ -152,7 +152,7 @@ export default function Clients() {
               { label: 'Clients avec Crédit', value: clients.filter((c) => c.soldeDu > 0).length, color: '#ef4444' },
             ].map((k) => (
               <div key={k.label} style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #16233d' }}>
-                <p style={{ color: '#4e5f82', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
                 <p style={{ color: k.color, fontWeight: 700, fontSize: '1.25rem', margin: 0 }}>{k.value}</p>
               </div>
             ))}
@@ -168,7 +168,7 @@ export default function Clients() {
                       style={{
                         padding: '0.75rem 1rem',
                         textAlign: 'left',
-                        color: '#4e5f82',
+                        color: '#7b89a8',
                         fontSize: '0.75rem',
                         fontWeight: 600,
                         textTransform: 'uppercase',
@@ -216,13 +216,15 @@ export default function Clients() {
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button
                           onClick={() => ouvrirEdition(c)}
-                          style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 6, padding: '0.35rem', cursor: 'pointer', color: '#00BCD4' }}
+                          aria-label={`Modifier ${c.nom}`}
+                          style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 8, padding: '0.35rem', minWidth: 48, cursor: 'pointer', color: '#00BCD4' }}
                         >
                           <Edit2 size={14} />
                         </button>
                         <button
                           onClick={() => supprimer(c.id)}
-                          style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 6, padding: '0.35rem', cursor: 'pointer', color: '#ef4444' }}
+                          aria-label={`Supprimer ${c.nom}`}
+                          style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 8, padding: '0.35rem', minWidth: 48, cursor: 'pointer', color: '#ef4444' }}
                         >
                           <Trash2 size={14} />
                         </button>
@@ -266,24 +268,24 @@ export default function Clients() {
             <div>
               <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem' }}>
                 <div style={{ flex: 1, background: '#070e1f', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
-                  <p style={{ color: '#4e5f82', fontSize: '0.68rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Total Achats</p>
+                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Total Achats</p>
                   <p style={{ color: '#D4AF37', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>{profil.totalAchats.toLocaleString('fr-FR')} FCFA</p>
                 </div>
                 <div style={{ flex: 1, background: '#070e1f', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
-                  <p style={{ color: '#4e5f82', fontSize: '0.68rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>{t.satisfaction}</p>
-                  <p style={{ color: pctBien !== null ? '#22d98a' : '#4e5f82', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
+                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>{t.satisfaction}</p>
+                  <p style={{ color: pctBien !== null ? '#22d98a' : '#7b89a8', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
                     {pctBien !== null ? `${pctBien}%` : '—'}
                   </p>
                 </div>
               </div>
               <p style={{ color: '#9ba8c4', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Historique des ventes</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: 280, overflowY: 'auto' }}>
-                {historique.length === 0 && <p style={{ color: '#4e5f82', fontSize: '0.82rem' }}>Aucune vente encore.</p>}
+                {historique.length === 0 && <p style={{ color: '#7b89a8', fontSize: '0.82rem' }}>Aucune vente encore.</p>}
                 {historique.map((v) => (
                   <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070e1f', borderRadius: 8, padding: '0.6rem 0.75rem' }}>
                     <div>
                       <p style={{ color: '#f5f0e8', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>{v.total.toLocaleString('fr-FR')} FCFA</p>
-                      <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0.1rem 0 0' }}>{v.date}</p>
+                      <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>{v.date}</p>
                     </div>
                     {v.satisfaction && iconeSatisf[v.satisfaction]}
                   </div>

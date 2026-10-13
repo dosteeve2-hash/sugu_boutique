@@ -1,5 +1,7 @@
 'use client'
 
+import { cloneElement, isValidElement, useId } from 'react'
+
 const inputStyle: React.CSSProperties = {
   width: '100%',
   background: '#070e1f',
@@ -7,7 +9,8 @@ const inputStyle: React.CSSProperties = {
   borderRadius: 8,
   padding: '0.6rem 0.75rem',
   color: '#f5f0e8',
-  fontSize: '0.875rem',
+  fontSize: '1rem',
+  minHeight: 48,
   outline: 'none',
   boxSizing: 'border-box',
 }
@@ -19,12 +22,15 @@ export function FormField({
   label: string
   children: React.ReactNode
 }) {
+  const id = useId()
+  const champ =
+    isValidElement<{ id?: string }>(children) && !children.props.id ? cloneElement(children, { id }) : children
   return (
     <div style={{ marginBottom: '1rem' }}>
-      <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.8rem', marginBottom: '0.4rem', fontWeight: 600 }}>
+      <label htmlFor={id} style={{ display: 'block', color: '#9ba8c4', fontSize: '0.85rem', marginBottom: '0.4rem', fontWeight: 600 }}>
         {label}
       </label>
-      {children}
+      {champ}
     </div>
   )
 }

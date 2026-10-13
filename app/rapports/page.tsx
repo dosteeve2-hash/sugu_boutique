@@ -76,7 +76,7 @@ export default function Rapports() {
     <div>
       <div style={{ marginBottom: '1.5rem' }}>
         <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Rapports</h2>
-        <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+        <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
           Performance financière basée sur vos ventes et achats enregistrés
         </p>
       </div>
@@ -92,7 +92,7 @@ export default function Rapports() {
           <div className="sugu-kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
             {kpis.map((k) => (
               <div key={k.label} style={{ background: '#0c1528', borderRadius: 12, padding: '1.1rem', border: '1px solid #16233d' }}>
-                <p style={{ color: '#4e5f82', fontSize: '0.72rem', margin: '0 0 0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   {k.label}
                 </p>
                 <p style={{ color: k.color, fontWeight: 700, fontSize: '1.15rem', margin: 0 }}>{k.value}</p>
@@ -107,8 +107,8 @@ export default function Rapports() {
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={data} barGap={4}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#16233d" />
-                <XAxis dataKey="mois" stroke="#4e5f82" fontSize={12} />
-                <YAxis stroke="#4e5f82" fontSize={12} tickFormatter={(v: number) => `${v / 1000}k`} />
+                <XAxis dataKey="mois" stroke="#7b89a8" fontSize={12} />
+                <YAxis stroke="#7b89a8" fontSize={12} tickFormatter={(v: number) => `${v / 1000}k`} />
                 <Tooltip
                   formatter={(v: number) => `${v.toLocaleString('fr-FR')} FCFA`}
                   contentStyle={{ background: '#070e1f', border: '1px solid #16233d', borderRadius: 8, color: '#f5f0e8' }}
@@ -129,7 +129,7 @@ export default function Rapports() {
               <thead>
                 <tr>
                   {['Mois', 'Ventes', 'Achats', 'Bénéfice', 'Marge'].map((h) => (
-                    <th key={h} style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: '#4e5f82', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                    <th key={h} style={{ padding: '0.5rem 0.75rem', textAlign: 'left', color: '#7b89a8', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>
                       {h}
                     </th>
                   ))}

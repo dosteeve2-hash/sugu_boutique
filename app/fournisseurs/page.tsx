@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { Plus, Phone, MapPin, Edit2, Trash2, Building2 } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Fournisseur } from '@/lib/types'
@@ -60,7 +60,7 @@ export default function Fournisseurs() {
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Fournisseurs</h2>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {fournisseurs.length} fournisseur{fournisseurs.length !== 1 ? 's' : ''} partenaire{fournisseurs.length !== 1 ? 's' : ''}
           </p>
         </div>
@@ -112,13 +112,15 @@ export default function Fournisseurs() {
                 <div style={{ display: 'flex', gap: '0.4rem' }}>
                   <button
                     onClick={() => ouvrirEdition(f)}
-                    style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 6, padding: '0.3rem', cursor: 'pointer', color: '#00BCD4' }}
+                    aria-label={`Modifier ${f.nom}`}
+                    style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 8, padding: '0.3rem', minWidth: 48, cursor: 'pointer', color: '#00BCD4' }}
                   >
                     <Edit2 size={13} />
                   </button>
                   <button
                     onClick={() => supprimer(f.id)}
-                    style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 6, padding: '0.3rem', cursor: 'pointer', color: '#ef4444' }}
+                    aria-label={`Supprimer ${f.nom}`}
+                    style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 8, padding: '0.3rem', minWidth: 48, cursor: 'pointer', color: '#ef4444' }}
                   >
                     <Trash2 size={13} />
                   </button>
@@ -135,19 +137,19 @@ export default function Fournisseurs() {
               </div>
 
               <div style={{ background: '#070e1f', borderRadius: 8, padding: '0.75rem', marginBottom: '0.75rem' }}>
-                <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Produits fournis</p>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Produits fournis</p>
                 <p style={{ color: '#00BCD4', fontSize: '0.82rem', margin: 0 }}>{f.produits || '—'}</p>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Total Achats</p>
+                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Total Achats</p>
                   <p style={{ color: '#D4AF37', fontWeight: 700, margin: 0, fontSize: '0.95rem' }}>
                     {f.totalAchats.toLocaleString('fr-FR')} FCFA
                   </p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Dernière Commande</p>
+                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Dernière Commande</p>
                   <p style={{ color: '#9ba8c4', fontSize: '0.82rem', margin: 0 }}>{f.derniereCommande}</p>
                 </div>
               </div>

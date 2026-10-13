@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m as motion } from 'framer-motion'
 import { X } from 'lucide-react'
 
 function useIsMobile() {
@@ -88,7 +88,7 @@ export default function Modal({
               <button
                 onClick={onClose}
                 aria-label="Fermer"
-                style={{ background: 'transparent', border: 'none', color: '#4e5f82', cursor: 'pointer', padding: 4, minHeight: 'auto' }}
+                style={{ background: 'transparent', border: 'none', color: '#9ba8c4', cursor: 'pointer', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <X size={20} />
               </button>

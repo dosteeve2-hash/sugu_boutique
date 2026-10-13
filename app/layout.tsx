@@ -3,11 +3,12 @@ import './globals.css'
 import { LangueProvider } from '@/components/LangueProvider'
 import { BoutiqueProvider } from '@/components/BoutiqueProvider'
 import AppShell from '@/components/AppShell'
+import MotionProvider from '@/components/MotionProvider'
 import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: 'SUGU — Votre Caisse Digitale',
-  description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Multi-boutiques, offline-first, FORGE Afrika.',
+  description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Plusieurs boutiques, données enregistrées sur votre téléphone. FORGE Afrika.',
   icons: {
     icon: '/android-chrome-192x192.png',
     shortcut: '/logo-sugu-icon.svg',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
   openGraph: {
     title: 'SUGU — Votre Caisse Digitale',
-    description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Multi-boutiques, offline-first, FORGE Afrika.',
+    description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Plusieurs boutiques, données enregistrées sur votre téléphone. FORGE Afrika.',
     images: ['/logo-sugu.svg'],
   },
 }
@@ -32,11 +33,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        <LangueProvider>
-          <BoutiqueProvider>
-            <AppShell>{children}</AppShell>
-          </BoutiqueProvider>
-        </LangueProvider>
+        <MotionProvider>
+          <LangueProvider>
+            <BoutiqueProvider>
+              <AppShell>{children}</AppShell>
+            </BoutiqueProvider>
+          </LangueProvider>
+        </MotionProvider>
         <Toaster
           position="bottom-right"
           toastOptions={{

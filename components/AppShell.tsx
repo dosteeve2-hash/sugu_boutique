@@ -1,19 +1,20 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m as motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import BottomNav from '@/components/BottomNav'
 import BoutiqueWelcome from '@/components/BoutiqueWelcome'
 import { useBoutique } from '@/components/BoutiqueProvider'
 import ScrollToTop from '@/components/ScrollToTop'
-import ExampleDataBanner from '@/components/ExampleDataBanner'
+import SauvegardeBandeau from '@/components/SauvegardeBandeau'
+import ShellSkeleton from '@/components/ShellSkeleton'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { loaded, boutiqueActive, boutiques } = useBoutique()
   const pathname = usePathname()
 
-  if (!loaded) return null
+  if (!loaded) return <ShellSkeleton />
 
   if (boutiques.length === 0 || !boutiqueActive) {
     return <BoutiqueWelcome />
@@ -31,7 +32,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
           >
-            <ExampleDataBanner />
+            <SauvegardeBandeau />
             {children}
           </motion.div>
         </AnimatePresence>

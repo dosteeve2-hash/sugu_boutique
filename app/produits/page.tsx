@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import { Plus, Search, Package, Edit2, Trash2, AlertTriangle, RefreshCw, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 import { usePersistedBoutique } from '@/lib/storage'
@@ -28,22 +28,6 @@ const CAT_BG: Record<string, string> = {
 }
 
 const QUICK_RESTOCK = [10, 25, 50]
-
-// ─── 12 Produits fictifs Burkina Faso ─────────────────────────────────────────
-const PRODUITS_DEMO: Produit[] = [
-  { id: 1001, nom: 'Riz local (sac 50 kg)',    categorie: 'Alimentaire', prixAchat: 18000, prixVente: 22000, stock: 12, stockMin: 5,  unite: 'sac' },
-  { id: 1002, nom: 'Huile de palme 5 L',       categorie: 'Alimentaire', prixAchat: 3500,  prixVente: 4500,  stock: 3,  stockMin: 5,  unite: 'bidon' },
-  { id: 1003, nom: 'Farine de blé 25 kg',      categorie: 'Alimentaire', prixAchat: 8000,  prixVente: 10000, stock: 8,  stockMin: 3,  unite: 'sac' },
-  { id: 1004, nom: 'Cube Maggi (boîte 100)',    categorie: 'Alimentaire', prixAchat: 2500,  prixVente: 3500,  stock: 2,  stockMin: 5,  unite: 'boîte' },
-  { id: 1005, nom: 'Sucre granulé 10 kg',       categorie: 'Alimentaire', prixAchat: 5500,  prixVente: 7000,  stock: 6,  stockMin: 4,  unite: 'sac' },
-  { id: 1006, nom: 'Savon de Marseille 400 g',  categorie: 'Hygiène',     prixAchat: 400,   prixVente: 600,   stock: 0,  stockMin: 10, unite: 'pièce' },
-  { id: 1007, nom: 'Shampooing Tahiti 500 ml',  categorie: 'Hygiène',     prixAchat: 800,   prixVente: 1200,  stock: 14, stockMin: 5,  unite: 'flacon' },
-  { id: 1008, nom: 'Dentifrice Colgate 75 ml',  categorie: 'Hygiène',     prixAchat: 600,   prixVente: 900,   stock: 4,  stockMin: 5,  unite: 'tube' },
-  { id: 1009, nom: 'Eau minérale 1,5 L',        categorie: 'Boissons',    prixAchat: 350,   prixVente: 500,   stock: 48, stockMin: 12, unite: 'bouteille' },
-  { id: 1010, nom: 'Bière Brakina 65 cl',       categorie: 'Boissons',    prixAchat: 500,   prixVente: 750,   stock: 1,  stockMin: 6,  unite: 'bouteille' },
-  { id: 1011, nom: 'Jus Jaffa Orange 50 cl',    categorie: 'Boissons',    prixAchat: 300,   prixVente: 500,   stock: 22, stockMin: 10, unite: 'bouteille' },
-  { id: 1012, nom: 'Allumettes Super (carton)', categorie: 'Divers',      prixAchat: 1500,  prixVente: 2500,  stock: 3,  stockMin: 5,  unite: 'carton' },
-]
 
 const vide: Omit<Produit, 'id'> = {
   nom: '', categorie: 'Alimentaire', prixAchat: 0, prixVente: 0, stock: 0, stockMin: 5, unite: '',
@@ -78,7 +62,7 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
           <div style={{
             position: 'absolute', top: 10, right: 10,
             background: isCritique ? '#ef4444' : '#f0a832',
-            color: '#fff', fontSize: '0.68rem', fontWeight: 700,
+            color: '#fff', fontSize: '0.75rem', fontWeight: 700,
             padding: '0.2rem 0.55rem', borderRadius: 99,
             display: 'flex', alignItems: 'center', gap: 4,
           }}>
@@ -89,7 +73,7 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
         <div style={{
           position: 'absolute', bottom: 10, left: 10,
           background: cat.bg, color: cat.text,
-          fontSize: '0.68rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: 99,
+          fontSize: '0.75rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: 99,
         }}>
           {p.categorie}
         </div>
@@ -99,11 +83,12 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
             style={{
               position: 'absolute', bottom: 10, right: 10,
               background: '#D4AF37', color: '#0A1628', border: 'none',
-              borderRadius: 99, width: 26, height: 26,
+              borderRadius: 99, width: 44, height: 44,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontWeight: 800, fontSize: '1rem', cursor: 'pointer',
             }}
             title="Réapprovisionner rapidement"
+            aria-label={`Ajouter du stock : ${p.nom}`}
           >
             +
           </button>
@@ -114,14 +99,14 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
         <p style={{ color: '#f5f0e8', fontWeight: 700, fontSize: '0.88rem', margin: 0, lineHeight: 1.3 }}>{p.nom}</p>
         <p style={{ color: '#D4AF37', fontWeight: 700, fontSize: '1rem', margin: 0 }}>
           {p.prixVente.toLocaleString('fr-FR')} FCFA
-          {p.unite && <span style={{ color: '#4e5f82', fontWeight: 400, fontSize: '0.72rem' }}> / {p.unite}</span>}
+          {p.unite && <span style={{ color: '#7b89a8', fontWeight: 400, fontSize: '0.75rem' }}> / {p.unite}</span>}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#4e5f82', fontSize: '0.75rem' }}>Stock :</span>
+          <span style={{ color: '#7b89a8', fontSize: '0.75rem' }}>Stock :</span>
           <span style={{ color: isCritique ? '#ef4444' : isBas ? '#f0a832' : '#22d98a', fontWeight: 700, fontSize: '0.85rem' }}>
             {p.stock} {p.unite ?? ''}
           </span>
-          <span style={{ color: '#4e5f82', fontSize: '0.7rem' }}>/ seuil {p.stockMin}</span>
+          <span style={{ color: '#7b89a8', fontSize: '0.75rem' }}>/ seuil {p.stockMin}</span>
         </div>
       </div>
       <div style={{ borderTop: '1px solid #16233d', padding: '0.65rem 0.9rem', display: 'flex', gap: '0.4rem' }}>
@@ -136,10 +121,10 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
         >
           <RefreshCw size={13} /> Stock
         </button>
-        <button onClick={() => onEdit(p)} style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', color: '#D4AF37', cursor: 'pointer' }}>
+        <button onClick={() => onEdit(p)} aria-label={`Modifier ${p.nom}`} style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', minWidth: 48, color: '#D4AF37', cursor: 'pointer' }}>
           <Edit2 size={14} />
         </button>
-        <button onClick={() => onDelete(p.id)} style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', color: '#ef4444', cursor: 'pointer' }}>
+        <button onClick={() => onDelete(p.id)} aria-label={`Supprimer ${p.nom}`} style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', minWidth: 48, color: '#ef4444', cursor: 'pointer' }}>
           <Trash2 size={14} />
         </button>
       </div>
@@ -159,10 +144,6 @@ export default function ProduitsPage() {
   const [modifStockProduit, setModifStockProduit] = useState<Produit | null>(null)
   const [deltaStock, setDeltaStock] = useState<string>('')
   const [showAlerteBanner, setShowAlerteBanner] = useState(true)
-
-  useEffect(() => {
-    if (loaded && produits.length === 0) setProduits(PRODUITS_DEMO)
-  }, [loaded]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const produitsFaibles = produits.filter((p) => p.stock <= p.stockMin)
 
@@ -222,7 +203,72 @@ export default function ProduitsPage() {
     setModifStockProduit(null)
   }
 
+  const formulaireProduit = (
+      <Modal open={showForm} onClose={() => setShowForm(false)} title={edition ? 'Modifier le produit' : 'Ajouter un produit'}>
+        <form onSubmit={soumettre}>
+          <FormField label="Nom du produit">
+            <TextInput required value={form.nom} onChange={(e) => setForm({ ...form, nom: e.target.value })} placeholder="Ex: Huile de Palme 5L" />
+          </FormField>
+          <FormField label="Catégorie">
+            <select value={form.categorie} onChange={(e) => setForm({ ...form, categorie: e.target.value })}
+              style={{ width: '100%', background: '#070e1f', border: '1px solid #16233d', borderRadius: 8, padding: '0.6rem 0.75rem', color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
+            >
+              {['Alimentaire', 'Hygiène', 'Boissons', 'Divers', 'Textile', 'Électronique', 'Autre'].map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </FormField>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <FormField label="Prix achat (FCFA)">
+              <TextInput required type="number" min={0} value={form.prixAchat || ''} onChange={(e) => setForm({ ...form, prixAchat: Number(e.target.value) })} />
+            </FormField>
+            <FormField label="Prix vente (FCFA)">
+              <TextInput required type="number" min={0} value={form.prixVente || ''} onChange={(e) => setForm({ ...form, prixVente: Number(e.target.value) })} />
+            </FormField>
+          </div>
+          <FormField label="Unité (kg, sac, pièce...)">
+            <TextInput value={form.unite ?? ''} onChange={(e) => setForm({ ...form, unite: e.target.value })} placeholder="Ex: kg, tas, pièce" />
+          </FormField>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <FormField label="Stock actuel">
+              <TextInput required type="number" min={0} value={form.stock || ''} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} />
+            </FormField>
+            <FormField label="Seuil d&apos;alerte">
+              <TextInput required type="number" min={0} value={form.stockMin || ''} onChange={(e) => setForm({ ...form, stockMin: Number(e.target.value) })} />
+            </FormField>
+          </div>
+          <SubmitRow onCancel={() => setShowForm(false)} submitLabel={edition ? 'Enregistrer' : 'Ajouter'} />
+        </form>
+      </Modal>
+  )
+
   if (!loaded) return null
+
+  if (produits.length === 0) {
+    return (
+      <div>
+        <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#0c1528', border: '1px solid #16233d', borderRadius: 16 }}>
+          <Package size={48} color="#D4AF37" style={{ opacity: 0.7, marginBottom: '1rem' }} />
+          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.5rem' }}>Catalogue Produits</h2>
+          <p style={{ color: '#9ba8c4', fontSize: '1rem', lineHeight: 1.5, margin: '0 auto 1.5rem', maxWidth: 360 }}>
+            Votre catalogue est vide. Ajoutez le premier produit que vous vendez : son nom, son prix, et combien vous en avez.
+          </p>
+          <button
+            onClick={ouvrirAjout}
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem',
+              width: '100%', maxWidth: 360, minHeight: 64,
+              background: '#D4AF37', color: '#0A1628', border: 'none', borderRadius: 14,
+              fontWeight: 800, cursor: 'pointer', fontSize: '1.15rem',
+            }}
+          >
+            <Plus size={22} /> Ajoutez votre premier produit
+          </button>
+        </div>
+        {formulaireProduit}
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -243,14 +289,14 @@ export default function ProduitsPage() {
                 <span key={p.id} style={{
                   background: p.stock === 0 ? 'rgba(239,68,68,0.2)' : 'rgba(240,168,50,0.15)',
                   color: p.stock === 0 ? '#ef4444' : '#f0a832',
-                  fontSize: '0.72rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: 99,
+                  fontSize: '0.75rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: 99,
                 }}>
                   {p.nom} ({p.stock === 0 ? 'Rupture' : `${p.stock}/${p.stockMin}`})
                 </span>
               ))}
             </div>
           </div>
-          <button onClick={() => setShowAlerteBanner(false)} style={{ background: 'none', border: 'none', color: '#4e5f82', cursor: 'pointer', fontSize: '1.1rem', padding: 0, flexShrink: 0 }}>×</button>
+          <button onClick={() => setShowAlerteBanner(false)} aria-label="Fermer l'alerte" style={{ background: 'none', border: 'none', color: '#7b89a8', cursor: 'pointer', fontSize: '1.4rem', padding: 0, width: 44, height: 44, flexShrink: 0 }}>×</button>
         </div>
       )}
 
@@ -258,7 +304,7 @@ export default function ProduitsPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Catalogue Produits</h2>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {produits.length} produit{produits.length !== 1 ? 's' : ''}
             {produitsFaibles.length > 0 && (
               <span style={{ color: '#f0a832', marginLeft: 8 }}>· {produitsFaibles.length} en alerte stock</span>
@@ -280,7 +326,7 @@ export default function ProduitsPage() {
       {/* Recherche + Filtres */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
         <div style={{ position: 'relative' }}>
-          <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }} />
+          <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#7b89a8' }} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -318,7 +364,7 @@ export default function ProduitsPage() {
             <AlertTriangle size={12} />
             Alertes seulement
             {produitsFaibles.length > 0 && (
-              <span style={{ background: '#ef4444', color: '#fff', borderRadius: 99, fontSize: '0.65rem', fontWeight: 800, padding: '0.05rem 0.35rem', marginLeft: 2 }}>
+              <span style={{ background: '#ef4444', color: '#fff', borderRadius: 99, fontSize: '0.75rem', fontWeight: 800, padding: '0.05rem 0.35rem', marginLeft: 2 }}>
                 {produitsFaibles.length}
               </span>
             )}
@@ -329,7 +375,7 @@ export default function ProduitsPage() {
       {/* Grille */}
       <AnimatePresence>
         {filtered.length === 0 ? (
-          <motion.p key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ color: '#4e5f82', textAlign: 'center', padding: '3rem 0', fontSize: '0.9rem' }}>
+          <motion.p key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ color: '#7b89a8', textAlign: 'center', padding: '3rem 0', fontSize: '0.9rem' }}>
             Aucun produit trouvé.
           </motion.p>
         ) : (
@@ -341,43 +387,7 @@ export default function ProduitsPage() {
         )}
       </AnimatePresence>
 
-      {/* Modal : Ajouter / Modifier produit */}
-      <Modal open={showForm} onClose={() => setShowForm(false)} title={edition ? 'Modifier le produit' : 'Ajouter un produit'}>
-        <form onSubmit={soumettre}>
-          <FormField label="Nom du produit">
-            <TextInput required value={form.nom} onChange={(e) => setForm({ ...form, nom: e.target.value })} placeholder="Ex: Huile de Palme 5L" />
-          </FormField>
-          <FormField label="Catégorie">
-            <select value={form.categorie} onChange={(e) => setForm({ ...form, categorie: e.target.value })}
-              style={{ width: '100%', background: '#070e1f', border: '1px solid #16233d', borderRadius: 8, padding: '0.6rem 0.75rem', color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
-            >
-              {['Alimentaire', 'Hygiène', 'Boissons', 'Divers', 'Textile', 'Électronique', 'Autre'].map((c) => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          </FormField>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <FormField label="Prix achat (FCFA)">
-              <TextInput required type="number" min={0} value={form.prixAchat || ''} onChange={(e) => setForm({ ...form, prixAchat: Number(e.target.value) })} />
-            </FormField>
-            <FormField label="Prix vente (FCFA)">
-              <TextInput required type="number" min={0} value={form.prixVente || ''} onChange={(e) => setForm({ ...form, prixVente: Number(e.target.value) })} />
-            </FormField>
-          </div>
-          <FormField label="Unité (kg, sac, pièce...)">
-            <TextInput value={form.unite ?? ''} onChange={(e) => setForm({ ...form, unite: e.target.value })} placeholder="Ex: kg, tas, pièce" />
-          </FormField>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <FormField label="Stock actuel">
-              <TextInput required type="number" min={0} value={form.stock || ''} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} />
-            </FormField>
-            <FormField label="Seuil d&apos;alerte">
-              <TextInput required type="number" min={0} value={form.stockMin || ''} onChange={(e) => setForm({ ...form, stockMin: Number(e.target.value) })} />
-            </FormField>
-          </div>
-          <SubmitRow onCancel={() => setShowForm(false)} submitLabel={edition ? 'Enregistrer' : 'Ajouter'} />
-        </form>
-      </Modal>
+      {formulaireProduit}
 
       {/* Modal : Modifier stock */}
       <Modal open={!!modifStockProduit} onClose={() => setModifStockProduit(null)} title="Modifier le stock">
@@ -389,7 +399,7 @@ export default function ProduitsPage() {
             </p>
             {/* Quick restock */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <p style={{ color: '#4e5f82', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem', marginTop: 0 }}>
+              <p style={{ color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem', marginTop: 0 }}>
                 Réapprovisionnement rapide
               </p>
               <div style={{ display: 'flex', gap: '0.5rem' }}>

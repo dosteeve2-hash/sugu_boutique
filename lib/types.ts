@@ -47,6 +47,7 @@ export type VenteLigne = {
   nom: string
   quantite: number
   prixUnit: number
+  prixAchat?: number
 }
 
 export type Satisfaction = 'bien' | 'correct' | 'probleme'

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m as motion } from 'framer-motion'
 import { ChevronDown, Plus, Check } from 'lucide-react'
 import { useBoutique } from '@/components/BoutiqueProvider'
 import BoutiqueFormModal from '@/components/BoutiqueFormModal'
@@ -38,7 +38,7 @@ export default function BoutiqueSwitcher({ compact = false }: { compact?: boolea
           borderRadius: 10,
           padding: compact ? '0.4rem 0.7rem' : '0.6rem 0.75rem',
           cursor: 'pointer',
-          minHeight: compact ? 40 : 48,
+          minHeight: 48,
         }}
       >
         <span style={{ fontSize: compact ? '1.1rem' : '1.3rem' }}>{boutiqueActive.emoji}</span>
@@ -81,7 +81,7 @@ export default function BoutiqueSwitcher({ compact = false }: { compact?: boolea
               boxShadow: '0 16px 40px rgba(0,0,0,0.45)',
             }}
           >
-            <p style={{ color: '#4e5f82', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0.35rem 0.6rem', margin: 0 }}>
+            <p style={{ color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0.35rem 0.6rem', margin: 0 }}>
               {t.mesBoutiques}
             </p>
             <div style={{ maxHeight: 240, overflowY: 'auto' }}>

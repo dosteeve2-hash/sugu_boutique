@@ -1,7 +1,7 @@
 'use client'
 
 import { LucideIcon } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 
 function IllustrationMarche() {
   return (
@@ -10,8 +10,8 @@ function IllustrationMarche() {
       <path d="M15 30 L70 12 L125 30 Z" fill="#D4AF37" opacity="0.18" />
       <path d="M15 30 L20 40 L30 30 L40 40 L50 30 L60 40 L70 30 L80 40 L90 30 L100 40 L110 30 L120 40 L125 30" stroke="#D4AF37" strokeWidth="2" fill="none" strokeLinejoin="round" />
       {/* montants */}
-      <line x1="25" y1="34" x2="22" y2="70" stroke="#4e5f82" strokeWidth="2" />
-      <line x1="115" y1="34" x2="118" y2="70" stroke="#4e5f82" strokeWidth="2" />
+      <line x1="25" y1="34" x2="22" y2="70" stroke="#7b89a8" strokeWidth="2" />
+      <line x1="115" y1="34" x2="118" y2="70" stroke="#7b89a8" strokeWidth="2" />
       {/* table */}
       <rect x="18" y="70" width="104" height="6" rx="2" fill="#16233d" />
       {/* paniers */}
@@ -47,7 +47,7 @@ export default function EmptyState({
       style={{
         textAlign: 'center',
         padding: '3rem 1.5rem',
-        color: '#4e5f82',
+        color: '#7b89a8',
         background: '#0c1528',
         borderRadius: 12,
         border: '1px solid #16233d',

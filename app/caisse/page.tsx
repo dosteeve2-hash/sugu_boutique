@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m as motion, AnimatePresence } from 'framer-motion'
 import {
   Search,
   Plus,
@@ -21,6 +21,8 @@ import { usePersistedBoutique } from '@/lib/storage'
 import { Client, Produit, Vente, VenteLigne, ModePaiement, Satisfaction } from '@/lib/types'
 import { useLangue } from '@/components/LangueProvider'
 import EmptyState from '@/components/EmptyState'
+import { toast } from 'sonner'
+import { appliquerVenteAuStock, detecterDepassementStock, produitsEnAlerte } from '@/lib/calculs'
 import Recu from '@/components/Recu'
 import BoutonTicketPDF from '@/components/TicketCaisse'
 
@@ -68,9 +70,11 @@ export default function Caisse() {
 
   const total = cart.reduce((a, l) => a + l.quantite * l.prixUnit, 0)
   const nbArticles = cart.reduce((a, l) => a + l.quantite, 0)
-  const montantRecu = Number(montantRecuStr) || 0
+  const montantSaisi = montantRecuStr.trim() !== ''
+  const montantRecu = montantSaisi ? Number(montantRecuStr) || 0 : total
   const renduMonnaie = montantRecu - total
   const peutValider = modePaiement !== 'Espèces' || montantRecu >= total
+  const depassements = detecterDepassementStock(cart, produits)
 
   const qtyDe = (produitId: number) => cart.find((l) => l.produitId === produitId)?.quantite ?? 0
 
@@ -79,7 +83,7 @@ export default function Caisse() {
       const existe = prev.find((l) => l.produitId === p.id)
       if (!existe) {
         if (delta <= 0) return prev
-        return [...prev, { produitId: p.id, nom: p.nom, quantite: 1, prixUnit: p.prixVente }]
+        return [...prev, { produitId: p.id, nom: p.nom, quantite: 1, prixUnit: p.prixVente, prixAchat: p.prixAchat > 0 ? p.prixAchat : undefined }]
       }
       const nouvelleQte = existe.quantite + delta
       if (nouvelleQte <= 0) return prev.filter((l) => l.produitId !== p.id)
@@ -108,12 +112,12 @@ export default function Caisse() {
       date: today(),
     }
     setVentes((prev) => [vente, ...prev])
-    setProduits((prev) =>
-      prev.map((p) => {
-        const ligne = cart.find((l) => l.produitId === p.id)
-        return ligne ? { ...p, stock: Math.max(0, p.stock - ligne.quantite) } : p
-      })
-    )
+    const apres = appliquerVenteAuStock(produits, cart)
+    setProduits(apres)
+    const touches = apres.filter((p) => cart.some((l) => l.produitId === p.id))
+    const { ruptures, faibles } = produitsEnAlerte(touches)
+    ruptures.forEach((p) => toast.error(`${p.nom} : plus de stock !`, { duration: 6000 }))
+    faibles.forEach((p) => toast.warning(`${p.nom} : il en reste ${p.stock}`, { duration: 5000 }))
     if (clientChoisi) {
       setClients((prev) =>
         prev.map((c) =>
@@ -124,8 +128,8 @@ export default function Caisse() {
       )
     }
     setVenteFinale(vente)
-    setVenteFinaleMontantRecu(modePaiement === 'Espèces' ? montantRecu : undefined)
-    setVenteFinaleRendu(modePaiement === 'Espèces' ? renduMonnaie : undefined)
+    setVenteFinaleMontantRecu(modePaiement === 'Espèces' && montantSaisi ? montantRecu : undefined)
+    setVenteFinaleRendu(modePaiement === 'Espèces' && montantSaisi ? renduMonnaie : undefined)
     setEtape('recu')
   }
 
@@ -170,7 +174,7 @@ export default function Caisse() {
       <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>{t.caisse}</h2>
-          <p style={{ color: '#4e5f82', fontSize: '0.85rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.85rem', margin: '0.25rem 0 0' }}>
             {t.etape} {etapeIndex}/3 — {etape === 'panier' ? t.panier : etape === 'paiement' ? t.paiement : t.recu}
           </p>
         </div>
@@ -194,7 +198,7 @@ export default function Caisse() {
       ) : etape === 'panier' ? (
         <>
           <div style={{ position: 'relative', marginBottom: '1rem' }}>
-            <Search size={18} style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#4e5f82' }} />
+            <Search size={18} style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#7b89a8' }} />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -215,18 +219,28 @@ export default function Caisse() {
           </div>
 
           {produitsFiltres.length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#4e5f82', padding: '3rem 1rem' }}>{t.aucunProduitCaisse}</p>
+            <p style={{ textAlign: 'center', color: '#7b89a8', padding: '3rem 1rem' }}>{t.aucunProduitCaisse}</p>
           ) : (
             <div className="sugu-caisse-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.85rem', marginBottom: '6.5rem' }}>
               {produitsFiltres.map((p) => {
                 const qty = qtyDe(p.id)
+                const manque = qty > p.stock
                 return (
                   <div
                     key={p.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Ajouter ${p.nom} au panier`}
                     onClick={() => changerQuantite(p, 1)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        changerQuantite(p, 1)
+                      }
+                    }}
                     style={{
                       background: qty > 0 ? 'rgba(212,175,55,0.08)' : '#0c1528',
-                      border: qty > 0 ? '2px solid #D4AF37' : '1px solid #16233d',
+                      border: manque ? '2px solid #ef4444' : qty > 0 ? '2px solid #D4AF37' : '1px solid #16233d',
                       borderRadius: 14,
                       padding: '1rem 0.85rem',
                       cursor: 'pointer',
@@ -242,6 +256,9 @@ export default function Caisse() {
                       <p style={{ color: '#D4AF37', fontWeight: 800, fontSize: '1.05rem', margin: '0.35rem 0 0' }}>
                         {p.prixVente.toLocaleString('fr-FR')} <span style={{ fontSize: '0.75rem', fontWeight: 500, color: '#9ba8c4' }}>FCFA{p.unite ? ` / ${p.unite}` : ''}</span>
                       </p>
+                      <p style={{ margin: '0.3rem 0 0', fontSize: '0.78rem', fontWeight: 700, color: manque || p.stock === 0 ? '#ef4444' : p.stock < p.stockMin ? '#f0a832' : '#9ba8c4' }}>
+                        {manque ? `Seulement ${p.stock} en stock` : p.stock === 0 ? 'Plus de stock' : `Stock : ${p.stock}`}
+                      </p>
                     </div>
 
                     {qty > 0 ? (
@@ -251,11 +268,11 @@ export default function Caisse() {
                       >
                         <button
                           onClick={() => changerQuantite(p, -1)}
-                          aria-label="-"
+                          aria-label={`Retirer un ${p.nom}`}
                           style={{
-                            width: 40,
-                            height: 40,
-                            minHeight: 40,
+                            width: 48,
+                            height: 48,
+                            minHeight: 48,
                             borderRadius: 10,
                             border: 'none',
                             background: 'rgba(239,68,68,0.15)',
@@ -272,11 +289,11 @@ export default function Caisse() {
                         <span style={{ color: '#F8F9FA', fontWeight: 800, fontSize: '1.15rem' }}>{qty}</span>
                         <button
                           onClick={() => changerQuantite(p, 1)}
-                          aria-label="+"
+                          aria-label={`Ajouter un ${p.nom}`}
                           style={{
-                            width: 40,
-                            height: 40,
-                            minHeight: 40,
+                            width: 48,
+                            height: 48,
+                            minHeight: 48,
                             borderRadius: 10,
                             border: 'none',
                             background: '#D4AF37',
@@ -330,7 +347,12 @@ export default function Caisse() {
             }}
           >
             <div>
-              <p style={{ color: '#4e5f82', fontSize: '0.75rem', margin: 0, textTransform: 'uppercase' }}>
+              {depassements.length > 0 && (
+                <p role="alert" style={{ color: '#ef4444', fontSize: '0.78rem', fontWeight: 700, margin: '0 0 0.25rem' }}>
+                  Stock insuffisant : {depassements.map((d) => d.nom).join(', ')}
+                </p>
+              )}
+              <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: 0, textTransform: 'uppercase' }}>
                 {nbArticles} {t.articles}
               </p>
               <AnimatePresence mode="popLayout">
@@ -353,7 +375,7 @@ export default function Caisse() {
               style={{
                 minHeight: 56,
                 minWidth: 160,
-                background: cart.length > 0 ? undefined : '#4e5f82',
+                background: cart.length > 0 ? undefined : '#7b89a8',
                 color: '#0A1628',
                 border: 'none',
                 borderRadius: 12,
@@ -397,7 +419,7 @@ export default function Caisse() {
             {cart.map((l) => (
               <div key={l.produitId} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', padding: '0.5rem 0', borderBottom: '1px solid #16233d' }}>
                 <span style={{ color: '#9ba8c4' }}>
-                  {l.nom} <span style={{ color: '#4e5f82' }}>× {l.quantite}</span>
+                  {l.nom} <span style={{ color: '#7b89a8' }}>× {l.quantite}</span>
                 </span>
                 <span style={{ color: '#f5f0e8', fontWeight: 700 }}>{(l.quantite * l.prixUnit).toLocaleString('fr-FR')} FCFA</span>
               </div>
@@ -407,6 +429,20 @@ export default function Caisse() {
               <span style={{ color: '#D4AF37', fontWeight: 900 }}>{total.toLocaleString('fr-FR')} FCFA</span>
             </div>
           </div>
+
+          {depassements.length > 0 && (
+            <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid #ef4444', borderRadius: 12, padding: '0.85rem 1rem', marginBottom: '1.25rem' }}>
+              <p style={{ color: '#ef4444', fontWeight: 800, fontSize: '0.95rem', margin: '0 0 0.35rem' }}>Attention : pas assez de stock</p>
+              {depassements.map((d) => (
+                <p key={d.produitId} style={{ color: '#f5f0e8', fontSize: '0.9rem', margin: '0.15rem 0' }}>
+                  {d.nom} : {d.demande} demandé{d.demande > 1 ? 's' : ''}, {d.disponible} en stock
+                </p>
+              ))}
+              <p style={{ color: '#9ba8c4', fontSize: '0.82rem', margin: '0.5rem 0 0' }}>
+                Si vous validez, le stock sera mis à 0. Vérifiez vos quantités.
+              </p>
+            </div>
+          )}
 
           <p style={{ color: '#9ba8c4', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.6rem' }}>{t.modePaiementLabel}</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.25rem' }}>
@@ -449,7 +485,7 @@ export default function Caisse() {
                 border: '1px solid #16233d',
                 borderRadius: 12,
                 padding: '0.75rem 1rem',
-                color: clientSelectionneId ? '#f5f0e8' : '#4e5f82',
+                color: clientSelectionneId ? '#f5f0e8' : '#7b89a8',
                 fontSize: '0.95rem',
                 outline: 'none',
                 cursor: 'pointer',
@@ -467,7 +503,7 @@ export default function Caisse() {
           {modePaiement === 'Espèces' && (
             <div style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 14, padding: '1.25rem', marginBottom: '1.25rem' }}>
               <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-                {t.montantRecu}
+                {t.montantRecu} <span style={{ fontWeight: 500, color: '#9ba8c4' }}>(facultatif)</span>
               </label>
               <input
                 type="number"
@@ -475,7 +511,8 @@ export default function Caisse() {
                 inputMode="numeric"
                 value={montantRecuStr}
                 onChange={(e) => setMontantRecuStr(e.target.value)}
-                placeholder="0"
+                placeholder={String(total)}
+                aria-label={`${t.montantRecu} (facultatif)`}
                 style={{
                   width: '100%',
                   minHeight: 56,
@@ -490,9 +527,15 @@ export default function Caisse() {
                   boxSizing: 'border-box',
                 }}
               />
-              {montantRecuStr !== '' && (
+              {montantSaisi ? (
                 <p style={{ marginTop: '0.75rem', fontSize: '1.05rem', fontWeight: 800, color: renduMonnaie >= 0 ? '#22d98a' : '#ef4444' }}>
-                  {t.renduMonnaie}: {renduMonnaie.toLocaleString('fr-FR')} FCFA
+                  {renduMonnaie >= 0
+                    ? `${t.renduMonnaie}: ${renduMonnaie.toLocaleString('fr-FR')} FCFA`
+                    : `Il manque ${Math.abs(renduMonnaie).toLocaleString('fr-FR')} FCFA`}
+                </p>
+              ) : (
+                <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: '#9ba8c4' }}>
+                  Laissez vide si le client donne le montant exact.
                 </p>
               )}
             </div>
@@ -503,9 +546,13 @@ export default function Caisse() {
             onClick={valider}
             disabled={!peutValider}
             style={{
+              position: 'sticky',
+              bottom: '1rem',
+              zIndex: 10,
+              boxShadow: '0 -10px 24px rgba(10,22,40,0.9)',
               width: '100%',
               minHeight: 60,
-              background: peutValider ? '#22d98a' : '#4e5f82',
+              background: peutValider ? '#22d98a' : '#7b89a8',
               color: '#0A1628',
               border: 'none',
               borderRadius: 14,
@@ -559,7 +606,7 @@ export default function Caisse() {
                       }}
                     >
                       <Icon size={24} color={color} />
-                      <span style={{ fontSize: '0.72rem', fontWeight: 600, color: selectionne ? color : '#9ba8c4' }}>{label}</span>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: selectionne ? color : '#9ba8c4' }}>{label}</span>
                     </motion.button>
                   )
                 })}

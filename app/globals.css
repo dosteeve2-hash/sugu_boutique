@@ -27,6 +27,20 @@ textarea {
   font-size: 1rem;
 }
 
+button {
+  min-width: 44px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible {
+  outline: 3px solid #f7c060;
+  outline-offset: 2px;
+}
+
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -119,6 +133,11 @@ textarea {
 
   .sugu-caisse-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .sugu-scrolltop {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    right: 1rem !important;
   }
 }
 

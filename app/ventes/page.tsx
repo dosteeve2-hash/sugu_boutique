@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { Plus, ShoppingCart, Trash2 } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Vente, VenteLigne, Produit, Client, ModePaiement } from '@/lib/types'
+import { toast } from 'sonner'
+import { appliquerVenteAuStock, creditAutorise, detecterDepassementStock } from '@/lib/calculs'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
 import { FormField, TextInput, SelectInput, SubmitRow } from '@/components/FormField'
@@ -22,6 +24,14 @@ const MODE_STYLE: Record<ModePaiement, { bg: string; color: string }> = {
 
 const today = () => new Date().toISOString().slice(0, 10)
 
+const ligneDepuisProduit = (p: Produit): VenteLigne => ({
+  produitId: p.id,
+  nom: p.nom,
+  quantite: 1,
+  prixUnit: p.prixVente,
+  prixAchat: p.prixAchat > 0 ? p.prixAchat : undefined,
+})
+
 export default function Ventes() {
   const [ventes, setVentes, loaded] = usePersistedBoutique<Vente[]>('ventes', [])
   const [produits, setProduits] = usePersistedBoutique<Produit[]>('produits', [])
@@ -31,27 +41,29 @@ export default function Ventes() {
   const [clientId, setClientId] = useState<number | 'passage'>('passage')
   const [lignes, setLignes] = useState<VenteLigne[]>([])
   const [modePaiement, setModePaiement] = useState<ModePaiement>('Espèces')
+  const [erreur, setErreur] = useState<string | null>(null)
 
   const totalJour = ventes.filter((v) => v.date === today()).reduce((acc, v) => acc + v.total, 0)
   const peutAjouter = produits.length > 0
 
   const ouvrirAjout = () => {
     setClientId('passage')
-    setLignes(produits[0] ? [{ produitId: produits[0].id, nom: produits[0].nom, quantite: 1, prixUnit: produits[0].prixVente }] : [])
+    setLignes(produits[0] ? [ligneDepuisProduit(produits[0])] : [])
     setModePaiement('Espèces')
+    setErreur(null)
     setShowForm(true)
   }
 
   const ajouterLigne = () => {
     const p = produits.find((pr) => !lignes.some((l) => l.produitId === pr.id)) ?? produits[0]
     if (!p) return
-    setLignes((prev) => [...prev, { produitId: p.id, nom: p.nom, quantite: 1, prixUnit: p.prixVente }])
+    setLignes((prev) => [...prev, ligneDepuisProduit(p)])
   }
 
   const modifierLigne = (index: number, produitId: number) => {
     const p = produits.find((pr) => pr.id === produitId)
     if (!p) return
-    setLignes((prev) => prev.map((l, i) => (i === index ? { produitId: p.id, nom: p.nom, quantite: l.quantite, prixUnit: p.prixVente } : l)))
+    setLignes((prev) => prev.map((l, i) => (i === index ? { ...ligneDepuisProduit(p), quantite: l.quantite } : l)))
   }
 
   const modifierQuantite = (index: number, quantite: number) => {
@@ -63,19 +75,32 @@ export default function Ventes() {
   }
 
   const total = lignes.reduce((a, l) => a + l.quantite * l.prixUnit, 0)
+  const depassementsForm = detecterDepassementStock(lignes, produits)
 
   const soumettre = (e: React.FormEvent) => {
     e.preventDefault()
-    if (lignes.length === 0 || total <= 0) return
+    const lignesValides = lignes.filter((l) => l.quantite > 0)
+    if (lignesValides.length === 0 || total <= 0) return
 
     const client = clientId !== 'passage' ? clients.find((c) => c.id === clientId) : null
+    if (!creditAutorise(modePaiement, client ? client.id : null)) {
+      const message = 'Pour une vente à crédit, choisissez un client. Sinon personne ne doit cet argent.'
+      setErreur(message)
+      toast.error(message)
+      return
+    }
+    const depassements = detecterDepassementStock(lignesValides, produits)
+    if (depassements.length > 0) {
+      const detail = depassements.map((d) => `${d.nom} (${d.demande} demandé, ${d.disponible} en stock)`).join(', ')
+      if (!window.confirm(`Stock insuffisant : ${detail}. Enregistrer quand même ?`)) return
+    }
     const statut = modePaiement === 'Crédit' ? 'Crédit' : 'Payé'
 
     const vente: Vente = {
       id: Date.now(),
       clientId: client ? client.id : null,
       client: client ? client.nom : 'Client de passage',
-      lignes,
+      lignes: lignesValides,
       total,
       modePaiement,
       statut,
@@ -83,12 +108,7 @@ export default function Ventes() {
     }
     setVentes((prev) => [vente, ...prev])
 
-    setProduits((prev) =>
-      prev.map((p) => {
-        const ligne = lignes.find((l) => l.produitId === p.id)
-        return ligne ? { ...p, stock: Math.max(0, p.stock - ligne.quantite) } : p
-      })
-    )
+    setProduits((prev) => appliquerVenteAuStock(prev, lignesValides))
 
     if (client) {
       setClients((prev) =>
@@ -110,7 +130,7 @@ export default function Ventes() {
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
           <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Ventes</h2>
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             Aujourd&apos;hui : <span style={{ color: '#22d98a', fontWeight: 600 }}>{totalJour.toLocaleString('fr-FR')} FCFA</span>
           </p>
         </div>
@@ -121,7 +141,7 @@ export default function Ventes() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: peutAjouter ? '#D4AF37' : '#4e5f82',
+            background: peutAjouter ? '#D4AF37' : '#7b89a8',
             color: '#0A1628',
             border: 'none',
             borderRadius: 8,
@@ -158,7 +178,7 @@ export default function Ventes() {
               { label: 'Ventes à Crédit', value: ventes.filter((v) => v.statut === 'Crédit').length, color: '#ef4444', suffix: 'transactions' },
             ].map((k) => (
               <div key={k.label} style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #16233d' }}>
-                <p style={{ color: '#4e5f82', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
+                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
                 <p style={{ color: k.color, fontWeight: 700, fontSize: '1.1rem', margin: 0 }}>
                   {k.suffix === 'FCFA' ? k.value.toLocaleString('fr-FR') : k.value}{' '}
                   <span style={{ fontSize: '0.75rem', fontWeight: 400 }}>{k.suffix}</span>
@@ -177,7 +197,7 @@ export default function Ventes() {
                       style={{
                         padding: '0.75rem 1rem',
                         textAlign: 'left',
-                        color: '#4e5f82',
+                        color: '#7b89a8',
                         fontSize: '0.75rem',
                         fontWeight: 600,
                         textTransform: 'uppercase',
@@ -198,7 +218,7 @@ export default function Ventes() {
                     transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
                     style={{ borderTop: '1px solid #16233d' }}
                   >
-                    <td style={{ padding: '0.75rem 1rem', color: '#4e5f82', fontSize: '0.8rem' }}>#{v.id.toString().slice(-4)}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#7b89a8', fontSize: '0.8rem' }}>#{v.id.toString().slice(-4)}</td>
                     <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>{v.client}</td>
                     <td style={{ padding: '0.75rem 1rem', color: '#D4AF37', fontWeight: 700 }}>
                       {v.total.toLocaleString('fr-FR')} FCFA
@@ -215,7 +235,7 @@ export default function Ventes() {
                           color: MODE_STYLE[v.modePaiement].color,
                           padding: '0.2rem 0.6rem',
                           borderRadius: 99,
-                          fontSize: '0.72rem',
+                          fontSize: '0.75rem',
                           fontWeight: 600,
                         }}
                       >
@@ -248,7 +268,7 @@ export default function Ventes() {
       <Modal open={showForm} onClose={() => setShowForm(false)} title="Nouvelle vente">
         <form onSubmit={soumettre}>
           <FormField label="Client">
-            <SelectInput value={clientId} onChange={(e) => setClientId(e.target.value === 'passage' ? 'passage' : Number(e.target.value))}>
+            <SelectInput value={clientId} onChange={(e) => { setClientId(e.target.value === 'passage' ? 'passage' : Number(e.target.value)); setErreur(null) }}>
               <option value="passage">Client de passage</option>
               {clients.map((c) => (
                 <option key={c.id} value={c.id}>{c.nom}</option>
@@ -274,7 +294,8 @@ export default function Ventes() {
               <button
                 type="button"
                 onClick={() => supprimerLigne(i)}
-                style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 6, padding: '0.5rem', cursor: 'pointer', color: '#ef4444' }}
+                aria-label={`Retirer ${l.nom} de la vente`}
+                style={{ background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 6, padding: '0.5rem', minWidth: 48, cursor: 'pointer', color: '#ef4444' }}
               >
                 <Trash2 size={14} />
               </button>
@@ -300,14 +321,28 @@ export default function Ventes() {
           </button>
 
           <FormField label="Mode de paiement">
-            <SelectInput value={modePaiement} onChange={(e) => setModePaiement(e.target.value as ModePaiement)}>
+            <SelectInput value={modePaiement} onChange={(e) => { setModePaiement(e.target.value as ModePaiement); setErreur(null) }}>
               {MODES_PAIEMENT.map((m) => (
                 <option key={m} value={m}>{m}</option>
               ))}
             </SelectInput>
           </FormField>
 
-          <p style={{ color: '#4e5f82', fontSize: '0.8rem' }}>
+          {depassementsForm.length > 0 && (
+            <p role="alert" style={{ color: '#f0a832', fontSize: '0.85rem', fontWeight: 600 }}>
+              Stock insuffisant : {depassementsForm.map((d) => `${d.nom} (${d.disponible} en stock)`).join(', ')}
+            </p>
+          )}
+          {modePaiement === 'Crédit' && clientId === 'passage' && (
+            <p role="alert" style={{ color: '#ef4444', fontSize: '0.85rem', fontWeight: 600 }}>
+              Choisissez un client pour une vente à crédit.{' '}
+              <Link href="/clients" style={{ color: '#00BCD4' }}>Créer un client</Link>
+            </p>
+          )}
+          {erreur && modePaiement !== 'Crédit' && (
+            <p role="alert" style={{ color: '#ef4444', fontSize: '0.85rem' }}>{erreur}</p>
+          )}
+          <p style={{ color: '#9ba8c4', fontSize: '0.9rem' }}>
             Total : <strong style={{ color: '#D4AF37' }}>{total.toLocaleString('fr-FR')} FCFA</strong>
           </p>
           <SubmitRow onCancel={() => setShowForm(false)} submitLabel="Enregistrer la vente" />

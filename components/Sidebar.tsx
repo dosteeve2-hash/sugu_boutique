@@ -3,28 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import {
-  LayoutDashboard,
-  Calculator,
-  Package,
-  ShoppingCart,
-  ShoppingBag,
-  Truck,
-  Users,
-  Building2,
-  BarChart3,
-  BarChart2,
-  FileText,
-  Settings,
-  Menu,
-  X,
-  History,
-  TrendingUp,
-  Tag,
-} from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useLangue } from '@/components/LangueProvider'
 import { LANGUES } from '@/lib/i18n'
 import BoutiqueSwitcher from '@/components/BoutiqueSwitcher'
+import { NAV_TOUS } from '@/lib/nav'
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -48,31 +31,12 @@ export default function Sidebar() {
     }
   }, [])
 
-  const links = [
-    { href: '/', label: t.dashboard, icon: LayoutDashboard },
-    { href: '/caisse', label: t.caisse, icon: Calculator },
-    { href: '/produits', label: t.produits, icon: Package },
-    { href: '/ventes', label: t.ventes, icon: ShoppingCart },
-    { href: '/commandes', label: 'Commandes', icon: ShoppingBag },
-    { href: '/historique', label: 'Historique', icon: History },
-    { href: '/achats', label: t.achats, icon: Truck },
-    { href: '/clients', label: t.clients, icon: Users },
-    { href: '/fournisseurs', label: t.fournisseurs, icon: Building2 },
-    { href: '/stock', label: t.stock, icon: BarChart3 },
-    { href: '/rapports', label: t.rapports, icon: FileText },
-    { href: '/promotions', label: 'Promotions', icon: Tag },
-    { href: '/analytics', label: 'Analytics', icon: BarChart2 },
-    { href: '/statistiques', label: 'Statistiques', icon: TrendingUp },
-    { href: '/parametres', label: t.parametres, icon: Settings },
-  ]
-
   return (
     <>
       {/* Barre mobile */}
       <div
         className="sugu-mobile-topbar"
         style={{
-          display: 'none',
           position: 'fixed',
           top: 0,
           left: 0,
@@ -88,7 +52,8 @@ export default function Sidebar() {
       >
         <button
           onClick={() => setOpen((v) => !v)}
-          aria-label="Menu"
+          aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-expanded={open}
           style={{
             background: '#0c1528',
             border: '1px solid #16233d',
@@ -99,7 +64,8 @@ export default function Sidebar() {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            minHeight: 40,
+            width: 48,
+            height: 48,
             flexShrink: 0,
           }}
         >
@@ -140,7 +106,7 @@ export default function Sidebar() {
           >
             SUGU
           </h1>
-          <p style={{ color: '#4e5f82', fontSize: '0.7rem', margin: '0.25rem 0 0', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.25rem 0 0', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             {t.tagline}
           </p>
         </div>
@@ -155,7 +121,7 @@ export default function Sidebar() {
       <div
         style={{
           padding: '0.6rem 1.25rem',
-          fontSize: '0.7rem',
+          fontSize: '0.75rem',
           fontWeight: 600,
           color: isOnline ? '#22d98a' : '#f0a832',
           borderBottom: '1px solid #16233d',
@@ -164,13 +130,13 @@ export default function Sidebar() {
           gap: '0.4rem',
         }}
       >
-        <span style={{ fontSize: '0.6rem' }}>{isOnline ? '●' : '○'}</span>
+        <span style={{ fontSize: '0.75rem' }}>{isOnline ? '●' : '○'}</span>
         {isOnline ? t.enLigne : t.horsLigne}
       </div>
 
       {/* Nav */}
       <nav style={{ flex: 1, padding: '1rem 0.75rem' }}>
-        {links.map(({ href, label, icon: Icon }) => {
+        {NAV_TOUS.map(({ href, label, icon: Icon }) => {
           const active = pathname === href
           return (
             <Link
@@ -181,6 +147,7 @@ export default function Sidebar() {
                 alignItems: 'center',
                 gap: '0.75rem',
                 padding: '0.6rem 0.75rem',
+                minHeight: 48,
                 borderRadius: 8,
                 marginBottom: 2,
                 color: active ? '#00BCD4' : '#9ba8c4',
@@ -193,7 +160,7 @@ export default function Sidebar() {
               }}
             >
               <Icon size={17} />
-              {label}
+              {label(t)}
             </Link>
           )
         })}
@@ -201,10 +168,11 @@ export default function Sidebar() {
 
       {/* Sélecteur de langue */}
       <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid #16233d' }}>
-        <label style={{ display: 'block', color: '#4e5f82', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
+        <label htmlFor="sugu-langue-menu" style={{ display: 'block', color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
           {t.langue}
         </label>
         <select
+          id="sugu-langue-menu"
           value={langue}
           onChange={(e) => setLangue(e.target.value as typeof langue)}
           style={{
@@ -231,8 +199,8 @@ export default function Sidebar() {
         style={{
           padding: '1rem 1.25rem',
           borderTop: '1px solid #16233d',
-          color: '#4e5f82',
-          fontSize: '0.7rem',
+          color: '#7b89a8',
+          fontSize: '0.75rem',
           letterSpacing: '0.05em',
         }}
       >
