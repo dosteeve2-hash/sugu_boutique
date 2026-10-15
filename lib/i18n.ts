@@ -73,6 +73,9 @@ export type Traduction = {
   bienvenueSugu: string
   bienvenueSuguMessage: string
   creerPremiereBoutique: string
+  essayerSugu: string
+  videoTitre: string
+  videoTitreIframe: string
   mesBoutiques: string
   confirmerSuppressionBoutique: string
   parametres: string
@@ -156,6 +159,9 @@ export const traductions: Record<Langue, Traduction> = {
     bienvenueSugu: 'Bienvenue sur SUGU',
     bienvenueSuguMessage: 'Créez votre première boutique pour commencer à gérer vos ventes, produits et clients.',
     creerPremiereBoutique: 'Créer ma première boutique',
+    essayerSugu: 'Essayer SUGU',
+    videoTitre: 'SUGU en 1 minute',
+    videoTitreIframe: 'Vidéo de présentation de SUGU',
     mesBoutiques: 'Mes Boutiques',
     confirmerSuppressionBoutique: 'Supprimer cette boutique et toutes ses données ?',
     parametres: 'Paramètres',
@@ -237,6 +243,9 @@ export const traductions: Record<Langue, Traduction> = {
     bienvenueSugu: 'Welcome to SUGU',
     bienvenueSuguMessage: 'Create your first shop to start managing your sales, products and customers.',
     creerPremiereBoutique: 'Create my first shop',
+    essayerSugu: 'Try SUGU',
+    videoTitre: 'SUGU in 1 minute',
+    videoTitreIframe: 'SUGU presentation video',
     mesBoutiques: 'My Shops',
     confirmerSuppressionBoutique: 'Delete this shop and all its data?',
     parametres: 'Settings',
@@ -318,6 +327,9 @@ export const traductions: Record<Langue, Traduction> = {
     bienvenueSugu: 'I bisimila SUGU la',
     bienvenueSuguMessage: 'I ka sugu fɔlɔ dilan walasa ka i ka fɛɛnw, nɔgɔw ni jatiguew mara.',
     creerPremiereBoutique: 'N ka sugu fɔlɔ dilan',
+    essayerSugu: 'Essayer SUGU',
+    videoTitre: 'SUGU en 1 minute',
+    videoTitreIframe: 'Vidéo de présentation de SUGU',
     mesBoutiques: 'N ka Suguw',
     confirmerSuppressionBoutique: 'I b\'a fɛ ka sugu in ni a kunnafoniw bɛɛ bɔ wa ?',
     parametres: 'Labɛnw',
@@ -399,6 +411,9 @@ export const traductions: Record<Langue, Traduction> = {
     bienvenueSugu: 'Yaa sõma ne yãmb SUGU pʋgẽ',
     bienvenueSuguMessage: 'Naan-y y raaga a yembr n paas n tõog n mao ne y yoodo, bilgu la ned-tʋmba.',
     creerPremiereBoutique: 'Naan mam raaga a yembr',
+    essayerSugu: 'Essayer SUGU',
+    videoTitre: 'SUGU en 1 minute',
+    videoTitreIframe: 'Vidéo de présentation de SUGU',
     mesBoutiques: 'Mam raadã',
     confirmerSuppressionBoutique: 'Yiisi raaga kãnga ne a võorã fãa ?',
     parametres: 'Naaneg-toaaga',
