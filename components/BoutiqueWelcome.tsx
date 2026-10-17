@@ -34,6 +34,7 @@ export default function BoutiqueWelcome() {
         initial={{ opacity: 0, y: 24, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
+        style={{ width: '100%', maxWidth: 560 }}
       >
         <motion.div
           initial={{ scale: 0.6, rotate: -8, opacity: 0 }}
