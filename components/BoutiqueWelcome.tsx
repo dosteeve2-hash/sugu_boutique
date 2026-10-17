@@ -7,12 +7,14 @@ import { useBoutique } from '@/components/BoutiqueProvider'
 import BoutiqueFormModal from '@/components/BoutiqueFormModal'
 import { useLangue } from '@/components/LangueProvider'
 import { useBoutonImport } from '@/components/SauvegardePanel'
+import ProjectVideo from '@/components/ProjectVideo'
 
 export default function BoutiqueWelcome() {
-  const { t } = useLangue()
+  const { t, langue } = useLangue()
   const { ajouterBoutique } = useBoutique()
   const [showForm, setShowForm] = useState(false)
   const { ouvrir, input } = useBoutonImport()
+  const videoLang = langue === 'en' ? 'en' : 'fr'
 
   return (
     <div
@@ -32,6 +34,7 @@ export default function BoutiqueWelcome() {
         initial={{ opacity: 0, y: 24, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
+        style={{ width: '100%', maxWidth: 560 }}
       >
         <motion.div
           initial={{ scale: 0.6, rotate: -8, opacity: 0 }}
@@ -59,6 +62,13 @@ export default function BoutiqueWelcome() {
           {t.bienvenueSuguMessage}
         </p>
 
+        <section aria-labelledby="sugu-video-titre" style={{ width: '100%', maxWidth: 560, margin: '0 auto 1.5rem' }}>
+          <h2 id="sugu-video-titre" style={{ color: '#f5f0e8', fontSize: '1.1rem', fontWeight: 700, margin: '0 0 0.75rem' }}>
+            {t.videoTitre}
+          </h2>
+          <ProjectVideo slug="sugu" lang={videoLang} title={t.videoTitreIframe} />
+        </section>
+
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowForm(true)}
@@ -78,7 +88,7 @@ export default function BoutiqueWelcome() {
             boxShadow: '0 10px 28px rgba(212,175,55,0.3)',
           }}
         >
-          <Plus size={20} /> {t.creerPremiereBoutique}
+          <Plus size={20} /> {t.essayerSugu}
         </motion.button>
 
         <p style={{ color: '#f0a832', fontSize: '0.85rem', fontWeight: 600, margin: '1.75rem auto 0.5rem', maxWidth: 320, lineHeight: 1.5 }}>
