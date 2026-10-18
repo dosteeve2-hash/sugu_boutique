@@ -70,7 +70,7 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
         if (!dejaDesDonnees && boutiques.length === 0) {
           ajouterBoutique({ nom: d.nomBoutique, type: 'Autre', emoji: '🏪', couleur: '#D4AF37' })
         }
-        toast.success('Compte créé. Vos données sont maintenant sauvegardées en ligne.')
+        toast.success(dejaDesDonnees ? 'Compte créé.' : 'Compte créé. Vos données sont sauvegardées en ligne.')
         router.push('/')
       } else if (mode === 'connexion') {
         const d = valider(connexionSchema.safeParse({ email, motDePasse }))
@@ -130,11 +130,11 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
   const sousTitres: Record<Mode, string> = {
     inscription: 'Gratuit. Vos ventes et votre stock seront sauvegardés, même si vous perdez votre téléphone.',
     connexion: 'Retrouvez votre boutique sur ce téléphone.',
-    oubli: 'Nous vous envoyons un lien pour choisir un nouveau mot de passe.',
+    oubli: courrielActif ? 'Nous vous envoyons un lien pour choisir un nouveau mot de passe.' : '',
   }
 
   return (
-    <CompteCadre titre={titres[mode]} sousTitre={sousTitres[mode]}>
+    <CompteCadre titre={titres[mode]} sousTitre={sousTitres[mode] || undefined}>
       {mode !== 'oubli' && (
         <div role="tablist" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
           {(['inscription', 'connexion'] as const).map((m) => (

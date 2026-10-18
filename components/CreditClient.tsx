@@ -75,12 +75,12 @@ export default function CreditClient({ client, ventes, paiements, onRembourser }
               value={montant}
               onChange={(e) => setMontant(e.target.value)}
               placeholder="0"
-              style={{ flex: 1, minHeight: 56, background: '#070e1f', border: '1px solid #16233d', borderRadius: 12, padding: '0.6rem 0.9rem', color: '#f5f0e8', fontSize: '1.2rem', fontWeight: 700 }}
+              style={{ flex: 1, minWidth: 0, minHeight: 56, background: '#070e1f', border: '1px solid #16233d', borderRadius: 12, padding: '0.6rem 0.9rem', color: '#f5f0e8', fontSize: '1.2rem', fontWeight: 700 }}
             />
             <button
               type="button"
               onClick={() => setMontant(String(client.soldeDu))}
-              style={{ minHeight: 56, padding: '0 0.9rem', borderRadius: 12, border: '1px solid #00BCD4', background: 'transparent', color: '#00BCD4', fontWeight: 800, cursor: 'pointer' }}
+              style={{ minHeight: 56, flexShrink: 0, padding: '0 1rem', borderRadius: 12, border: '1px solid #00BCD4', background: 'transparent', color: '#00BCD4', fontWeight: 800, cursor: 'pointer' }}
             >
               Tout
             </button>

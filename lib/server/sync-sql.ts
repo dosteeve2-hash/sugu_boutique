@@ -111,8 +111,8 @@ export function construireUpsert(
     '$1::text',
     '$2::bigint',
     '$3::text',
-    ...champs.map((c, i) => `${i + 4}::${c.t === 'texte' || c.t === 'texteNul' ? 'text' : 'bigint'}`),
-    TS_BORNE.replace('$TS', `${values.length}`),
+    ...champs.map((c, i) => `$${i + 4}::${c.t === 'texte' || c.t === 'texteNul' ? 'text' : 'bigint'}`),
+    TS_BORNE.replace('$TS', `$${values.length}`),
   ]
   const maj = [...champs.map((c) => `${c.col} = excluded.${c.col}`), 'client_ts = excluded.client_ts', 'updated_at = now()', 'deleted_at = null']
   const text =

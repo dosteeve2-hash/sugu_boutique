@@ -46,6 +46,15 @@ describe('politiques d’accès : requêtes toujours liées à l’utilisateur',
     expect(r.text).not.toContain('user-A')
   })
 
+  it('upsert : tous les paramètres sont des $n typés, valeurs alignées', () => {
+    const r = construireUpsert('produits', 'user-A', 'bt_1_x', '1', produit, AT)
+    const marques = /select (.*?) where exists/.exec(r.text)?.[1] ?? ''
+    const params = marques.match(/\$\d+/g) ?? []
+    expect(params.length).toBe(r.values.length)
+    expect(marques).not.toMatch(/(^|, )\d+::/)
+    expect(Math.max(...params.map((p) => Number(p.slice(1))))).toBe(r.values.length)
+  })
+
   it('suppression : filtrée par user_id', () => {
     const r = construireSuppression('clients', 'user-A', 'bt_1_x', '4', AT)
     expect(r.text).toMatch(/user_id = \$3/)
