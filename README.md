@@ -10,14 +10,14 @@ Outil pensé pour les vendeurs de rue, les boutiquiers de quartier et les commer
 
 - Tableau de bord avec KPIs dynamiques
 - Produits, ventes, achats, clients, fournisseurs, stock, rapports
-- Données enregistrées sur le téléphone (localStorage), export/import JSON dans Paramètres ; pas de synchronisation ni de compte pour l'instant
+- Données enregistrées sur le téléphone (localStorage), export/import JSON dans Paramètres ; compte gratuit optionnel (Neon + Better Auth) pour sauvegarder en ligne, démarrage hors ligne (PWA), crédit à la caisse et remboursements. Voir docs/LOT2_COMPTES_CLOUD.md
 - Multi-langue : Français, Anglais, Jula, Mooré
 - Modes de paiement : Espèces, Orange Money, Wave, Moov Money, Crédit
 - Mobile-first
 
 ## Stack
 
-Next.js 15 (App Router) · TypeScript strict · Tailwind CSS v4 · Supabase (sync distante à venir) · Recharts · Framer Motion
+Next.js 15 (App Router) · TypeScript strict · Tailwind CSS v4 · Neon + Better Auth (sauvegarde cloud) · Recharts · Framer Motion
 
 ## Développement
 
