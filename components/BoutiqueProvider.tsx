@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { Boutique, TypeBoutique } from '@/lib/types'
+import { EVENEMENT_DONNEES, noterEcriture } from '@/lib/sync/bridge'
 
 export const TYPES_BOUTIQUE: { type: TypeBoutique; emoji: string }[] = [
   { type: 'Alimentation', emoji: '🛒' },
@@ -38,7 +39,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
   const [activeId, setActiveId] = useState<string | null>(null)
   const [loaded, setLoaded] = useState(false)
 
-  useEffect(() => {
+  const charger = useCallback(() => {
     try {
       const savedBoutiques = window.localStorage.getItem(KEY_BOUTIQUES)
       const savedActive = window.localStorage.getItem(KEY_ACTIVE)
@@ -75,6 +76,12 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
     setLoaded(true)
   }, [])
 
+  useEffect(() => {
+    charger()
+    window.addEventListener(EVENEMENT_DONNEES, charger)
+    return () => window.removeEventListener(EVENEMENT_DONNEES, charger)
+  }, [charger])
+
   const changerBoutique = useCallback((id: string) => {
     setActiveId(id)
     try {
@@ -91,6 +98,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
         const next = [...prev, nouvelle]
         try {
           window.localStorage.setItem(KEY_BOUTIQUES, JSON.stringify(next))
+          noterEcriture(KEY_BOUTIQUES, prev, next)
         } catch {
           // ignore
         }
@@ -108,6 +116,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
         const next = prev.map((b) => (b.id === id ? { ...b, ...data } : b))
         try {
           window.localStorage.setItem(KEY_BOUTIQUES, JSON.stringify(next))
+          noterEcriture(KEY_BOUTIQUES, prev, next)
         } catch {
           // ignore
         }
@@ -123,6 +132,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
         const next = prev.filter((b) => b.id !== id)
         try {
           window.localStorage.setItem(KEY_BOUTIQUES, JSON.stringify(next))
+          noterEcriture(KEY_BOUTIQUES, prev, next)
           const keysToRemove: string[] = []
           for (let i = 0; i < window.localStorage.length; i++) {
             const k = window.localStorage.key(i)

@@ -22,13 +22,15 @@ import { Client, Produit, Vente, VenteLigne, ModePaiement, Satisfaction } from '
 import { useLangue } from '@/components/LangueProvider'
 import EmptyState from '@/components/EmptyState'
 import { toast } from 'sonner'
-import { appliquerVenteAuStock, detecterDepassementStock, produitsEnAlerte } from '@/lib/calculs'
+import { appliquerVenteAuStock, creditAutorise, detecterDepassementStock, produitsEnAlerte } from '@/lib/calculs'
+import { appliquerVenteAuClient } from '@/lib/credit'
+import { clientRapideSchema } from '@/lib/sync/schemas'
 import Recu from '@/components/Recu'
 import BoutonTicketPDF from '@/components/TicketCaisse'
 
 type Etape = 'panier' | 'paiement' | 'recu'
 
-const MODES_CAISSE: ModePaiement[] = ['Espèces', 'Orange Money', 'Wave', 'Moov Money']
+const MODES_CAISSE: ModePaiement[] = ['Espèces', 'Orange Money', 'Wave', 'Moov Money', 'Crédit']
 
 const MODE_STYLE: Record<ModePaiement, { bg: string; color: string; border: string }> = {
   'Espèces': { bg: 'rgba(34,217,138,0.1)', color: '#22d98a', border: '#22d98a' },
@@ -57,6 +59,10 @@ export default function Caisse() {
   const [venteFinale, setVenteFinale] = useState<Vente | null>(null)
   const [venteFinaleRendu, setVenteFinaleRendu] = useState<number | undefined>(undefined)
   const [venteFinaleMontantRecu, setVenteFinaleMontantRecu] = useState<number | undefined>(undefined)
+  const [nouveauClientOuvert, setNouveauClientOuvert] = useState(false)
+  const [nouveauNom, setNouveauNom] = useState('')
+  const [nouveauTel, setNouveauTel] = useState('')
+  const [nouveauErreur, setNouveauErreur] = useState<string | null>(null)
 
   const produitsFiltres = useMemo(
     () =>
@@ -73,7 +79,8 @@ export default function Caisse() {
   const montantSaisi = montantRecuStr.trim() !== ''
   const montantRecu = montantSaisi ? Number(montantRecuStr) || 0 : total
   const renduMonnaie = montantRecu - total
-  const peutValider = modePaiement !== 'Espèces' || montantRecu >= total
+  const creditSansClient = !creditAutorise(modePaiement, clientSelectionneId)
+  const peutValider = (modePaiement !== 'Espèces' || montantRecu >= total) && !creditSansClient
   const depassements = detecterDepassementStock(cart, produits)
 
   const qtyDe = (produitId: number) => cart.find((l) => l.produitId === produitId)?.quantite ?? 0
@@ -98,6 +105,29 @@ export default function Caisse() {
     setEtape('paiement')
   }
 
+  const creerClientRapide = () => {
+    const parse = clientRapideSchema.safeParse({ nom: nouveauNom, telephone: nouveauTel })
+    if (!parse.success) {
+      setNouveauErreur(parse.error.issues[0]?.message ?? 'Informations non valides')
+      return
+    }
+    const client: Client = {
+      id: Date.now(),
+      nom: parse.data.nom,
+      telephone: parse.data.telephone,
+      ville: '',
+      soldeDu: 0,
+      totalAchats: 0,
+      derniereVisite: today(),
+    }
+    setClients((prev) => [...prev, client])
+    setClientSelectionneId(client.id)
+    setNouveauClientOuvert(false)
+    setNouveauNom('')
+    setNouveauTel('')
+    setNouveauErreur(null)
+  }
+
   const valider = () => {
     if (!peutValider || cart.length === 0) return
     const clientChoisi = clients.find((c) => c.id === clientSelectionneId) ?? null
@@ -108,7 +138,7 @@ export default function Caisse() {
       lignes: cart,
       total,
       modePaiement,
-      statut: 'Payé',
+      statut: modePaiement === 'Crédit' ? 'Crédit' : 'Payé',
       date: today(),
     }
     setVentes((prev) => [vente, ...prev])
@@ -119,13 +149,7 @@ export default function Caisse() {
     ruptures.forEach((p) => toast.error(`${p.nom} : plus de stock !`, { duration: 6000 }))
     faibles.forEach((p) => toast.warning(`${p.nom} : il en reste ${p.stock}`, { duration: 5000 }))
     if (clientChoisi) {
-      setClients((prev) =>
-        prev.map((c) =>
-          c.id === clientChoisi.id
-            ? { ...c, totalAchats: c.totalAchats + total, derniereVisite: today() }
-            : c
-        )
-      )
+      setClients((prev) => appliquerVenteAuClient(prev, clientChoisi.id, vente))
     }
     setVenteFinale(vente)
     setVenteFinaleMontantRecu(modePaiement === 'Espèces' && montantSaisi ? montantRecu : undefined)
@@ -144,6 +168,7 @@ export default function Caisse() {
     setModePaiement('Espèces')
     setMontantRecuStr('')
     setClientSelectionneId(null)
+    setNouveauClientOuvert(false)
     setVenteFinale(null)
     setSearch('')
     setEtape('panier')
@@ -473,7 +498,7 @@ export default function Caisse() {
           {/* Associer un client */}
           <div style={{ marginBottom: '1.25rem' }}>
             <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.6rem' }}>
-              Client (optionnel)
+              {modePaiement === 'Crédit' ? 'Client (obligatoire pour un crédit)' : 'Client (optionnel)'}
             </label>
             <select
               value={clientSelectionneId ?? ''}
@@ -498,6 +523,51 @@ export default function Caisse() {
                 </option>
               ))}
             </select>
+            {modePaiement === 'Crédit' && (
+              <div style={{ marginTop: '0.75rem' }}>
+                {!nouveauClientOuvert ? (
+                  <button
+                    type="button"
+                    onClick={() => setNouveauClientOuvert(true)}
+                    style={{ minHeight: 48, width: '100%', borderRadius: 12, border: '1px dashed #00BCD4', background: 'transparent', color: '#00BCD4', fontWeight: 700, cursor: 'pointer' }}
+                  >
+                    + Nouveau client
+                  </button>
+                ) : (
+                  <div style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 12, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                    <input
+                      value={nouveauNom}
+                      onChange={(e) => setNouveauNom(e.target.value)}
+                      placeholder="Nom du client"
+                      aria-label="Nom du nouveau client"
+                      style={{ minHeight: 52, background: '#070e1f', border: '1px solid #16233d', borderRadius: 10, padding: '0.6rem 0.9rem', color: '#f5f0e8', fontSize: '1rem' }}
+                    />
+                    <input
+                      value={nouveauTel}
+                      onChange={(e) => setNouveauTel(e.target.value)}
+                      inputMode="tel"
+                      placeholder="Téléphone (facultatif)"
+                      aria-label="Téléphone du nouveau client"
+                      style={{ minHeight: 52, background: '#070e1f', border: '1px solid #16233d', borderRadius: 10, padding: '0.6rem 0.9rem', color: '#f5f0e8', fontSize: '1rem' }}
+                    />
+                    {nouveauErreur && <p role="alert" style={{ color: '#ef4444', margin: 0, fontSize: '0.88rem', fontWeight: 600 }}>{nouveauErreur}</p>}
+                    <div style={{ display: 'flex', gap: '0.6rem' }}>
+                      <button type="button" onClick={() => setNouveauClientOuvert(false)} style={{ flex: 1, minHeight: 48, borderRadius: 10, border: '1px solid #16233d', background: 'transparent', color: '#9ba8c4', fontWeight: 700, cursor: 'pointer' }}>
+                        Annuler
+                      </button>
+                      <button type="button" onClick={creerClientRapide} style={{ flex: 1, minHeight: 48, borderRadius: 10, border: 'none', background: '#D4AF37', color: '#0A1628', fontWeight: 800, cursor: 'pointer' }}>
+                        Ajouter
+                      </button>
+                    </div>
+                  </div>
+                )}
+                <p role={creditSansClient ? 'alert' : undefined} style={{ margin: '0.75rem 0 0', fontSize: '0.88rem', fontWeight: 600, color: creditSansClient ? '#f0a832' : '#9ba8c4' }}>
+                  {creditSansClient
+                    ? 'Choisissez un client : sa dette sera notée sur sa fiche.'
+                    : `Le client doit ${total.toLocaleString('fr-FR')} FCFA de plus. Vous l'encaisserez depuis sa fiche.`}
+                </p>
+              </div>
+            )}
           </div>
 
           {modePaiement === 'Espèces' && (
@@ -565,7 +635,7 @@ export default function Caisse() {
               gap: '0.6rem',
             }}
           >
-            <CheckCircle2 size={22} /> {t.validerPayer}
+            <CheckCircle2 size={22} /> {modePaiement === 'Crédit' ? 'Enregistrer à crédit' : t.validerPayer}
           </motion.button>
         </div>
       ) : (

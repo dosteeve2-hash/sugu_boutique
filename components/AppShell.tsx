@@ -14,6 +14,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const { loaded, boutiqueActive, boutiques } = useBoutique()
   const pathname = usePathname()
 
+  if (pathname.startsWith('/compte')) return <>{children}</>
+
   if (!loaded) return <ShellSkeleton />
 
   if (boutiques.length === 0 || !boutiqueActive) {

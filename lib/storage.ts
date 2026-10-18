@@ -2,19 +2,25 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useBoutique } from '@/components/BoutiqueProvider'
+import { EVENEMENT_DONNEES, noterEcriture } from '@/lib/sync/bridge'
 
 export function usePersisted<T>(key: string, initial: T) {
   const [value, setValue] = useState<T>(initial)
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem(key)
-      setValue(saved ? JSON.parse(saved) : initial)
-    } catch {
-      setValue(initial)
+    const lire = () => {
+      try {
+        const saved = window.localStorage.getItem(key)
+        setValue(saved ? JSON.parse(saved) : initial)
+      } catch {
+        setValue(initial)
+      }
     }
+    lire()
     setLoaded(true)
+    window.addEventListener(EVENEMENT_DONNEES, lire)
+    return () => window.removeEventListener(EVENEMENT_DONNEES, lire)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key])
 
@@ -24,6 +30,7 @@ export function usePersisted<T>(key: string, initial: T) {
         const next = typeof updater === 'function' ? (updater as (p: T) => T)(prev) : updater
         try {
           window.localStorage.setItem(key, JSON.stringify(next))
+          noterEcriture(key, prev, next)
         } catch {
           // storage full or unavailable — data stays in memory for this session
         }

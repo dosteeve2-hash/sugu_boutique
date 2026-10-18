@@ -5,6 +5,9 @@ import { m as motion } from 'framer-motion'
 import { Plus, Phone, AlertCircle, CheckCircle, Edit2, Trash2, Users, Smile, Meh, Frown } from 'lucide-react'
 import { usePersistedBoutique } from '@/lib/storage'
 import { Client, Vente } from '@/lib/types'
+import type { Paiement } from '@/lib/sync/types'
+import CreditClient from '@/components/CreditClient'
+import { enregistrerRemboursement, type ModeRemboursement } from '@/lib/credit'
 import EmptyState from '@/components/EmptyState'
 import Modal from '@/components/Modal'
 import { FormField, TextInput, SubmitRow } from '@/components/FormField'
@@ -23,11 +26,13 @@ export default function Clients() {
   const { t } = useLangue()
   const [clients, setClients, loaded] = usePersistedBoutique<Client[]>('clients', [])
   const [ventes] = usePersistedBoutique<Vente[]>('ventes', [])
+  const [paiements, setPaiements] = usePersistedBoutique<Paiement[]>('paiements', [])
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [edition, setEdition] = useState<Client | null>(null)
   const [form, setForm] = useState(vide)
-  const [profil, setProfil] = useState<Client | null>(null)
+  const [profilBrut, setProfil] = useState<Client | null>(null)
+  const profil = profilBrut ? clients.find((c) => c.id === profilBrut.id) ?? profilBrut : null
 
   const totalSoldeDu = clients.reduce((a, c) => a + c.soldeDu, 0)
 
@@ -68,6 +73,14 @@ export default function Clients() {
       setClients((prev) => [...prev, { ...form, id: Date.now() }])
     }
     setShowForm(false)
+  }
+
+  const rembourser = (clientId: number, montant: number, mode: ModeRemboursement): string | null => {
+    const r = enregistrerRemboursement(clients, { clientId, montant, mode })
+    if (!r.ok) return r.erreur
+    setClients(r.clients)
+    setPaiements((prev) => [r.paiement, ...prev])
+    return null
   }
 
   if (!loaded) return null
@@ -214,6 +227,15 @@ export default function Clients() {
                     <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{c.derniereVisite}</td>
                     <td style={{ padding: '0.75rem 1rem' }} onClick={(e) => e.stopPropagation()}>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        {c.soldeDu > 0 && (
+                          <button
+                            onClick={() => setProfil(c)}
+                            aria-label={`Encaisser un remboursement de ${c.nom}`}
+                            style={{ background: 'rgba(34,217,138,0.12)', border: 'none', borderRadius: 8, padding: '0.35rem 0.7rem', minHeight: 48, cursor: 'pointer', color: '#22d98a', fontWeight: 800, fontSize: '0.8rem' }}
+                          >
+                            Encaisser
+                          </button>
+                        )}
                         <button
                           onClick={() => ouvrirEdition(c)}
                           aria-label={`Modifier ${c.nom}`}
@@ -278,6 +300,7 @@ export default function Clients() {
                   </p>
                 </div>
               </div>
+              <CreditClient client={profil} ventes={ventes} paiements={paiements} onRembourser={rembourser} />
               <p style={{ color: '#9ba8c4', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Historique des ventes</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: 280, overflowY: 'auto' }}>
                 {historique.length === 0 && <p style={{ color: '#7b89a8', fontSize: '0.82rem' }}>Aucune vente encore.</p>}
