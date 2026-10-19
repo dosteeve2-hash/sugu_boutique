@@ -67,6 +67,12 @@ export default function Recu({
           <span style={{ opacity: 0.7 }}>{t.modePaiementLabel}</span>
           <span style={{ fontWeight: 700 }}>{vente.modePaiement}</span>
         </div>
+        {vente.statut === 'Crédit' && (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ opacity: 0.7 }}>À payer plus tard</span>
+            <span style={{ fontWeight: 700 }}>{vente.client}</span>
+          </div>
+        )}
         {typeof montantRecu === 'number' && (
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ opacity: 0.7 }}>{t.montantRecu}</span>

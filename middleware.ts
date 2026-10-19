@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 const rateMap = new Map<string, { count: number; reset: number }>()
-const LIMIT = 60, WINDOW = 60_000
+const LIMIT = 240, WINDOW = 60_000
 
 export function middleware(req: NextRequest) {
   const ip  = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'

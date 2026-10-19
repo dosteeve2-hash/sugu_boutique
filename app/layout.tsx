@@ -1,8 +1,10 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { LangueProvider } from '@/components/LangueProvider'
 import { BoutiqueProvider } from '@/components/BoutiqueProvider'
 import AppShell from '@/components/AppShell'
+import { SyncProvider } from '@/components/SyncProvider'
+import EnregistrementSW from '@/components/EnregistrementSW'
 import MotionProvider from '@/components/MotionProvider'
 import { Toaster } from 'sonner'
 
@@ -14,13 +16,16 @@ export const metadata: Metadata = {
     shortcut: '/logo-sugu-icon.svg',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/site.webmanifest',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: { capable: true, title: 'SUGU', statusBarStyle: 'black-translucent' },
   openGraph: {
     title: 'SUGU — Votre Caisse Digitale',
     description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Plusieurs boutiques, données enregistrées sur votre téléphone. FORGE Afrika.',
     images: ['/logo-sugu.svg'],
   },
 }
+
+export const viewport: Viewport = { themeColor: '#0A1628', width: 'device-width', initialScale: 1 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -36,10 +41,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MotionProvider>
           <LangueProvider>
             <BoutiqueProvider>
-              <AppShell>{children}</AppShell>
+              <SyncProvider>
+                <AppShell>{children}</AppShell>
+              </SyncProvider>
             </BoutiqueProvider>
           </LangueProvider>
         </MotionProvider>
+        <EnregistrementSW />
         <Toaster
           position="bottom-right"
           toastOptions={{

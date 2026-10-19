@@ -28,7 +28,7 @@
 ```
 Next.js 15 (App Router) + TypeScript strict
 Tailwind CSS v4 + postcss
-Persistance : localStorage (offline-first) — Supabase prévu en sync distante future
+Persistance : localStorage (offline-first) + sauvegarde cloud optionnelle (Neon Postgres + Better Auth, file d'attente hors ligne) — voir docs/LOT2_COMPTES_CLOUD.md
 Recharts — graphiques
 Lucide React — icônes
 Framer Motion — animations (si besoin)
@@ -113,7 +113,7 @@ Client → Vente (lignes multi-produits) → [-Stock produit, +totalAchats/solde
 
 ## Prochaines Features
 
-- [ ] Auth Supabase (inscription commerçant) + sync localStorage ↔ Supabase
+- [x] Comptes (Better Auth) + sync localStorage ↔ Neon (Lot 2)
 - [ ] Intégration réelle Orange Money / Wave (actuellement UI seulement)
 - [ ] Caisse (POS simplifié) — écran de vente rapide
 - [ ] Impression reçus (PDF)
