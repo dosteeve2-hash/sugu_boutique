@@ -7,14 +7,12 @@ import { useBoutique } from '@/components/BoutiqueProvider'
 import BoutiqueFormModal from '@/components/BoutiqueFormModal'
 import { useLangue } from '@/components/LangueProvider'
 import { useBoutonImport } from '@/components/SauvegardePanel'
-import ProjectVideo from '@/components/ProjectVideo'
 
 export default function BoutiqueWelcome() {
-  const { t, langue } = useLangue()
+  const { t } = useLangue()
   const { ajouterBoutique } = useBoutique()
   const [showForm, setShowForm] = useState(false)
   const { ouvrir, input } = useBoutonImport()
-  const videoLang = langue === 'en' ? 'en' : 'fr'
 
   return (
     <div
@@ -61,13 +59,6 @@ export default function BoutiqueWelcome() {
         <p style={{ color: '#9ba8c4', fontSize: '0.9rem', margin: '0 0 2rem', maxWidth: 340, lineHeight: 1.6 }}>
           {t.bienvenueSuguMessage}
         </p>
-
-        <section aria-labelledby="sugu-video-titre" style={{ width: '100%', maxWidth: 560, margin: '0 auto 1.5rem' }}>
-          <h2 id="sugu-video-titre" style={{ color: '#f5f0e8', fontSize: '1.1rem', fontWeight: 700, margin: '0 0 0.75rem' }}>
-            {t.videoTitre}
-          </h2>
-          <ProjectVideo slug="sugu" lang={videoLang} title={t.videoTitreIframe} />
-        </section>
 
         <motion.button
           whileTap={{ scale: 0.95 }}
