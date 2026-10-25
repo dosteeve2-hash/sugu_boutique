@@ -47,7 +47,7 @@ export default function BoutiqueWelcome() {
             overflow: 'hidden',
           }}
         >
-          <img src="/brand/logo.svg" alt="SUGU" width={160} height={64} style={{ display: 'block', width: 160, height: 'auto' }} />
+          <img src="/brand/mark.svg" alt="SUGU" width={88} height={88} style={{ display: 'block', width: 88, height: 88, padding: 12, boxSizing: 'border-box', background: '#F2EBCF' }} />
         </motion.div>
 
         <h1 style={{ color: '#E3A00F', fontSize: '1.9rem', fontWeight: 900, margin: '0 0 0.5rem', letterSpacing: '0.02em' }}>

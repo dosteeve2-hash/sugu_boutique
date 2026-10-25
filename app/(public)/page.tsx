@@ -19,8 +19,8 @@ export default function AccueilPublic() {
         <div className="hero-copy">
           <p className="eyebrow">Le cahier de comptes du commerçant, devenu simple.</p>
           <h1 className="hero-title" id="hero-title">
-            <span>Sachez chaque</span>
-            <span>soir ce que</span>
+            <span>Sachez chaque</span>{' '}
+            <span>soir ce que</span>{' '}
             <span>vous avez <em>gagné.</em></span>
           </h1>
           <p className="hero-intro">
