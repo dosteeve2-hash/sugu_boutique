@@ -43,8 +43,8 @@ export default function Sidebar() {
           right: 0,
           height: 56,
           zIndex: 250,
-          background: '#070e1f',
-          borderBottom: '1px solid #16233d',
+          background: '#1F3A2B',
+          borderBottom: '1px solid #496653',
           alignItems: 'center',
           gap: '0.6rem',
           padding: '0 0.75rem',
@@ -55,11 +55,11 @@ export default function Sidebar() {
           aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
           aria-expanded={open}
           style={{
-            background: '#0c1528',
-            border: '1px solid #16233d',
+            background: '#263F30',
+            border: '1px solid #496653',
             borderRadius: 8,
             padding: '0.5rem',
-            color: '#D4AF37',
+            color: '#E3A00F',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -82,8 +82,8 @@ export default function Sidebar() {
         style={{
           width: 240,
           minWidth: 240,
-          background: '#070e1f',
-          borderRight: '1px solid #16233d',
+          background: '#1F3A2B',
+          borderRight: '1px solid #496653',
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
@@ -91,29 +91,17 @@ export default function Sidebar() {
         }}
       >
       {/* Logo */}
-      <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid #16233d', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <img src="/logo-sugu-icon.svg" alt="SUGU" width={40} height={40} style={{ borderRadius: 10, flexShrink: 0 }} />
+      <div style={{ padding: '1.15rem 1.25rem', borderBottom: '1px solid #496653', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.55rem' }}>
+        <img src="/brand/logo-sombre.svg" alt="SUGU" width={152} height={64} style={{ width: 152, height: 'auto', flexShrink: 0 }} />
         <div>
-          <h1
-            style={{
-              color: '#D4AF37',
-              fontSize: '1.75rem',
-              fontWeight: 900,
-              margin: 0,
-              letterSpacing: '0.05em',
-              fontFeatureSettings: '"kern" 1',
-            }}
-          >
-            SUGU
-          </h1>
-          <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.25rem 0 0', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <p style={{ color: '#D9DEC9', fontSize: '0.7rem', margin: '0.15rem 0 0', letterSpacing: '0.07em', textTransform: 'uppercase' }}>
             {t.tagline}
           </p>
         </div>
       </div>
 
       {/* Sélecteur de boutique */}
-      <div style={{ padding: '0.85rem 1.25rem', borderBottom: '1px solid #16233d' }}>
+      <div style={{ padding: '0.85rem 1.25rem', borderBottom: '1px solid #496653' }}>
         <BoutiqueSwitcher />
       </div>
 
@@ -123,8 +111,8 @@ export default function Sidebar() {
           padding: '0.6rem 1.25rem',
           fontSize: '0.75rem',
           fontWeight: 600,
-          color: isOnline ? '#22d98a' : '#f0a832',
-          borderBottom: '1px solid #16233d',
+          color: isOnline ? '#91D9A3' : '#E3A00F',
+          borderBottom: '1px solid #496653',
           display: 'flex',
           alignItems: 'center',
           gap: '0.4rem',
@@ -150,12 +138,12 @@ export default function Sidebar() {
                 minHeight: 48,
                 borderRadius: 8,
                 marginBottom: 2,
-                color: active ? '#00BCD4' : '#9ba8c4',
-                background: active ? 'rgba(0,188,212,0.08)' : 'transparent',
+                color: active ? '#E3A00F' : '#D9DEC9',
+                background: active ? 'rgba(227,160,15,0.08)' : 'transparent',
                 textDecoration: 'none',
                 fontSize: '0.875rem',
                 fontWeight: active ? 600 : 400,
-                borderLeft: active ? '2px solid #00BCD4' : '2px solid transparent',
+                borderLeft: active ? '2px solid #E3A00F' : '2px solid transparent',
                 transition: 'all 0.15s ease',
               }}
             >
@@ -167,8 +155,8 @@ export default function Sidebar() {
       </nav>
 
       {/* Sélecteur de langue */}
-      <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid #16233d' }}>
-        <label htmlFor="sugu-langue-menu" style={{ display: 'block', color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
+      <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid #496653' }}>
+        <label htmlFor="sugu-langue-menu" style={{ display: 'block', color: '#B7C5AE', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
           {t.langue}
         </label>
         <select
@@ -177,11 +165,11 @@ export default function Sidebar() {
           onChange={(e) => setLangue(e.target.value as typeof langue)}
           style={{
             width: '100%',
-            background: '#0c1528',
-            border: '1px solid #16233d',
+            background: '#263F30',
+            border: '1px solid #496653',
             borderRadius: 8,
             padding: '0.4rem 0.5rem',
-            color: '#f5f0e8',
+            color: '#F2EBCF',
             fontSize: '0.8rem',
             outline: 'none',
           }}
@@ -198,13 +186,13 @@ export default function Sidebar() {
       <div
         style={{
           padding: '1rem 1.25rem',
-          borderTop: '1px solid #16233d',
-          color: '#7b89a8',
+          borderTop: '1px solid #496653',
+          color: '#B7C5AE',
           fontSize: '0.75rem',
           letterSpacing: '0.05em',
         }}
       >
-        <span style={{ color: '#D4AF37', fontWeight: 700 }}>FORGE</span> Afrika © 2026
+        <span style={{ color: '#E3A00F', fontWeight: 700 }}>FORGE</span> Afrika © 2026
       </div>
       </aside>
     </>

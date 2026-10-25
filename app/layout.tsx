@@ -1,57 +1,53 @@
 import type { Metadata, Viewport } from 'next'
+import { DM_Sans, Fredoka } from 'next/font/google'
 import './globals.css'
-import { LangueProvider } from '@/components/LangueProvider'
-import { BoutiqueProvider } from '@/components/BoutiqueProvider'
-import AppShell from '@/components/AppShell'
-import { SyncProvider } from '@/components/SyncProvider'
 import EnregistrementSW from '@/components/EnregistrementSW'
-import MotionProvider from '@/components/MotionProvider'
+import RouteProviders from '@/components/RouteProviders'
 import { Toaster } from 'sonner'
 
+const fredoka = Fredoka({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-fredoka',
+  display: 'swap',
+})
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-dm-sans',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: 'SUGU — Votre Caisse Digitale',
-  description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Plusieurs boutiques, données enregistrées sur votre téléphone. FORGE Afrika.',
+  title: 'SUGU | Sachez ce que vous avez gagné',
+  description: 'Le cahier de comptes du commerçant, devenu simple. SUGU aide à suivre les produits, ventes, achats, clients et stocks.',
   icons: {
-    icon: '/android-chrome-192x192.png',
-    shortcut: '/logo-sugu-icon.svg',
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
     apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.webmanifest',
   appleWebApp: { capable: true, title: 'SUGU', statusBarStyle: 'black-translucent' },
   openGraph: {
-    title: 'SUGU — Votre Caisse Digitale',
-    description: 'SUGU — la caisse et la gestion digitale pensées pour les commerçants africains. Plusieurs boutiques, données enregistrées sur votre téléphone. FORGE Afrika.',
-    images: ['/logo-sugu.svg'],
+    title: 'SUGU | Sachez ce que vous avez gagné',
+    description: 'Le cahier de comptes du commerçant, devenu simple.',
+    images: ['/brand/logo.svg'],
   },
 }
 
-export const viewport: Viewport = { themeColor: '#0A1628', width: 'device-width', initialScale: 1 }
+export const viewport: Viewport = { themeColor: '#1F3A2B', width: 'device-width', initialScale: 1 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <body
-        style={{
-          background: '#0A1628',
-          color: '#F8F9FA',
-          margin: 0,
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-        }}
-      >
-        <MotionProvider>
-          <LangueProvider>
-            <BoutiqueProvider>
-              <SyncProvider>
-                <AppShell>{children}</AppShell>
-              </SyncProvider>
-            </BoutiqueProvider>
-          </LangueProvider>
-        </MotionProvider>
+      <body className={`${fredoka.variable} ${dmSans.variable}`}>
+        <RouteProviders>{children}</RouteProviders>
         <EnregistrementSW />
         <Toaster
           position="bottom-right"
           toastOptions={{
-            style: { background: '#0c1528', border: '1px solid #16233d', color: '#f5f0e8' },
+            style: { background: '#263F30', border: '1px solid #496653', color: '#F2EBCF' },
           }}
         />
       </body>

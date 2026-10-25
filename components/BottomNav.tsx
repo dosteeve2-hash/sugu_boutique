@@ -9,8 +9,8 @@ import { useLangue } from '@/components/LangueProvider'
 import { LANGUES } from '@/lib/i18n'
 import { NAV_ACCUEIL, NAV_AUTRES, NAV_CAISSE, NAV_CLIENTS, NAV_PRODUITS, type NavItem } from '@/lib/nav'
 
-const COULEUR_ACTIF = '#D4AF37'
-const COULEUR_INACTIF = '#9ba8c4'
+const COULEUR_ACTIF = '#E3A00F'
+const COULEUR_INACTIF = '#D9DEC9'
 
 const PRINCIPAUX: NavItem[] = [NAV_ACCUEIL, NAV_PRODUITS, NAV_CAISSE, NAV_CLIENTS]
 
@@ -40,7 +40,7 @@ function pastilleStyle(central: boolean): React.CSSProperties {
     borderRadius: 14,
     background: central ? COULEUR_ACTIF : 'transparent',
     marginTop: central ? -16 : 0,
-    boxShadow: central ? '0 4px 14px rgba(212,175,55,0.4)' : 'none',
+    boxShadow: central ? '0 4px 14px rgba(227,160,15,0.4)' : 'none',
   }
 }
 
@@ -73,7 +73,7 @@ export default function BottomNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setPlusOuvert(false)}
-            style={{ position: 'fixed', inset: 0, background: 'rgba(7,14,31,0.7)', zIndex: 58 }}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(31,58,43,0.7)', zIndex: 58 }}
           >
             <motion.div
               role="dialog"
@@ -88,8 +88,8 @@ export default function BottomNav() {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                background: '#0c1528',
-                borderTop: '1px solid #1f3054',
+                background: '#263F30',
+                borderTop: '1px solid #5B755F',
                 borderRadius: '16px 16px 0 0',
                 padding: '1rem 1rem calc(5rem + env(safe-area-inset-bottom, 0px))',
                 maxHeight: '85vh',
@@ -97,11 +97,11 @@ export default function BottomNav() {
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <h2 style={{ color: '#D4AF37', fontSize: '1.1rem', fontWeight: 800, margin: 0 }}>Toutes les pages</h2>
+                <h2 style={{ color: '#E3A00F', fontSize: '1.1rem', fontWeight: 800, margin: 0 }}>Toutes les pages</h2>
                 <button
                   onClick={() => setPlusOuvert(false)}
                   aria-label="Fermer"
-                  style={{ width: 48, height: 48, background: 'transparent', border: 'none', color: '#9ba8c4', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  style={{ width: 48, height: 48, background: 'transparent', border: 'none', color: '#D9DEC9', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
                   <X size={22} />
                 </button>
@@ -123,9 +123,9 @@ export default function BottomNav() {
                         textDecoration: 'none',
                         fontWeight: 700,
                         fontSize: '0.95rem',
-                        color: actif ? '#0A1628' : '#f5f0e8',
-                        background: actif ? COULEUR_ACTIF : '#111d34',
-                        border: '1px solid #1f3054',
+                        color: actif ? '#1F3A2B' : '#F2EBCF',
+                        background: actif ? COULEUR_ACTIF : '#284334',
+                        border: '1px solid #5B755F',
                       }}
                     >
                       <Icon size={20} />
@@ -136,7 +136,7 @@ export default function BottomNav() {
               </div>
               <label
                 htmlFor="sugu-langue-plus"
-                style={{ display: 'block', color: '#9ba8c4', fontSize: '0.85rem', fontWeight: 600, margin: '1.1rem 0 0.4rem' }}
+                style={{ display: 'block', color: '#D9DEC9', fontSize: '0.85rem', fontWeight: 600, margin: '1.1rem 0 0.4rem' }}
               >
                 {t.langue}
               </label>
@@ -144,7 +144,7 @@ export default function BottomNav() {
                 id="sugu-langue-plus"
                 value={langue}
                 onChange={(e) => setLangue(e.target.value as typeof langue)}
-                style={{ width: '100%', minHeight: 52, background: '#070e1f', border: '1px solid #1f3054', borderRadius: 12, padding: '0 0.9rem', color: '#f5f0e8' }}
+                style={{ width: '100%', minHeight: 52, background: '#1F3A2B', border: '1px solid #5B755F', borderRadius: 12, padding: '0 0.9rem', color: '#F2EBCF' }}
               >
                 {LANGUES.map((l) => (
                   <option key={l.code} value={l.code}>
@@ -166,8 +166,8 @@ export default function BottomNav() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: '#070e1f',
-          borderTop: '1px solid #16233d',
+          background: '#1F3A2B',
+          borderTop: '1px solid #496653',
           zIndex: 60,
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}
@@ -179,7 +179,7 @@ export default function BottomNav() {
           return (
             <Link key={item.href} href={item.href} aria-current={actif ? 'page' : undefined} style={lienStyle(actif)}>
               <span style={pastilleStyle(central)}>
-                <Icon size={central ? 24 : 22} color={central ? '#0A1628' : actif ? COULEUR_ACTIF : COULEUR_INACTIF} />
+                <Icon size={central ? 24 : 22} color={central ? '#1F3A2B' : actif ? COULEUR_ACTIF : COULEUR_INACTIF} />
               </span>
               <span style={libelleStyle(actif)}>{item.label(t)}</span>
             </Link>

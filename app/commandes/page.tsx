@@ -27,10 +27,10 @@ const WORKFLOW: Record<StatutCommande, StatutCommande | null> = {
 }
 
 const SC: Record<StatutCommande, { bg: string; text: string; border: string }> = {
-  'En attente': { bg: 'rgba(240,168,50,0.12)',  text: '#f0a832', border: 'rgba(240,168,50,0.3)' },
+  'En attente': { bg: 'rgba(227,160,15,0.12)',  text: '#E3A00F', border: 'rgba(227,160,15,0.3)' },
   'Confirmée':  { bg: 'rgba(0,212,255,0.10)',   text: '#00D4FF', border: 'rgba(0,212,255,0.3)' },
   'En cours':   { bg: 'rgba(167,139,250,0.10)', text: '#a78bfa', border: 'rgba(167,139,250,0.3)' },
-  'Livrée':     { bg: 'rgba(34,217,138,0.10)',  text: '#22d98a', border: 'rgba(34,217,138,0.3)' },
+  'Livrée':     { bg: 'rgba(145,217,163,0.10)',  text: '#91D9A3', border: 'rgba(145,217,163,0.3)' },
   'Annulée':    { bg: 'rgba(239,68,68,0.10)',   text: '#ef4444', border: 'rgba(239,68,68,0.3)' },
 }
 
@@ -48,10 +48,10 @@ function StatutBadge({ statut }: { statut: StatutCommande }) {
 
 function KpiCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
   return (
-    <div style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 12, padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-      <span style={{ color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
+    <div style={{ background: '#263F30', border: '1px solid #496653', borderRadius: 12, padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+      <span style={{ color: '#B7C5AE', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
       <span style={{ color, fontSize: '1.6rem', fontWeight: 800, lineHeight: 1 }}>{value}</span>
-      {sub && <span style={{ color: '#7b89a8', fontSize: '0.75rem' }}>{sub}</span>}
+      {sub && <span style={{ color: '#B7C5AE', fontSize: '0.75rem' }}>{sub}</span>}
     </div>
   )
 }
@@ -117,16 +117,16 @@ export default function CommandesPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
-          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <ShoppingBag size={22} color="#D4AF37" /> Commandes
+          <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <ShoppingBag size={22} color="#E3A00F" /> Commandes
           </h2>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {commandes.length} commande{commandes.length !== 1 ? 's' : ''} au total
           </p>
         </div>
         <button onClick={() => setShowForm(true)} style={{
           display: 'flex', alignItems: 'center', gap: '0.5rem',
-          background: '#D4AF37', color: '#0A1628', border: 'none',
+          background: '#E3A00F', color: '#1F3A2B', border: 'none',
           borderRadius: 8, padding: '0.65rem 1.1rem', fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem',
         }}>
           <Plus size={16} /> Nouvelle commande
@@ -137,8 +137,8 @@ export default function CommandesPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
         <KpiCard label="Aujourd&apos;hui" value={commandesDuJour} sub="commandes" color="#00D4FF" />
         <KpiCard label="En cours" value={enCours} sub="en livraison" color="#a78bfa" />
-        <KpiCard label="Livrées ce mois" value={livreesMois} sub="commandes" color="#22d98a" />
-        <KpiCard label="CA Commandes" value={`${caCommandes.toLocaleString('fr-FR')} F`} sub="hors annulations" color="#D4AF37" />
+        <KpiCard label="Livrées ce mois" value={livreesMois} sub="commandes" color="#91D9A3" />
+        <KpiCard label="CA Commandes" value={`${caCommandes.toLocaleString('fr-FR')} F`} sub="hors annulations" color="#E3A00F" />
       </div>
 
       {/* Filtres statut */}
@@ -150,14 +150,14 @@ export default function CommandesPage() {
           return (
             <button key={s} onClick={() => setStatutActif(s)} style={{
               padding: '0.35rem 0.85rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 600,
-              border: active ? `1px solid ${c?.border ?? '#D4AF37'}` : '1px solid #16233d',
-              background: active ? (c?.bg ?? 'rgba(212,175,55,0.12)') : '#0c1528',
-              color: active ? (c?.text ?? '#D4AF37') : '#9ba8c4',
+              border: active ? `1px solid ${c?.border ?? '#E3A00F'}` : '1px solid #496653',
+              background: active ? (c?.bg ?? 'rgba(227,160,15,0.12)') : '#263F30',
+              color: active ? (c?.text ?? '#E3A00F') : '#D9DEC9',
               cursor: 'pointer', transition: 'all 0.15s',
               display: 'flex', alignItems: 'center', gap: 5,
             }}>
               {s}
-              <span style={{ background: active ? 'rgba(255,255,255,0.15)' : '#16233d', color: active ? (c?.text ?? '#D4AF37') : '#7b89a8', fontSize: '0.75rem', fontWeight: 700, borderRadius: 99, padding: '0.05rem 0.35rem' }}>
+              <span style={{ background: active ? 'rgba(255,255,255,0.15)' : '#496653', color: active ? (c?.text ?? '#E3A00F') : '#B7C5AE', fontSize: '0.75rem', fontWeight: 700, borderRadius: 99, padding: '0.05rem 0.35rem' }}>
                 {count}
               </span>
             </button>
@@ -166,39 +166,39 @@ export default function CommandesPage() {
       </div>
 
       {/* Table */}
-      <div style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ background: '#263F30', border: '1px solid #496653', borderRadius: 12, overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: '#07111f' }}>
                 {['#', 'Client', 'Produits', 'Total', 'Mode', 'Date', 'Statut', ''].map((h) => (
-                  <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', color: '#7b89a8', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+                  <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', color: '#B7C5AE', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <AnimatePresence>
                 {filtered.length === 0 ? (
-                  <tr><td colSpan={8} style={{ padding: '2.5rem', textAlign: 'center', color: '#7b89a8', fontSize: '0.9rem' }}>{commandes.length === 0 ? 'Aucune commande enregistrée. Notez ici les commandes à livrer à vos clients.' : 'Aucune commande pour ce filtre.'}</td></tr>
+                  <tr><td colSpan={8} style={{ padding: '2.5rem', textAlign: 'center', color: '#B7C5AE', fontSize: '0.9rem' }}>{commandes.length === 0 ? 'Aucune commande enregistrée. Notez ici les commandes à livrer à vos clients.' : 'Aucune commande pour ce filtre.'}</td></tr>
                 ) : (
                   filtered.map((c, i) => (
                     <motion.tr key={c.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.03 }}
                       onClick={() => setSelectedCommande(c)}
-                      style={{ borderTop: '1px solid #16233d', cursor: 'pointer' }}
+                      style={{ borderTop: '1px solid #496653', cursor: 'pointer' }}
                       onMouseEnter={(e) => (e.currentTarget.style.background = '#0d1a30')}
                       onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                     >
-                      <td style={{ padding: '0.75rem 1rem', color: '#D4AF37', fontWeight: 700, fontSize: '0.82rem' }}>#{c.id}</td>
-                      <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontSize: '0.85rem', fontWeight: 600 }}>{c.client}</td>
-                      <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.8rem' }}>
+                      <td style={{ padding: '0.75rem 1rem', color: '#E3A00F', fontWeight: 700, fontSize: '0.82rem' }}>#{c.id}</td>
+                      <td style={{ padding: '0.75rem 1rem', color: '#F2EBCF', fontSize: '0.85rem', fontWeight: 600 }}>{c.client}</td>
+                      <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.8rem' }}>
                         {c.produits.slice(0, 2).map((p) => p.nom).join(', ')}
                         {c.produits.length > 2 && ` +${c.produits.length - 2}`}
                       </td>
-                      <td style={{ padding: '0.75rem 1rem', color: '#22d98a', fontWeight: 700, fontSize: '0.85rem', whiteSpace: 'nowrap' }}>{c.total.toLocaleString('fr-FR')} F</td>
-                      <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.8rem' }}>{c.modePaiement}</td>
-                      <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{c.date}</td>
+                      <td style={{ padding: '0.75rem 1rem', color: '#91D9A3', fontWeight: 700, fontSize: '0.85rem', whiteSpace: 'nowrap' }}>{c.total.toLocaleString('fr-FR')} F</td>
+                      <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.8rem' }}>{c.modePaiement}</td>
+                      <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{c.date}</td>
                       <td style={{ padding: '0.75rem 1rem' }}><StatutBadge statut={c.statut} /></td>
-                      <td style={{ padding: '0.75rem 0.75rem' }}><ChevronRight size={16} color="#7b89a8" /></td>
+                      <td style={{ padding: '0.75rem 0.75rem' }}><ChevronRight size={16} color="#B7C5AE" /></td>
                     </motion.tr>
                   ))
                 )}
@@ -214,31 +214,31 @@ export default function CommandesPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <StatutBadge statut={selectedCommande.statut} />
-              <span style={{ color: '#7b89a8', fontSize: '0.8rem' }}>{selectedCommande.date}</span>
+              <span style={{ color: '#B7C5AE', fontSize: '0.8rem' }}>{selectedCommande.date}</span>
             </div>
-            <div style={{ background: '#070e1f', borderRadius: 10, padding: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <p style={{ margin: 0, color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Client</p>
-              <p style={{ margin: 0, color: '#f5f0e8', fontWeight: 700 }}>{selectedCommande.client}</p>
-              <p style={{ margin: 0, color: '#9ba8c4', fontSize: '0.8rem' }}>{selectedCommande.adresseLivraison}</p>
-              <p style={{ margin: 0, color: '#9ba8c4', fontSize: '0.8rem' }}>Paiement : {selectedCommande.modePaiement}</p>
+            <div style={{ background: '#1F3A2B', borderRadius: 10, padding: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <p style={{ margin: 0, color: '#B7C5AE', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Client</p>
+              <p style={{ margin: 0, color: '#F2EBCF', fontWeight: 700 }}>{selectedCommande.client}</p>
+              <p style={{ margin: 0, color: '#D9DEC9', fontSize: '0.8rem' }}>{selectedCommande.adresseLivraison}</p>
+              <p style={{ margin: 0, color: '#D9DEC9', fontSize: '0.8rem' }}>Paiement : {selectedCommande.modePaiement}</p>
             </div>
-            <div style={{ background: '#070e1f', borderRadius: 10, padding: '0.85rem' }}>
-              <p style={{ margin: '0 0 0.75rem', color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Produits</p>
+            <div style={{ background: '#1F3A2B', borderRadius: 10, padding: '0.85rem' }}>
+              <p style={{ margin: '0 0 0.75rem', color: '#B7C5AE', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Produits</p>
               {selectedCommande.produits.map((p, i) => (
-                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: i < selectedCommande.produits.length - 1 ? '1px solid #16233d' : 'none' }}>
-                  <span style={{ color: '#f5f0e8', fontSize: '0.85rem' }}>{p.nom} <span style={{ color: '#7b89a8' }}>×{p.qte}</span></span>
-                  <span style={{ color: '#D4AF37', fontWeight: 700, fontSize: '0.85rem' }}>{(p.qte * p.prix).toLocaleString('fr-FR')} F</span>
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: i < selectedCommande.produits.length - 1 ? '1px solid #496653' : 'none' }}>
+                  <span style={{ color: '#F2EBCF', fontSize: '0.85rem' }}>{p.nom} <span style={{ color: '#B7C5AE' }}>×{p.qte}</span></span>
+                  <span style={{ color: '#E3A00F', fontWeight: 700, fontSize: '0.85rem' }}>{(p.qte * p.prix).toLocaleString('fr-FR')} F</span>
                 </div>
               ))}
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #16233d' }}>
-                <span style={{ color: '#f5f0e8', fontWeight: 700 }}>Total</span>
-                <span style={{ color: '#22d98a', fontWeight: 800, fontSize: '1.1rem' }}>{selectedCommande.total.toLocaleString('fr-FR')} FCFA</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #496653' }}>
+                <span style={{ color: '#F2EBCF', fontWeight: 700 }}>Total</span>
+                <span style={{ color: '#91D9A3', fontWeight: 800, fontSize: '1.1rem' }}>{selectedCommande.total.toLocaleString('fr-FR')} FCFA</span>
               </div>
             </div>
             {WORKFLOW[selectedCommande.statut] && (
               <button onClick={() => avancer(selectedCommande.id)} style={{
                 width: '100%', padding: '0.75rem', borderRadius: 8, fontWeight: 700, fontSize: '0.9rem',
-                background: '#D4AF37', color: '#0A1628', border: 'none', cursor: 'pointer',
+                background: '#E3A00F', color: '#1F3A2B', border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               }}>
                 <ChevronRight size={16} /> Passer à : {WORKFLOW[selectedCommande.statut]}
@@ -267,15 +267,15 @@ export default function CommandesPage() {
           </FormField>
           <FormField label="Mode de paiement">
             <select value={form.modePaiement} onChange={(e) => setForm({ ...form, modePaiement: e.target.value })}
-              style={{ width: '100%', background: '#070e1f', border: '1px solid #16233d', borderRadius: 8, padding: '0.6rem 0.75rem', color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', background: '#1F3A2B', border: '1px solid #496653', borderRadius: 8, padding: '0.6rem 0.75rem', color: '#F2EBCF', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
             >
               {['Espèces', 'Orange Money', 'Wave', 'Moov Money', 'Virement'].map((m) => (
                 <option key={m} value={m}>{m}</option>
               ))}
             </select>
           </FormField>
-          <div style={{ borderTop: '1px solid #16233d', paddingTop: '1rem', marginTop: '0.5rem' }}>
-            <p style={{ color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.75rem' }}>Premier article</p>
+          <div style={{ borderTop: '1px solid #496653', paddingTop: '1rem', marginTop: '0.5rem' }}>
+            <p style={{ color: '#B7C5AE', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.75rem' }}>Premier article</p>
             <FormField label="Produit">
               <TextInput required value={form.produit1Nom} onChange={(e) => setForm({ ...form, produit1Nom: e.target.value })} placeholder="Nom du produit" />
             </FormField>
@@ -288,7 +288,7 @@ export default function CommandesPage() {
               </FormField>
             </div>
             {form.produit1Qte > 0 && form.produit1Prix > 0 && (
-              <p style={{ color: '#22d98a', fontSize: '0.82rem', margin: '0.25rem 0 0.5rem' }}>
+              <p style={{ color: '#91D9A3', fontSize: '0.82rem', margin: '0.25rem 0 0.5rem' }}>
                 Total : <strong>{(form.produit1Qte * form.produit1Prix).toLocaleString('fr-FR')} FCFA</strong>
               </p>
             )}

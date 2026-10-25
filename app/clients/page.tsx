@@ -89,8 +89,8 @@ export default function Clients() {
     <div>
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
-          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Clients</h2>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Clients</h2>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {clients.length} client{clients.length !== 1 ? 's' : ''}
             {totalSoldeDu > 0 && (
               <>
@@ -105,8 +105,8 @@ export default function Clients() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: '#D4AF37',
-            color: '#0A1628',
+            background: '#E3A00F',
+            color: '#1F3A2B',
             border: 'none',
             borderRadius: 8,
             padding: '0.65rem 1.1rem',
@@ -123,7 +123,7 @@ export default function Clients() {
       {clients.length > 0 && (
         <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
           <svg
-            style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#7b89a8' }}
+            style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: '#B7C5AE' }}
             width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
           >
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
@@ -135,11 +135,11 @@ export default function Clients() {
             style={{
               width: '100%',
               minHeight: 48,
-              background: '#0c1528',
-              border: '1px solid #16233d',
+              background: '#263F30',
+              border: '1px solid #496653',
               borderRadius: 12,
               padding: '0.65rem 0.75rem 0.65rem 2.75rem',
-              color: '#f5f0e8',
+              color: '#F2EBCF',
               fontSize: '0.95rem',
               outline: 'none',
               boxSizing: 'border-box',
@@ -160,28 +160,28 @@ export default function Clients() {
         <>
           <div className="sugu-kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
             {[
-              { label: 'Total Clients', value: clients.length, color: '#00BCD4' },
-              { label: 'Clients Soldés', value: clients.filter((c) => c.soldeDu === 0).length, color: '#22d98a' },
+              { label: 'Total Clients', value: clients.length, color: '#E3A00F' },
+              { label: 'Clients Soldés', value: clients.filter((c) => c.soldeDu === 0).length, color: '#91D9A3' },
               { label: 'Clients avec Crédit', value: clients.filter((c) => c.soldeDu > 0).length, color: '#ef4444' },
             ].map((k) => (
-              <div key={k.label} style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #16233d' }}>
-                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
+              <div key={k.label} style={{ background: '#263F30', borderRadius: 12, padding: '1rem', border: '1px solid #496653' }}>
+                <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
                 <p style={{ color: k.color, fontWeight: 700, fontSize: '1.25rem', margin: 0 }}>{k.value}</p>
               </div>
             ))}
           </div>
 
-          <div className="sugu-table-wrap" style={{ background: '#0c1528', borderRadius: 12, overflow: 'hidden', border: '1px solid #16233d' }}>
+          <div className="sugu-table-wrap" style={{ background: '#263F30', borderRadius: 12, overflow: 'hidden', border: '1px solid #496653' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}>
               <thead>
-                <tr style={{ background: '#070e1f' }}>
+                <tr style={{ background: '#1F3A2B' }}>
                   {['Client', 'Téléphone', 'Ville', 'Total Achats', 'Solde Dû', 'Dernière Visite', 'Actions'].map((h) => (
                     <th
                       key={h}
                       style={{
                         padding: '0.75rem 1rem',
                         textAlign: 'left',
-                        color: '#7b89a8',
+                        color: '#B7C5AE',
                         fontSize: '0.75rem',
                         fontWeight: 600,
                         textTransform: 'uppercase',
@@ -201,16 +201,16 @@ export default function Clients() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
                     onClick={() => setProfil(c)}
-                    style={{ borderTop: '1px solid #16233d', cursor: 'pointer' }}
+                    style={{ borderTop: '1px solid #496653', cursor: 'pointer' }}
                   >
-                    <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 600 }}>{c.nom}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#F2EBCF', fontWeight: 600 }}>{c.nom}</td>
                     <td style={{ padding: '0.75rem 1rem' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#9ba8c4', fontSize: '0.875rem' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#D9DEC9', fontSize: '0.875rem' }}>
                         <Phone size={13} /> {c.telephone || '—'}
                       </span>
                     </td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{c.ville || '—'}</td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#D4AF37', fontWeight: 600, fontSize: '0.875rem' }}>
+                    <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.875rem' }}>{c.ville || '—'}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#E3A00F', fontWeight: 600, fontSize: '0.875rem' }}>
                       {c.totalAchats.toLocaleString('fr-FR')} FCFA
                     </td>
                     <td style={{ padding: '0.75rem 1rem' }}>
@@ -219,19 +219,19 @@ export default function Clients() {
                           <AlertCircle size={14} /> {c.soldeDu.toLocaleString('fr-FR')} FCFA
                         </span>
                       ) : (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#22d98a', fontWeight: 600 }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#91D9A3', fontWeight: 600 }}>
                           <CheckCircle size={14} /> Soldé
                         </span>
                       )}
                     </td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{c.derniereVisite}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.875rem' }}>{c.derniereVisite}</td>
                     <td style={{ padding: '0.75rem 1rem' }} onClick={(e) => e.stopPropagation()}>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
                         {c.soldeDu > 0 && (
                           <button
                             onClick={() => setProfil(c)}
                             aria-label={`Encaisser un remboursement de ${c.nom}`}
-                            style={{ background: 'rgba(34,217,138,0.12)', border: 'none', borderRadius: 8, padding: '0.35rem 0.7rem', minHeight: 48, cursor: 'pointer', color: '#22d98a', fontWeight: 800, fontSize: '0.8rem' }}
+                            style={{ background: 'rgba(145,217,163,0.12)', border: 'none', borderRadius: 8, padding: '0.35rem 0.7rem', minHeight: 48, cursor: 'pointer', color: '#91D9A3', fontWeight: 800, fontSize: '0.8rem' }}
                           >
                             Encaisser
                           </button>
@@ -239,7 +239,7 @@ export default function Clients() {
                         <button
                           onClick={() => ouvrirEdition(c)}
                           aria-label={`Modifier ${c.nom}`}
-                          style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 8, padding: '0.35rem', minWidth: 48, cursor: 'pointer', color: '#00BCD4' }}
+                          style={{ background: 'rgba(227,160,15,0.1)', border: 'none', borderRadius: 8, padding: '0.35rem', minWidth: 48, cursor: 'pointer', color: '#E3A00F' }}
                         >
                           <Edit2 size={14} />
                         </button>
@@ -285,30 +285,30 @@ export default function Clients() {
           const pctBien = avecSatisfaction.length > 0
             ? Math.round((avecSatisfaction.filter((v) => v.satisfaction === 'bien').length / avecSatisfaction.length) * 100)
             : null
-          const iconeSatisf = { bien: <Smile size={15} color="#22d98a" />, correct: <Meh size={15} color="#f0a832" />, probleme: <Frown size={15} color="#ef4444" /> }
+          const iconeSatisf = { bien: <Smile size={15} color="#91D9A3" />, correct: <Meh size={15} color="#E3A00F" />, probleme: <Frown size={15} color="#ef4444" /> }
           return (
             <div>
               <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem' }}>
-                <div style={{ flex: 1, background: '#070e1f', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
-                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Total Achats</p>
-                  <p style={{ color: '#D4AF37', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>{profil.totalAchats.toLocaleString('fr-FR')} FCFA</p>
+                <div style={{ flex: 1, background: '#1F3A2B', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
+                  <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Total Achats</p>
+                  <p style={{ color: '#E3A00F', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>{profil.totalAchats.toLocaleString('fr-FR')} FCFA</p>
                 </div>
-                <div style={{ flex: 1, background: '#070e1f', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
-                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>{t.satisfaction}</p>
-                  <p style={{ color: pctBien !== null ? '#22d98a' : '#7b89a8', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
+                <div style={{ flex: 1, background: '#1F3A2B', borderRadius: 10, padding: '0.75rem', textAlign: 'center' }}>
+                  <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>{t.satisfaction}</p>
+                  <p style={{ color: pctBien !== null ? '#91D9A3' : '#B7C5AE', fontWeight: 700, margin: 0, fontSize: '0.9rem' }}>
                     {pctBien !== null ? `${pctBien}%` : '—'}
                   </p>
                 </div>
               </div>
               <CreditClient client={profil} ventes={ventes} paiements={paiements} onRembourser={rembourser} />
-              <p style={{ color: '#9ba8c4', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Historique des ventes</p>
+              <p style={{ color: '#D9DEC9', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>Historique des ventes</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: 280, overflowY: 'auto' }}>
-                {historique.length === 0 && <p style={{ color: '#7b89a8', fontSize: '0.82rem' }}>Aucune vente encore.</p>}
+                {historique.length === 0 && <p style={{ color: '#B7C5AE', fontSize: '0.82rem' }}>Aucune vente encore.</p>}
                 {historique.map((v) => (
-                  <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070e1f', borderRadius: 8, padding: '0.6rem 0.75rem' }}>
+                  <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1F3A2B', borderRadius: 8, padding: '0.6rem 0.75rem' }}>
                     <div>
-                      <p style={{ color: '#f5f0e8', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>{v.total.toLocaleString('fr-FR')} FCFA</p>
-                      <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>{v.date}</p>
+                      <p style={{ color: '#F2EBCF', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>{v.total.toLocaleString('fr-FR')} FCFA</p>
+                      <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>{v.date}</p>
                     </div>
                     {v.satisfaction && iconeSatisf[v.satisfaction]}
                   </div>

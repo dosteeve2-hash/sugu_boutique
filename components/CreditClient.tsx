@@ -48,22 +48,22 @@ export default function CreditClient({ client, ventes, paiements, onRembourser }
     <section aria-label="Crédit du client" style={{ marginBottom: '1.25rem' }}>
       <div
         style={{
-          background: client.soldeDu > 0 ? 'rgba(239,68,68,0.08)' : 'rgba(34,217,138,0.08)',
-          border: `1px solid ${client.soldeDu > 0 ? '#ef444455' : '#22d98a55'}`,
+          background: client.soldeDu > 0 ? 'rgba(239,68,68,0.08)' : 'rgba(145,217,163,0.08)',
+          border: `1px solid ${client.soldeDu > 0 ? '#ef444455' : '#91D9A355'}`,
           borderRadius: 12,
           padding: '1rem',
           marginBottom: '0.9rem',
         }}
       >
-        <p style={{ color: '#9ba8c4', fontSize: '0.78rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Solde dû</p>
-        <p data-testid="solde-du" style={{ color: client.soldeDu > 0 ? '#ef4444' : '#22d98a', fontWeight: 900, fontSize: '1.6rem', margin: 0 }}>
+        <p style={{ color: '#D9DEC9', fontSize: '0.78rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Solde dû</p>
+        <p data-testid="solde-du" style={{ color: client.soldeDu > 0 ? '#ef4444' : '#91D9A3', fontWeight: 900, fontSize: '1.6rem', margin: 0 }}>
           {client.soldeDu > 0 ? fcfa(client.soldeDu) : 'Soldé'}
         </p>
       </div>
 
       {client.soldeDu > 0 && (
         <form onSubmit={valider} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1rem' }}>
-          <label htmlFor="remb-montant" style={{ color: '#9ba8c4', fontSize: '0.88rem', fontWeight: 700 }}>
+          <label htmlFor="remb-montant" style={{ color: '#D9DEC9', fontSize: '0.88rem', fontWeight: 700 }}>
             Montant encaissé
           </label>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -75,24 +75,24 @@ export default function CreditClient({ client, ventes, paiements, onRembourser }
               value={montant}
               onChange={(e) => setMontant(e.target.value)}
               placeholder="0"
-              style={{ flex: 1, minWidth: 0, minHeight: 56, background: '#070e1f', border: '1px solid #16233d', borderRadius: 12, padding: '0.6rem 0.9rem', color: '#f5f0e8', fontSize: '1.2rem', fontWeight: 700 }}
+              style={{ flex: 1, minWidth: 0, minHeight: 56, background: '#1F3A2B', border: '1px solid #496653', borderRadius: 12, padding: '0.6rem 0.9rem', color: '#F2EBCF', fontSize: '1.2rem', fontWeight: 700 }}
             />
             <button
               type="button"
               onClick={() => setMontant(String(client.soldeDu))}
-              style={{ minHeight: 56, flexShrink: 0, padding: '0 1rem', borderRadius: 12, border: '1px solid #00BCD4', background: 'transparent', color: '#00BCD4', fontWeight: 800, cursor: 'pointer' }}
+              style={{ minHeight: 56, flexShrink: 0, padding: '0 1rem', borderRadius: 12, border: '1px solid #E3A00F', background: 'transparent', color: '#E3A00F', fontWeight: 800, cursor: 'pointer' }}
             >
               Tout
             </button>
           </div>
-          <label htmlFor="remb-mode" style={{ color: '#9ba8c4', fontSize: '0.88rem', fontWeight: 700 }}>
+          <label htmlFor="remb-mode" style={{ color: '#D9DEC9', fontSize: '0.88rem', fontWeight: 700 }}>
             Payé par
           </label>
           <select
             id="remb-mode"
             value={mode}
             onChange={(e) => setMode(e.target.value as ModeRemboursement)}
-            style={{ minHeight: 52, background: '#070e1f', border: '1px solid #16233d', borderRadius: 12, padding: '0.6rem 0.9rem', color: '#f5f0e8', fontSize: '1rem' }}
+            style={{ minHeight: 52, background: '#1F3A2B', border: '1px solid #496653', borderRadius: 12, padding: '0.6rem 0.9rem', color: '#F2EBCF', fontSize: '1rem' }}
           >
             {MODES_REMBOURSEMENT.map((m) => (
               <option key={m} value={m}>
@@ -107,23 +107,23 @@ export default function CreditClient({ client, ventes, paiements, onRembourser }
           )}
           <button
             type="submit"
-            style={{ minHeight: 58, borderRadius: 14, border: 'none', background: '#22d98a', color: '#0A1628', fontWeight: 900, fontSize: '1.05rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+            style={{ minHeight: 58, borderRadius: 14, border: 'none', background: '#91D9A3', color: '#1F3A2B', fontWeight: 900, fontSize: '1.05rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
           >
             <Wallet size={20} /> Encaisser le remboursement
           </button>
         </form>
       )}
 
-      <p style={{ color: '#9ba8c4', fontSize: '0.8rem', fontWeight: 600, margin: '0 0 0.5rem' }}>Crédits et remboursements</p>
+      <p style={{ color: '#D9DEC9', fontSize: '0.8rem', fontWeight: 600, margin: '0 0 0.5rem' }}>Crédits et remboursements</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: 220, overflowY: 'auto' }}>
-        {mouvements.length === 0 && <p style={{ color: '#9ba8c4', fontSize: '0.85rem', margin: 0 }}>Aucun crédit pour ce client.</p>}
+        {mouvements.length === 0 && <p style={{ color: '#D9DEC9', fontSize: '0.85rem', margin: 0 }}>Aucun crédit pour ce client.</p>}
         {mouvements.map((m) => (
-          <div key={`${m.signe}-${m.id}`} style={{ display: 'flex', justifyContent: 'space-between', background: '#070e1f', borderRadius: 8, padding: '0.55rem 0.75rem' }}>
+          <div key={`${m.signe}-${m.id}`} style={{ display: 'flex', justifyContent: 'space-between', background: '#1F3A2B', borderRadius: 8, padding: '0.55rem 0.75rem' }}>
             <div>
-              <p style={{ color: '#f5f0e8', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>{m.libelle}</p>
-              <p style={{ color: '#9ba8c4', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>{m.date}</p>
+              <p style={{ color: '#F2EBCF', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>{m.libelle}</p>
+              <p style={{ color: '#D9DEC9', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>{m.date}</p>
             </div>
-            <p style={{ color: m.signe === 1 ? '#ef4444' : '#22d98a', fontWeight: 800, margin: 0 }}>
+            <p style={{ color: m.signe === 1 ? '#ef4444' : '#91D9A3', fontWeight: 800, margin: 0 }}>
               {m.signe === 1 ? '+' : '−'} {fcfa(m.montant)}
             </p>
           </div>

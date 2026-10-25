@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "commerce-etal",
+    "fichier": "/images/photos/commerce-etal.webp",
+    "width": 1600,
+    "height": 1200,
+    "titre": "Le marché des fruits et legumes1.jpg",
+    "auteur": "Tissoufou",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.fr",
+    "source": "https://commons.wikimedia.org/wiki/File:Le_march%C3%A9_des_fruits_et_legumes1.jpg",
+    "modifications": "Redimensionnée et convertie en WebP. Le fichier modifié reste sous la même licence."
+  },
+  {
+    "slug": "commerce-boutique",
+    "fichier": "/images/photos/commerce-boutique.webp",
+    "width": 1200,
+    "height": 1600,
+    "titre": "TOECIN yaar (le marché de TOECIN à Tampouy) 05.jpg",
+    "auteur": "Ibrahim Somgalia Guitti",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.fr",
+    "source": "https://commons.wikimedia.org/wiki/File:TOECIN_yaar_(le_march%C3%A9_de_TOECIN_%C3%A0_Tampouy)_05.jpg",
+    "modifications": "Redimensionnée et convertie en WebP. Le fichier modifié reste sous la même licence."
+  }
+]

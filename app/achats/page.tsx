@@ -81,9 +81,9 @@ export default function Achats() {
     <div>
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
-          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Achats</h2>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
-            Total dépensé : <span style={{ color: '#9ba8c4', fontWeight: 600 }}>{totalDepenses.toLocaleString('fr-FR')} FCFA</span>
+          <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Achats</h2>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+            Total dépensé : <span style={{ color: '#D9DEC9', fontWeight: 600 }}>{totalDepenses.toLocaleString('fr-FR')} FCFA</span>
           </p>
         </div>
         <button
@@ -93,8 +93,8 @@ export default function Achats() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: peutAjouter ? '#D4AF37' : '#7b89a8',
-            color: '#0A1628',
+            background: peutAjouter ? '#E3A00F' : '#B7C5AE',
+            color: '#1F3A2B',
             border: 'none',
             borderRadius: 8,
             padding: '0.65rem 1.1rem',
@@ -108,11 +108,11 @@ export default function Achats() {
       </div>
 
       {!peutAjouter && (
-        <p style={{ color: '#f0a832', fontSize: '0.8rem', marginBottom: '1rem' }}>
+        <p style={{ color: '#E3A00F', fontSize: '0.8rem', marginBottom: '1rem' }}>
           Ajoutez d&apos;abord un{' '}
-          {produits.length === 0 && <Link href="/produits" style={{ color: '#00BCD4', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>produit</Link>}
+          {produits.length === 0 && <Link href="/produits" style={{ color: '#E3A00F', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>produit</Link>}
           {produits.length === 0 && fournisseurs.length === 0 && ' et un '}
-          {fournisseurs.length === 0 && <Link href="/fournisseurs" style={{ color: '#00BCD4', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>fournisseur</Link>} pour enregistrer un achat.
+          {fournisseurs.length === 0 && <Link href="/fournisseurs" style={{ color: '#E3A00F', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>fournisseur</Link>} pour enregistrer un achat.
         </p>
       )}
 
@@ -128,28 +128,28 @@ export default function Achats() {
         <>
           <div className="sugu-kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
             {[
-              { label: 'Total Dépensé', value: `${totalDepenses.toLocaleString('fr-FR')} FCFA`, color: '#9ba8c4' },
-              { label: 'Commandes Livrées', value: `${achats.filter((a) => a.statut === 'Livré').length}`, color: '#22d98a' },
-              { label: 'En Attente', value: `${achats.filter((a) => a.statut === 'En attente').length}`, color: '#f0a832' },
+              { label: 'Total Dépensé', value: `${totalDepenses.toLocaleString('fr-FR')} FCFA`, color: '#D9DEC9' },
+              { label: 'Commandes Livrées', value: `${achats.filter((a) => a.statut === 'Livré').length}`, color: '#91D9A3' },
+              { label: 'En Attente', value: `${achats.filter((a) => a.statut === 'En attente').length}`, color: '#E3A00F' },
             ].map((k) => (
-              <div key={k.label} style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #16233d' }}>
-                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
+              <div key={k.label} style={{ background: '#263F30', borderRadius: 12, padding: '1rem', border: '1px solid #496653' }}>
+                <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
                 <p style={{ color: k.color, fontWeight: 700, fontSize: '1.1rem', margin: 0 }}>{k.value}</p>
               </div>
             ))}
           </div>
 
-          <div className="sugu-table-wrap" style={{ background: '#0c1528', borderRadius: 12, overflow: 'hidden', border: '1px solid #16233d' }}>
+          <div className="sugu-table-wrap" style={{ background: '#263F30', borderRadius: 12, overflow: 'hidden', border: '1px solid #496653' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}>
               <thead>
-                <tr style={{ background: '#070e1f' }}>
+                <tr style={{ background: '#1F3A2B' }}>
                   {['Fournisseur', 'Produit', 'Qté', 'Prix Unit.', 'Total', 'Statut', 'Date'].map((h) => (
                     <th
                       key={h}
                       style={{
                         padding: '0.75rem 1rem',
                         textAlign: 'left',
-                        color: '#7b89a8',
+                        color: '#B7C5AE',
                         fontSize: '0.75rem',
                         fontWeight: 600,
                         textTransform: 'uppercase',
@@ -168,22 +168,22 @@ export default function Achats() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
-                    style={{ borderTop: '1px solid #16233d' }}
+                    style={{ borderTop: '1px solid #496653' }}
                   >
-                    <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>{a.fournisseur}</td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4' }}>{a.produit}</td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#00BCD4', fontWeight: 600 }}>{a.quantite}</td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>
+                    <td style={{ padding: '0.75rem 1rem', color: '#F2EBCF', fontWeight: 500 }}>{a.fournisseur}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9' }}>{a.produit}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#E3A00F', fontWeight: 600 }}>{a.quantite}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.875rem' }}>
                       {a.prixUnit.toLocaleString('fr-FR')} FCFA
                     </td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#D4AF37', fontWeight: 700 }}>
+                    <td style={{ padding: '0.75rem 1rem', color: '#E3A00F', fontWeight: 700 }}>
                       {a.total.toLocaleString('fr-FR')} FCFA
                     </td>
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <span
                         style={{
-                          background: a.statut === 'Livré' ? 'rgba(34,217,138,0.1)' : 'rgba(240,168,50,0.1)',
-                          color: a.statut === 'Livré' ? '#22d98a' : '#f0a832',
+                          background: a.statut === 'Livré' ? 'rgba(145,217,163,0.1)' : 'rgba(227,160,15,0.1)',
+                          color: a.statut === 'Livré' ? '#91D9A3' : '#E3A00F',
                           padding: '0.2rem 0.6rem',
                           borderRadius: 99,
                           fontSize: '0.75rem',
@@ -193,7 +193,7 @@ export default function Achats() {
                         {a.statut}
                       </span>
                     </td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{a.date}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.875rem' }}>{a.date}</td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -232,8 +232,8 @@ export default function Achats() {
               <option value="En attente">En attente</option>
             </SelectInput>
           </FormField>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem' }}>
-            Total : <strong style={{ color: '#D4AF37' }}>{(quantite * prixUnit).toLocaleString('fr-FR')} FCFA</strong>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem' }}>
+            Total : <strong style={{ color: '#E3A00F' }}>{(quantite * prixUnit).toLocaleString('fr-FR')} FCFA</strong>
           </p>
           <SubmitRow onCancel={() => setShowForm(false)} submitLabel="Enregistrer l'achat" />
         </form>

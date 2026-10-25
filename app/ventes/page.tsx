@@ -15,10 +15,10 @@ import { FormField, TextInput, SelectInput, SubmitRow } from '@/components/FormF
 const MODES_PAIEMENT: ModePaiement[] = ['Espèces', 'Orange Money', 'Wave', 'Moov Money', 'Crédit']
 
 const MODE_STYLE: Record<ModePaiement, { bg: string; color: string }> = {
-  'Espèces': { bg: 'rgba(34,217,138,0.1)', color: '#22d98a' },
-  'Orange Money': { bg: 'rgba(240,168,50,0.12)', color: '#f0a832' },
-  'Wave': { bg: 'rgba(0,188,212,0.12)', color: '#00BCD4' },
-  'Moov Money': { bg: 'rgba(212,175,55,0.12)', color: '#D4AF37' },
+  'Espèces': { bg: 'rgba(145,217,163,0.1)', color: '#91D9A3' },
+  'Orange Money': { bg: 'rgba(227,160,15,0.12)', color: '#E3A00F' },
+  'Wave': { bg: 'rgba(227,160,15,0.12)', color: '#E3A00F' },
+  'Moov Money': { bg: 'rgba(227,160,15,0.12)', color: '#E3A00F' },
   'Crédit': { bg: 'rgba(239,68,68,0.1)', color: '#ef4444' },
 }
 
@@ -129,9 +129,9 @@ export default function Ventes() {
     <div>
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
-          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Ventes</h2>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
-            Aujourd&apos;hui : <span style={{ color: '#22d98a', fontWeight: 600 }}>{totalJour.toLocaleString('fr-FR')} FCFA</span>
+          <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Ventes</h2>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+            Aujourd&apos;hui : <span style={{ color: '#91D9A3', fontWeight: 600 }}>{totalJour.toLocaleString('fr-FR')} FCFA</span>
           </p>
         </div>
         <button
@@ -141,8 +141,8 @@ export default function Ventes() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: peutAjouter ? '#D4AF37' : '#7b89a8',
-            color: '#0A1628',
+            background: peutAjouter ? '#E3A00F' : '#B7C5AE',
+            color: '#1F3A2B',
             border: 'none',
             borderRadius: 8,
             padding: '0.65rem 1.1rem',
@@ -156,8 +156,8 @@ export default function Ventes() {
       </div>
 
       {!peutAjouter && (
-        <p style={{ color: '#f0a832', fontSize: '0.8rem', marginBottom: '1rem' }}>
-          Ajoutez d&apos;abord un <Link href="/produits" style={{ color: '#00BCD4' }}>produit</Link> pour enregistrer une vente.
+        <p style={{ color: '#E3A00F', fontSize: '0.8rem', marginBottom: '1rem' }}>
+          Ajoutez d&apos;abord un <Link href="/produits" style={{ color: '#E3A00F' }}>produit</Link> pour enregistrer une vente.
         </p>
       )}
 
@@ -173,12 +173,12 @@ export default function Ventes() {
         <>
           <div className="sugu-kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
             {[
-              { label: 'Total Ventes', value: ventes.reduce((a, v) => a + v.total, 0), color: '#D4AF37', suffix: 'FCFA' },
-              { label: 'Ventes Payées', value: ventes.filter((v) => v.statut === 'Payé').length, color: '#22d98a', suffix: 'transactions' },
+              { label: 'Total Ventes', value: ventes.reduce((a, v) => a + v.total, 0), color: '#E3A00F', suffix: 'FCFA' },
+              { label: 'Ventes Payées', value: ventes.filter((v) => v.statut === 'Payé').length, color: '#91D9A3', suffix: 'transactions' },
               { label: 'Ventes à Crédit', value: ventes.filter((v) => v.statut === 'Crédit').length, color: '#ef4444', suffix: 'transactions' },
             ].map((k) => (
-              <div key={k.label} style={{ background: '#0c1528', borderRadius: 12, padding: '1rem', border: '1px solid #16233d' }}>
-                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
+              <div key={k.label} style={{ background: '#263F30', borderRadius: 12, padding: '1rem', border: '1px solid #496653' }}>
+                <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.4rem', textTransform: 'uppercase' }}>{k.label}</p>
                 <p style={{ color: k.color, fontWeight: 700, fontSize: '1.1rem', margin: 0 }}>
                   {k.suffix === 'FCFA' ? k.value.toLocaleString('fr-FR') : k.value}{' '}
                   <span style={{ fontSize: '0.75rem', fontWeight: 400 }}>{k.suffix}</span>
@@ -187,17 +187,17 @@ export default function Ventes() {
             ))}
           </div>
 
-          <div className="sugu-table-wrap" style={{ background: '#0c1528', borderRadius: 12, overflow: 'hidden', border: '1px solid #16233d' }}>
+          <div className="sugu-table-wrap" style={{ background: '#263F30', borderRadius: 12, overflow: 'hidden', border: '1px solid #496653' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}>
               <thead>
-                <tr style={{ background: '#070e1f' }}>
+                <tr style={{ background: '#1F3A2B' }}>
                   {['#', 'Client', 'Montant', 'Produits', 'Paiement', 'Statut', 'Date'].map((h) => (
                     <th
                       key={h}
                       style={{
                         padding: '0.75rem 1rem',
                         textAlign: 'left',
-                        color: '#7b89a8',
+                        color: '#B7C5AE',
                         fontSize: '0.75rem',
                         fontWeight: 600,
                         textTransform: 'uppercase',
@@ -216,14 +216,14 @@ export default function Ventes() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: Math.min(i, 10) * 0.05 }}
-                    style={{ borderTop: '1px solid #16233d' }}
+                    style={{ borderTop: '1px solid #496653' }}
                   >
-                    <td style={{ padding: '0.75rem 1rem', color: '#7b89a8', fontSize: '0.8rem' }}>#{v.id.toString().slice(-4)}</td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#f5f0e8', fontWeight: 500 }}>{v.client}</td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#D4AF37', fontWeight: 700 }}>
+                    <td style={{ padding: '0.75rem 1rem', color: '#B7C5AE', fontSize: '0.8rem' }}>#{v.id.toString().slice(-4)}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#F2EBCF', fontWeight: 500 }}>{v.client}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#E3A00F', fontWeight: 700 }}>
                       {v.total.toLocaleString('fr-FR')} FCFA
                     </td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4' }}>
+                    <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9' }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                         <ShoppingCart size={14} /> {v.lignes.reduce((a, l) => a + l.quantite, 0)}
                       </span>
@@ -245,8 +245,8 @@ export default function Ventes() {
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <span
                         style={{
-                          background: v.statut === 'Payé' ? 'rgba(34,217,138,0.1)' : 'rgba(239,68,68,0.1)',
-                          color: v.statut === 'Payé' ? '#22d98a' : '#ef4444',
+                          background: v.statut === 'Payé' ? 'rgba(145,217,163,0.1)' : 'rgba(239,68,68,0.1)',
+                          color: v.statut === 'Payé' ? '#91D9A3' : '#ef4444',
                           padding: '0.2rem 0.6rem',
                           borderRadius: 99,
                           fontSize: '0.75rem',
@@ -256,7 +256,7 @@ export default function Ventes() {
                         {v.statut}
                       </span>
                     </td>
-                    <td style={{ padding: '0.75rem 1rem', color: '#9ba8c4', fontSize: '0.875rem' }}>{v.date}</td>
+                    <td style={{ padding: '0.75rem 1rem', color: '#D9DEC9', fontSize: '0.875rem' }}>{v.date}</td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -276,7 +276,7 @@ export default function Ventes() {
             </SelectInput>
           </FormField>
 
-          <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.8rem', marginBottom: '0.4rem', fontWeight: 600 }}>Produits</label>
+          <label style={{ display: 'block', color: '#D9DEC9', fontSize: '0.8rem', marginBottom: '0.4rem', fontWeight: 600 }}>Produits</label>
           {lignes.map((l, i) => (
             <div key={i} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center' }}>
               <SelectInput value={l.produitId} onChange={(e) => modifierLigne(i, Number(e.target.value))} style={{ flex: 2 }}>
@@ -307,8 +307,8 @@ export default function Ventes() {
             disabled={lignes.length >= produits.length}
             style={{
               background: 'transparent',
-              border: '1px dashed #16233d',
-              color: '#00BCD4',
+              border: '1px dashed #496653',
+              color: '#E3A00F',
               borderRadius: 8,
               padding: '0.5rem',
               width: '100%',
@@ -329,21 +329,21 @@ export default function Ventes() {
           </FormField>
 
           {depassementsForm.length > 0 && (
-            <p role="alert" style={{ color: '#f0a832', fontSize: '0.85rem', fontWeight: 600 }}>
+            <p role="alert" style={{ color: '#E3A00F', fontSize: '0.85rem', fontWeight: 600 }}>
               Stock insuffisant : {depassementsForm.map((d) => `${d.nom} (${d.disponible} en stock)`).join(', ')}
             </p>
           )}
           {modePaiement === 'Crédit' && clientId === 'passage' && (
             <p role="alert" style={{ color: '#ef4444', fontSize: '0.85rem', fontWeight: 600 }}>
               Choisissez un client pour une vente à crédit.{' '}
-              <Link href="/clients" style={{ color: '#00BCD4' }}>Créer un client</Link>
+              <Link href="/clients" style={{ color: '#E3A00F' }}>Créer un client</Link>
             </p>
           )}
           {erreur && modePaiement !== 'Crédit' && (
             <p role="alert" style={{ color: '#ef4444', fontSize: '0.85rem' }}>{erreur}</p>
           )}
-          <p style={{ color: '#9ba8c4', fontSize: '0.9rem' }}>
-            Total : <strong style={{ color: '#D4AF37' }}>{total.toLocaleString('fr-FR')} FCFA</strong>
+          <p style={{ color: '#D9DEC9', fontSize: '0.9rem' }}>
+            Total : <strong style={{ color: '#E3A00F' }}>{total.toLocaleString('fr-FR')} FCFA</strong>
           </p>
           <SubmitRow onCancel={() => setShowForm(false)} submitLabel="Enregistrer la vente" />
         </form>

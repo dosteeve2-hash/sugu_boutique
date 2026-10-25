@@ -21,10 +21,10 @@ const STYLE_NIVEAU = {
     dot: '#ef4444',
   },
   bas: {
-    bg: 'rgba(240,168,50,0.08)',
-    border: 'rgba(240,168,50,0.25)',
-    badge: { bg: '#f0a832', text: '#0A1628' },
-    dot: '#f0a832',
+    bg: 'rgba(227,160,15,0.08)',
+    border: 'rgba(227,160,15,0.25)',
+    badge: { bg: '#E3A00F', text: '#1F3A2B' },
+    dot: '#E3A00F',
   },
 }
 
@@ -47,9 +47,9 @@ export default function AlertesStock() {
   return (
     <div
       style={{
-        background: '#0c1528',
+        background: '#263F30',
         borderRadius: 12,
-        border: '1px solid #16233d',
+        border: '1px solid #496653',
         overflow: 'hidden',
       }}
     >
@@ -60,12 +60,12 @@ export default function AlertesStock() {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '1rem 1.25rem',
-          borderBottom: '1px solid #16233d',
+          borderBottom: '1px solid #496653',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <AlertTriangle size={17} color={alertes.length > 0 ? '#f0a832' : '#22d98a'} />
-          <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 600, margin: 0 }}>
+          <AlertTriangle size={17} color={alertes.length > 0 ? '#E3A00F' : '#91D9A3'} />
+          <h3 style={{ color: '#F2EBCF', fontSize: '0.95rem', fontWeight: 600, margin: 0 }}>
             Alertes Stock
           </h3>
           {alertes.length > 0 && (
@@ -113,8 +113,8 @@ export default function AlertesStock() {
               animate={{ opacity: 1 }}
               style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.75rem 0' }}
             >
-              <CheckCircle size={16} color="#22d98a" />
-              <span style={{ color: '#22d98a', fontSize: '0.85rem', fontWeight: 500 }}>
+              <CheckCircle size={16} color="#91D9A3" />
+              <span style={{ color: '#91D9A3', fontSize: '0.85rem', fontWeight: 500 }}>
                 Aucune alerte — tous les stocks sont suffisants.
               </span>
             </motion.div>
@@ -142,10 +142,10 @@ export default function AlertesStock() {
                 >
                   {/* Infos produit */}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ color: '#f5f0e8', fontSize: '0.82rem', fontWeight: 600, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <p style={{ color: '#F2EBCF', fontSize: '0.82rem', fontWeight: 600, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {p.nom}
                     </p>
-                    <p style={{ color: '#9ba8c4', fontSize: '0.75rem', margin: '0.15rem 0 0' }}>
+                    <p style={{ color: '#D9DEC9', fontSize: '0.75rem', margin: '0.15rem 0 0' }}>
                       Stock : <strong style={{ color: style.dot }}>{p.stock}</strong> / min {p.stockMin} {p.unite ?? ''}
                     </p>
                   </div>

@@ -9,10 +9,10 @@ import { useSauvegarde } from '@/components/SyncProvider'
 import type { StatutSauvegarde } from '@/lib/sync/types'
 
 const LIBELLES: Record<Exclude<StatutSauvegarde, 'sans-compte'>, { texte: string; couleur: string }> = {
-  'a-jour': { texte: 'Sauvegarde : à jour', couleur: '#22d98a' },
-  'en-attente': { texte: 'Sauvegarde : en attente', couleur: '#f0a832' },
-  'hors-ligne': { texte: 'Sauvegarde : hors ligne', couleur: '#f0a832' },
-  'a-faire': { texte: 'Sauvegarde : à faire', couleur: '#f0a832' },
+  'a-jour': { texte: 'Sauvegarde : à jour', couleur: '#91D9A3' },
+  'en-attente': { texte: 'Sauvegarde : en attente', couleur: '#E3A00F' },
+  'hors-ligne': { texte: 'Sauvegarde : hors ligne', couleur: '#E3A00F' },
+  'a-faire': { texte: 'Sauvegarde : à faire', couleur: '#E3A00F' },
   'session-expiree': { texte: 'Sauvegarde : reconnectez-vous', couleur: '#ef4444' },
 }
 
@@ -55,11 +55,11 @@ export function PastilleSauvegarde() {
       >
         <Icone size={16} /> {info.texte}
       </Link>
-      {aide && <span style={{ color: '#9ba8c4', fontSize: '0.82rem' }}>{aide}</span>}
+      {aide && <span style={{ color: '#D9DEC9', fontSize: '0.82rem' }}>{aide}</span>}
       {(statut === 'en-attente' || statut === 'hors-ligne') && (
         <button
           onClick={() => void synchroniser()}
-          style={{ minHeight: 44, padding: '0 0.9rem', borderRadius: 10, border: '1px solid #1f3054', background: 'transparent', color: '#00BCD4', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' }}
+          style={{ minHeight: 44, padding: '0 0.9rem', borderRadius: 10, border: '1px solid #5B755F', background: 'transparent', color: '#E3A00F', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' }}
         >
           Réessayer
         </button>
@@ -98,12 +98,12 @@ export default function SauvegardeBandeau() {
         marginBottom: '1.25rem',
         padding: '0.75rem 1rem',
         borderRadius: 12,
-        background: urgent ? 'rgba(240,168,50,0.1)' : '#111d34',
-        border: `1px solid ${urgent ? '#f0a83288' : '#1f3054'}`,
+        background: urgent ? 'rgba(227,160,15,0.1)' : '#284334',
+        border: `1px solid ${urgent ? '#E3A00F88' : '#5B755F'}`,
       }}
     >
-      <ShieldAlert size={20} color="#f0a832" style={{ flexShrink: 0 }} />
-      <p style={{ flex: '1 1 200px', margin: 0, color: '#f5f0e8', fontSize: '0.9rem', lineHeight: 1.4 }}>
+      <ShieldAlert size={20} color="#E3A00F" style={{ flexShrink: 0 }} />
+      <p style={{ flex: '1 1 200px', margin: 0, color: '#F2EBCF', fontSize: '0.9rem', lineHeight: 1.4 }}>
         <strong>Vos données sont enregistrées sur ce téléphone seulement.</strong>{' '}
         Créez un compte gratuit pour les sauvegarder en ligne.
       </p>
@@ -116,8 +116,8 @@ export default function SauvegardeBandeau() {
           minHeight: 48,
           padding: '0 1.1rem',
           borderRadius: 10,
-          background: '#D4AF37',
-          color: '#0A1628',
+          background: '#E3A00F',
+          color: '#1F3A2B',
           fontWeight: 800,
           fontSize: '0.9rem',
           textDecoration: 'none',

@@ -49,7 +49,7 @@ export default function BoutiqueFormModal({ open, onClose, onSubmit, edition }: 
         </FormField>
 
         <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.8rem', marginBottom: '0.5rem', fontWeight: 600 }}>
+          <label style={{ display: 'block', color: '#D9DEC9', fontSize: '0.8rem', marginBottom: '0.5rem', fontWeight: 600 }}>
             {t.typeBoutique}
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
@@ -67,13 +67,13 @@ export default function BoutiqueFormModal({ open, onClose, onSubmit, edition }: 
                     gap: '0.3rem',
                     padding: '0.75rem 0.4rem',
                     borderRadius: 10,
-                    border: selectionne ? '2px solid #D4AF37' : '1px solid #16233d',
-                    background: selectionne ? 'rgba(212,175,55,0.1)' : '#070e1f',
+                    border: selectionne ? '2px solid #E3A00F' : '1px solid #496653',
+                    background: selectionne ? 'rgba(227,160,15,0.1)' : '#1F3A2B',
                     cursor: 'pointer',
                   }}
                 >
                   <span style={{ fontSize: '1.4rem' }}>{tb.emoji}</span>
-                  <span style={{ fontSize: '0.75rem', color: selectionne ? '#D4AF37' : '#9ba8c4', fontWeight: 600, textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.75rem', color: selectionne ? '#E3A00F' : '#D9DEC9', fontWeight: 600, textAlign: 'center' }}>
                     {tb.type}
                   </span>
                 </button>
@@ -83,7 +83,7 @@ export default function BoutiqueFormModal({ open, onClose, onSubmit, edition }: 
         </div>
 
         <div style={{ marginBottom: '1.25rem' }}>
-          <label style={{ display: 'block', color: '#9ba8c4', fontSize: '0.8rem', marginBottom: '0.5rem', fontWeight: 600 }}>
+          <label style={{ display: 'block', color: '#D9DEC9', fontSize: '0.8rem', marginBottom: '0.5rem', fontWeight: 600 }}>
             {t.couleurBoutique}
           </label>
           <div style={{ display: 'flex', gap: '0.6rem' }}>
@@ -100,7 +100,7 @@ export default function BoutiqueFormModal({ open, onClose, onSubmit, edition }: 
                   minHeight: 44,
                   borderRadius: '50%',
                   background: c,
-                  border: couleur === c ? '3px solid #f5f0e8' : '3px solid transparent',
+                  border: couleur === c ? '3px solid #F2EBCF' : '3px solid transparent',
                   cursor: 'pointer',
                   boxShadow: couleur === c ? `0 0 0 2px ${c}` : 'none',
                 }}

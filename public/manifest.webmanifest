@@ -2,16 +2,15 @@
   "id": "/",
   "name": "SUGU",
   "short_name": "SUGU",
-  "description": "La caisse et la gestion des petits commerçants, même sans réseau.",
+  "description": "Gestion de boutique sur t\u00e9l\u00e9phone, avec acc\u00e8s hors ligne apr\u00e8s chargement.",
   "lang": "fr",
-  "start_url": "/",
+  "start_url": "/app",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0A1628",
-  "theme_color": "#0A1628",
+  "background_color": "#1F3A2B",
+  "theme_color": "#1F3A2B",
   "icons": [
-    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    { "src": "/brand/mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }

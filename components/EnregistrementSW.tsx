@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { NAV_TOUS } from '@/lib/nav'
 
-export const SW_VERSION = 'sugu-sw-v1'
+export const SW_VERSION = 'sugu-sw-v2'
 const CLE_PRECACHE = 'sugucloud_sw_precache'
 
 export default function EnregistrementSW() {

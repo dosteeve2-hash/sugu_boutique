@@ -131,10 +131,10 @@ export default function RapportJour() {
   const totalCredit = clients.reduce((s, c) => s + (c.soldeDu ?? 0), 0)
 
   const stats = [
-    { icon: TrendingUp, label: 'CA du Jour',           value: `${caJour.toLocaleString('fr-FR')} F`,    color: '#D4AF37' },
-    { icon: ShoppingBag, label: 'Ventes',               value: String(nbVentes),                         color: '#00BCD4' },
-    { icon: BarChart2,   label: 'Panier Moyen',         value: `${panierMoyen.toLocaleString('fr-FR')} F`, color: '#22d98a' },
-    { icon: CreditCard,  label: 'Total Crédit en Cours', value: `${totalCredit.toLocaleString('fr-FR')} F`, color: '#f0a832' },
+    { icon: TrendingUp, label: 'CA du Jour',           value: `${caJour.toLocaleString('fr-FR')} F`,    color: '#E3A00F' },
+    { icon: ShoppingBag, label: 'Ventes',               value: String(nbVentes),                         color: '#E3A00F' },
+    { icon: BarChart2,   label: 'Panier Moyen',         value: `${panierMoyen.toLocaleString('fr-FR')} F`, color: '#91D9A3' },
+    { icon: CreditCard,  label: 'Total Crédit en Cours', value: `${totalCredit.toLocaleString('fr-FR')} F`, color: '#E3A00F' },
   ]
 
   return (
@@ -142,15 +142,15 @@ export default function RapportJour() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.1 }}
-      style={{ background: '#0c1528', borderRadius: 14, padding: '1.25rem', border: '1px solid #16233d', marginTop: '1.5rem' }}
+      style={{ background: '#263F30', borderRadius: 14, padding: '1.25rem', border: '1px solid #496653', marginTop: '1.5rem' }}
     >
       {/* En-tête */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
         <div>
-          <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
+          <h3 style={{ color: '#F2EBCF', fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
             Rapport du Jour
           </h3>
-          <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.2rem 0 0' }}>
+          <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0.2rem 0 0' }}>
             {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
           </p>
         </div>
@@ -160,9 +160,9 @@ export default function RapportJour() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.4rem',
-            background: 'rgba(212,175,55,0.1)',
-            border: '1px solid rgba(212,175,55,0.25)',
-            color: '#D4AF37',
+            background: 'rgba(227,160,15,0.1)',
+            border: '1px solid rgba(227,160,15,0.25)',
+            color: '#E3A00F',
             padding: '0.45rem 0.85rem',
             borderRadius: 9,
             fontSize: '0.78rem',
@@ -184,7 +184,7 @@ export default function RapportJour() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: i * 0.05 }}
             style={{
-              background: '#070e1f',
+              background: '#1F3A2B',
               borderRadius: 10,
               padding: '0.85rem',
               border: `1px solid ${color}22`,
@@ -206,7 +206,7 @@ export default function RapportJour() {
               <Icon size={15} style={{ color }} />
             </div>
             <p style={{ color, fontSize: '1rem', fontWeight: 800, margin: '0 0 0.2rem' }}>{value}</p>
-            <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: 0, lineHeight: 1.3 }}>{label}</p>
+            <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: 0, lineHeight: 1.3 }}>{label}</p>
           </motion.div>
         ))}
       </div>
