@@ -4,11 +4,11 @@ import { cloneElement, isValidElement, useId } from 'react'
 
 const inputStyle: React.CSSProperties = {
   width: '100%',
-  background: '#070e1f',
-  border: '1px solid #16233d',
+  background: '#1F3A2B',
+  border: '1px solid #496653',
   borderRadius: 8,
   padding: '0.6rem 0.75rem',
-  color: '#f5f0e8',
+  color: '#F2EBCF',
   fontSize: '1rem',
   minHeight: 48,
   outline: 'none',
@@ -27,7 +27,7 @@ export function FormField({
     isValidElement<{ id?: string }>(children) && !children.props.id ? cloneElement(children, { id }) : children
   return (
     <div style={{ marginBottom: '1rem' }}>
-      <label htmlFor={id} style={{ display: 'block', color: '#9ba8c4', fontSize: '0.85rem', marginBottom: '0.4rem', fontWeight: 600 }}>
+      <label htmlFor={id} style={{ display: 'block', color: '#D9DEC9', fontSize: '0.85rem', marginBottom: '0.4rem', fontWeight: 600 }}>
         {label}
       </label>
       {champ}
@@ -52,8 +52,8 @@ export function SubmitRow({ onCancel, submitLabel = 'Enregistrer' }: { onCancel:
         style={{
           flex: 1,
           background: 'transparent',
-          border: '1px solid #16233d',
-          color: '#9ba8c4',
+          border: '1px solid #496653',
+          color: '#D9DEC9',
           borderRadius: 8,
           padding: '0.65rem',
           fontWeight: 600,
@@ -67,9 +67,9 @@ export function SubmitRow({ onCancel, submitLabel = 'Enregistrer' }: { onCancel:
         type="submit"
         style={{
           flex: 1,
-          background: '#D4AF37',
+          background: '#E3A00F',
           border: 'none',
-          color: '#0A1628',
+          color: '#1F3A2B',
           borderRadius: 8,
           padding: '0.65rem',
           fontWeight: 700,

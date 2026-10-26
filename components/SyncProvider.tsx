@@ -220,11 +220,11 @@ export function SyncProvider({ children }: { children: React.ReactNode }) {
       {children}
       <Modal open={dialogue} onClose={reporter} title="Sauvegarder mes données">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <p style={{ color: '#f5f0e8', fontSize: '1rem', lineHeight: 1.5, margin: 0 }}>
+          <p style={{ color: '#F2EBCF', fontSize: '1rem', lineHeight: 1.5, margin: 0 }}>
             Votre compte est prêt. Mettons vos données de ce téléphone en sécurité :
           </p>
           {resume && (
-            <ul style={{ color: '#9ba8c4', fontSize: '0.95rem', lineHeight: 1.7, margin: 0, paddingLeft: '1.25rem' }}>
+            <ul style={{ color: '#D9DEC9', fontSize: '0.95rem', lineHeight: 1.7, margin: 0, paddingLeft: '1.25rem' }}>
               <li>{resume.boutiques} boutique{resume.boutiques > 1 ? 's' : ''}</li>
               <li>{resume.produits} produit{resume.produits > 1 ? 's' : ''}</li>
               <li>{resume.clients} client{resume.clients > 1 ? 's' : ''}</li>
@@ -238,8 +238,8 @@ export function SyncProvider({ children }: { children: React.ReactNode }) {
               minHeight: 56,
               borderRadius: 12,
               border: 'none',
-              background: '#D4AF37',
-              color: '#0A1628',
+              background: '#E3A00F',
+              color: '#1F3A2B',
               fontWeight: 800,
               fontSize: '1rem',
               cursor: envoiEnCours ? 'wait' : 'pointer',
@@ -253,7 +253,7 @@ export function SyncProvider({ children }: { children: React.ReactNode }) {
           </button>
           <button
             onClick={reporter}
-            style={{ minHeight: 48, borderRadius: 12, border: '1px solid #1f3054', background: 'transparent', color: '#9ba8c4', fontWeight: 600, cursor: 'pointer' }}
+            style={{ minHeight: 48, borderRadius: 12, border: '1px solid #5B755F', background: 'transparent', color: '#D9DEC9', fontWeight: 600, cursor: 'pointer' }}
           >
             Plus tard
           </button>

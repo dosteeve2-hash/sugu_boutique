@@ -59,8 +59,8 @@ export default function Fournisseurs() {
     <div>
       <div className="sugu-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
-          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Fournisseurs</h2>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Fournisseurs</h2>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {fournisseurs.length} fournisseur{fournisseurs.length !== 1 ? 's' : ''} partenaire{fournisseurs.length !== 1 ? 's' : ''}
           </p>
         </div>
@@ -70,8 +70,8 @@ export default function Fournisseurs() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: '#D4AF37',
-            color: '#0A1628',
+            background: '#E3A00F',
+            color: '#1F3A2B',
             border: 'none',
             borderRadius: 8,
             padding: '0.65rem 1.1rem',
@@ -101,19 +101,19 @@ export default function Fournisseurs() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: Math.min(i, 10) * 0.05 }}
               style={{
-                background: '#0c1528',
+                background: '#263F30',
                 borderRadius: 12,
                 padding: '1.25rem',
-                border: '1px solid #16233d',
+                border: '1px solid #496653',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <h3 style={{ color: '#f5f0e8', fontWeight: 700, margin: 0, fontSize: '1rem' }}>{f.nom}</h3>
+                <h3 style={{ color: '#F2EBCF', fontWeight: 700, margin: 0, fontSize: '1rem' }}>{f.nom}</h3>
                 <div style={{ display: 'flex', gap: '0.4rem' }}>
                   <button
                     onClick={() => ouvrirEdition(f)}
                     aria-label={`Modifier ${f.nom}`}
-                    style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 8, padding: '0.3rem', minWidth: 48, cursor: 'pointer', color: '#00BCD4' }}
+                    style={{ background: 'rgba(227,160,15,0.1)', border: 'none', borderRadius: 8, padding: '0.3rem', minWidth: 48, cursor: 'pointer', color: '#E3A00F' }}
                   >
                     <Edit2 size={13} />
                   </button>
@@ -128,29 +128,29 @@ export default function Fournisseurs() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-                <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ba8c4', fontSize: '0.85rem', margin: 0 }}>
+                <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#D9DEC9', fontSize: '0.85rem', margin: 0 }}>
                   <Phone size={13} /> {f.contact || '—'}
                 </p>
-                <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ba8c4', fontSize: '0.85rem', margin: 0 }}>
+                <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#D9DEC9', fontSize: '0.85rem', margin: 0 }}>
                   <MapPin size={13} /> {f.ville || '—'}
                 </p>
               </div>
 
-              <div style={{ background: '#070e1f', borderRadius: 8, padding: '0.75rem', marginBottom: '0.75rem' }}>
-                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Produits fournis</p>
-                <p style={{ color: '#00BCD4', fontSize: '0.82rem', margin: 0 }}>{f.produits || '—'}</p>
+              <div style={{ background: '#1F3A2B', borderRadius: 8, padding: '0.75rem', marginBottom: '0.75rem' }}>
+                <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.25rem', textTransform: 'uppercase' }}>Produits fournis</p>
+                <p style={{ color: '#E3A00F', fontSize: '0.82rem', margin: 0 }}>{f.produits || '—'}</p>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Total Achats</p>
-                  <p style={{ color: '#D4AF37', fontWeight: 700, margin: 0, fontSize: '0.95rem' }}>
+                  <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Total Achats</p>
+                  <p style={{ color: '#E3A00F', fontWeight: 700, margin: 0, fontSize: '0.95rem' }}>
                     {f.totalAchats.toLocaleString('fr-FR')} FCFA
                   </p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Dernière Commande</p>
-                  <p style={{ color: '#9ba8c4', fontSize: '0.82rem', margin: 0 }}>{f.derniereCommande}</p>
+                  <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.1rem', textTransform: 'uppercase' }}>Dernière Commande</p>
+                  <p style={{ color: '#D9DEC9', fontSize: '0.82rem', margin: 0 }}>{f.derniereCommande}</p>
                 </div>
               </div>
             </motion.div>

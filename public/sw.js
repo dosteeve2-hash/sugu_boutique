@@ -1,5 +1,5 @@
 /* SUGU : démarrage hors ligne. Version à garder identique à SW_VERSION dans components/EnregistrementSW.tsx */
-const VERSION = 'sugu-sw-v1'
+const VERSION = 'sugu-sw-v2'
 const PAGES = VERSION + '-pages'
 const STATIQUE = VERSION + '-static'
 
@@ -44,7 +44,7 @@ async function pageStaleWhileRevalidate(requete) {
   }
   const reponse = await reseau
   if (reponse) return reponse
-  return (await cache.match('/')) || new Response('Hors ligne', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } })
+  return (await cache.match('/app')) || (await cache.match('/')) || new Response('Hors ligne', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } })
 }
 
 async function cachePremier(requete) {

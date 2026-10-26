@@ -14,9 +14,9 @@ const CATEGORIES = ['Tous', 'Alimentaire', 'Hygiène', 'Boissons', 'Divers'] as 
 type Categorie = (typeof CATEGORIES)[number]
 
 const CAT_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  Alimentaire: { bg: 'rgba(212,175,55,0.12)', text: '#D4AF37', dot: '#D4AF37' },
+  Alimentaire: { bg: 'rgba(227,160,15,0.12)', text: '#E3A00F', dot: '#E3A00F' },
   Hygiène:     { bg: 'rgba(0,212,255,0.10)',  text: '#00D4FF', dot: '#00D4FF' },
-  Boissons:    { bg: 'rgba(34,217,138,0.10)', text: '#22d98a', dot: '#22d98a' },
+  Boissons:    { bg: 'rgba(145,217,163,0.10)', text: '#91D9A3', dot: '#91D9A3' },
   Divers:      { bg: 'rgba(167,139,250,0.10)',text: '#a78bfa', dot: '#a78bfa' },
 }
 
@@ -51,8 +51,8 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: Math.min(index, 11) * 0.04 }}
       style={{
-        background: '#0c1528', borderRadius: 14,
-        border: `1px solid ${(isCritique || isBas) ? '#ef444444' : '#16233d'}`,
+        background: '#263F30', borderRadius: 14,
+        border: `1px solid ${(isCritique || isBas) ? '#ef444444' : '#496653'}`,
         overflow: 'hidden', display: 'flex', flexDirection: 'column',
       }}
     >
@@ -61,7 +61,7 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
         {(isCritique || isBas) && (
           <div style={{
             position: 'absolute', top: 10, right: 10,
-            background: isCritique ? '#ef4444' : '#f0a832',
+            background: isCritique ? '#ef4444' : '#E3A00F',
             color: '#fff', fontSize: '0.75rem', fontWeight: 700,
             padding: '0.2rem 0.55rem', borderRadius: 99,
             display: 'flex', alignItems: 'center', gap: 4,
@@ -82,7 +82,7 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
             onClick={(e) => { e.stopPropagation(); onModifStock(p) }}
             style={{
               position: 'absolute', bottom: 10, right: 10,
-              background: '#D4AF37', color: '#0A1628', border: 'none',
+              background: '#E3A00F', color: '#1F3A2B', border: 'none',
               borderRadius: 99, width: 44, height: 44,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontWeight: 800, fontSize: '1rem', cursor: 'pointer',
@@ -96,20 +96,20 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
       </div>
 
       <div style={{ padding: '0.9rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-        <p style={{ color: '#f5f0e8', fontWeight: 700, fontSize: '0.88rem', margin: 0, lineHeight: 1.3 }}>{p.nom}</p>
-        <p style={{ color: '#D4AF37', fontWeight: 700, fontSize: '1rem', margin: 0 }}>
+        <p style={{ color: '#F2EBCF', fontWeight: 700, fontSize: '0.88rem', margin: 0, lineHeight: 1.3 }}>{p.nom}</p>
+        <p style={{ color: '#E3A00F', fontWeight: 700, fontSize: '1rem', margin: 0 }}>
           {p.prixVente.toLocaleString('fr-FR')} FCFA
-          {p.unite && <span style={{ color: '#7b89a8', fontWeight: 400, fontSize: '0.75rem' }}> / {p.unite}</span>}
+          {p.unite && <span style={{ color: '#B7C5AE', fontWeight: 400, fontSize: '0.75rem' }}> / {p.unite}</span>}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ color: '#7b89a8', fontSize: '0.75rem' }}>Stock :</span>
-          <span style={{ color: isCritique ? '#ef4444' : isBas ? '#f0a832' : '#22d98a', fontWeight: 700, fontSize: '0.85rem' }}>
+          <span style={{ color: '#B7C5AE', fontSize: '0.75rem' }}>Stock :</span>
+          <span style={{ color: isCritique ? '#ef4444' : isBas ? '#E3A00F' : '#91D9A3', fontWeight: 700, fontSize: '0.85rem' }}>
             {p.stock} {p.unite ?? ''}
           </span>
-          <span style={{ color: '#7b89a8', fontSize: '0.75rem' }}>/ seuil {p.stockMin}</span>
+          <span style={{ color: '#B7C5AE', fontSize: '0.75rem' }}>/ seuil {p.stockMin}</span>
         </div>
       </div>
-      <div style={{ borderTop: '1px solid #16233d', padding: '0.65rem 0.9rem', display: 'flex', gap: '0.4rem' }}>
+      <div style={{ borderTop: '1px solid #496653', padding: '0.65rem 0.9rem', display: 'flex', gap: '0.4rem' }}>
         <button
           onClick={() => onModifStock(p)}
           style={{
@@ -121,7 +121,7 @@ function ProduitCard({ p, index, onEdit, onDelete, onModifStock }: {
         >
           <RefreshCw size={13} /> Stock
         </button>
-        <button onClick={() => onEdit(p)} aria-label={`Modifier ${p.nom}`} style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', minWidth: 48, color: '#D4AF37', cursor: 'pointer' }}>
+        <button onClick={() => onEdit(p)} aria-label={`Modifier ${p.nom}`} style={{ background: 'rgba(227,160,15,0.08)', border: '1px solid rgba(227,160,15,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', minWidth: 48, color: '#E3A00F', cursor: 'pointer' }}>
           <Edit2 size={14} />
         </button>
         <button onClick={() => onDelete(p.id)} aria-label={`Supprimer ${p.nom}`} style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 7, padding: '0.4rem 0.6rem', minWidth: 48, color: '#ef4444', cursor: 'pointer' }}>
@@ -211,7 +211,7 @@ export default function ProduitsPage() {
           </FormField>
           <FormField label="Catégorie">
             <select value={form.categorie} onChange={(e) => setForm({ ...form, categorie: e.target.value })}
-              style={{ width: '100%', background: '#070e1f', border: '1px solid #16233d', borderRadius: 8, padding: '0.6rem 0.75rem', color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', background: '#1F3A2B', border: '1px solid #496653', borderRadius: 8, padding: '0.6rem 0.75rem', color: '#F2EBCF', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
             >
               {['Alimentaire', 'Hygiène', 'Boissons', 'Divers', 'Textile', 'Électronique', 'Autre'].map((c) => (
                 <option key={c} value={c}>{c}</option>
@@ -247,10 +247,10 @@ export default function ProduitsPage() {
   if (produits.length === 0) {
     return (
       <div>
-        <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#0c1528', border: '1px solid #16233d', borderRadius: 16 }}>
-          <Package size={48} color="#D4AF37" style={{ opacity: 0.7, marginBottom: '1rem' }} />
-          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.5rem' }}>Catalogue Produits</h2>
-          <p style={{ color: '#9ba8c4', fontSize: '1rem', lineHeight: 1.5, margin: '0 auto 1.5rem', maxWidth: 360 }}>
+        <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#263F30', border: '1px solid #496653', borderRadius: 16 }}>
+          <Package size={48} color="#E3A00F" style={{ opacity: 0.7, marginBottom: '1rem' }} />
+          <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.5rem' }}>Catalogue Produits</h2>
+          <p style={{ color: '#D9DEC9', fontSize: '1rem', lineHeight: 1.5, margin: '0 auto 1.5rem', maxWidth: 360 }}>
             Votre catalogue est vide. Ajoutez le premier produit que vous vendez : son nom, son prix, et combien vous en avez.
           </p>
           <button
@@ -258,7 +258,7 @@ export default function ProduitsPage() {
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem',
               width: '100%', maxWidth: 360, minHeight: 64,
-              background: '#D4AF37', color: '#0A1628', border: 'none', borderRadius: 14,
+              background: '#E3A00F', color: '#1F3A2B', border: 'none', borderRadius: 14,
               fontWeight: 800, cursor: 'pointer', fontSize: '1.15rem',
             }}
           >
@@ -287,8 +287,8 @@ export default function ProduitsPage() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
               {produitsFaibles.map((p) => (
                 <span key={p.id} style={{
-                  background: p.stock === 0 ? 'rgba(239,68,68,0.2)' : 'rgba(240,168,50,0.15)',
-                  color: p.stock === 0 ? '#ef4444' : '#f0a832',
+                  background: p.stock === 0 ? 'rgba(239,68,68,0.2)' : 'rgba(227,160,15,0.15)',
+                  color: p.stock === 0 ? '#ef4444' : '#E3A00F',
                   fontSize: '0.75rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: 99,
                 }}>
                   {p.nom} ({p.stock === 0 ? 'Rupture' : `${p.stock}/${p.stockMin}`})
@@ -296,18 +296,18 @@ export default function ProduitsPage() {
               ))}
             </div>
           </div>
-          <button onClick={() => setShowAlerteBanner(false)} aria-label="Fermer l'alerte" style={{ background: 'none', border: 'none', color: '#7b89a8', cursor: 'pointer', fontSize: '1.4rem', padding: 0, width: 44, height: 44, flexShrink: 0 }}>×</button>
+          <button onClick={() => setShowAlerteBanner(false)} aria-label="Fermer l'alerte" style={{ background: 'none', border: 'none', color: '#B7C5AE', cursor: 'pointer', fontSize: '1.4rem', padding: 0, width: 44, height: 44, flexShrink: 0 }}>×</button>
         </div>
       )}
 
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
-          <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Catalogue Produits</h2>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Catalogue Produits</h2>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {produits.length} produit{produits.length !== 1 ? 's' : ''}
             {produitsFaibles.length > 0 && (
-              <span style={{ color: '#f0a832', marginLeft: 8 }}>· {produitsFaibles.length} en alerte stock</span>
+              <span style={{ color: '#E3A00F', marginLeft: 8 }}>· {produitsFaibles.length} en alerte stock</span>
             )}
           </p>
         </div>
@@ -315,7 +315,7 @@ export default function ProduitsPage() {
           onClick={ouvrirAjout}
           style={{
             display: 'flex', alignItems: 'center', gap: '0.5rem',
-            background: '#D4AF37', color: '#0A1628', border: 'none',
+            background: '#E3A00F', color: '#1F3A2B', border: 'none',
             borderRadius: 8, padding: '0.65rem 1.1rem', fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem',
           }}
         >
@@ -326,12 +326,12 @@ export default function ProduitsPage() {
       {/* Recherche + Filtres */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
         <div style={{ position: 'relative' }}>
-          <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#7b89a8' }} />
+          <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#B7C5AE' }} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Rechercher un produit..."
-            style={{ width: '100%', background: '#0c1528', border: '1px solid #16233d', borderRadius: 8, padding: '0.6rem 0.75rem 0.6rem 2.25rem', color: '#f5f0e8', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
+            style={{ width: '100%', background: '#263F30', border: '1px solid #496653', borderRadius: 8, padding: '0.6rem 0.75rem 0.6rem 2.25rem', color: '#F2EBCF', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box' }}
           />
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -341,9 +341,9 @@ export default function ProduitsPage() {
             return (
               <button key={cat} onClick={() => { setCatActive(cat); setAlertesSeul(false) }} style={{
                 padding: '0.35rem 0.85rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 600,
-                border: active ? `1px solid ${cc?.dot ?? '#D4AF37'}` : '1px solid #16233d',
-                background: active ? (cc?.bg ?? 'rgba(212,175,55,0.12)') : '#0c1528',
-                color: active ? (cc?.text ?? '#D4AF37') : '#9ba8c4',
+                border: active ? `1px solid ${cc?.dot ?? '#E3A00F'}` : '1px solid #496653',
+                background: active ? (cc?.bg ?? 'rgba(227,160,15,0.12)') : '#263F30',
+                color: active ? (cc?.text ?? '#E3A00F') : '#D9DEC9',
                 cursor: 'pointer', transition: 'all 0.15s',
               }}>
                 {cat}
@@ -354,9 +354,9 @@ export default function ProduitsPage() {
             onClick={() => setAlertesSeul((v) => !v)}
             style={{
               padding: '0.35rem 0.85rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 600,
-              border: alertesSeul ? '1px solid #ef4444' : '1px solid #16233d',
-              background: alertesSeul ? 'rgba(239,68,68,0.12)' : '#0c1528',
-              color: alertesSeul ? '#ef4444' : '#9ba8c4',
+              border: alertesSeul ? '1px solid #ef4444' : '1px solid #496653',
+              background: alertesSeul ? 'rgba(239,68,68,0.12)' : '#263F30',
+              color: alertesSeul ? '#ef4444' : '#D9DEC9',
               cursor: 'pointer', transition: 'all 0.15s',
               display: 'flex', alignItems: 'center', gap: 5,
             }}
@@ -375,7 +375,7 @@ export default function ProduitsPage() {
       {/* Grille */}
       <AnimatePresence>
         {filtered.length === 0 ? (
-          <motion.p key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ color: '#7b89a8', textAlign: 'center', padding: '3rem 0', fontSize: '0.9rem' }}>
+          <motion.p key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ color: '#B7C5AE', textAlign: 'center', padding: '3rem 0', fontSize: '0.9rem' }}>
             Aucun produit trouvé.
           </motion.p>
         ) : (
@@ -393,13 +393,13 @@ export default function ProduitsPage() {
       <Modal open={!!modifStockProduit} onClose={() => setModifStockProduit(null)} title="Modifier le stock">
         {modifStockProduit && (
           <div>
-            <p style={{ color: '#9ba8c4', fontSize: '0.85rem', marginBottom: '1rem' }}>
-              <strong style={{ color: '#f5f0e8' }}>{modifStockProduit.nom}</strong><br />
-              Stock actuel : <span style={{ color: '#D4AF37', fontWeight: 700 }}>{modifStockProduit.stock} {modifStockProduit.unite ?? ''}</span>
+            <p style={{ color: '#D9DEC9', fontSize: '0.85rem', marginBottom: '1rem' }}>
+              <strong style={{ color: '#F2EBCF' }}>{modifStockProduit.nom}</strong><br />
+              Stock actuel : <span style={{ color: '#E3A00F', fontWeight: 700 }}>{modifStockProduit.stock} {modifStockProduit.unite ?? ''}</span>
             </p>
             {/* Quick restock */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <p style={{ color: '#7b89a8', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem', marginTop: 0 }}>
+              <p style={{ color: '#B7C5AE', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem', marginTop: 0 }}>
                 Réapprovisionnement rapide
               </p>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -416,7 +416,7 @@ export default function ProduitsPage() {
               </div>
             </div>
             {/* Variation manuelle */}
-            <div style={{ borderTop: '1px solid #16233d', paddingTop: '1rem' }}>
+            <div style={{ borderTop: '1px solid #496653', paddingTop: '1rem' }}>
               <form onSubmit={soumettreModifStock}>
                 <FormField label="Variation manuelle (+ réception / − sortie)">
                   <TextInput required type="number" value={deltaStock} onChange={(e) => setDeltaStock(e.target.value)} placeholder="Ex: +20 ou -5" />

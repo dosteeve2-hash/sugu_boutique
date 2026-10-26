@@ -106,10 +106,10 @@ export default function HistoriquePage() {
       {/* En-tête */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <div>
-          <h1 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>
+          <h1 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>
             Historique des ventes
           </h1>
-          <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
+          <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.25rem 0 0' }}>
             {filtered.length} vente(s) affichée(s)
           </p>
         </div>
@@ -119,9 +119,9 @@ export default function HistoriquePage() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: 'rgba(0,188,212,0.1)',
-            border: '1px solid rgba(0,188,212,0.25)',
-            color: '#00BCD4',
+            background: 'rgba(227,160,15,0.1)',
+            border: '1px solid rgba(227,160,15,0.25)',
+            color: '#E3A00F',
             padding: '0.55rem 1rem',
             borderRadius: 10,
             fontSize: '0.82rem',
@@ -138,7 +138,7 @@ export default function HistoriquePage() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.25rem' }}>
         {/* Période */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Calendar size={14} style={{ color: '#7b89a8' }} />
+          <Calendar size={14} style={{ color: '#B7C5AE' }} />
           <div style={{ display: 'flex', gap: '0.25rem' }}>
             {PERIODES.map(({ key, label }) => (
               <button
@@ -150,9 +150,9 @@ export default function HistoriquePage() {
                   fontSize: '0.75rem',
                   fontWeight: 600,
                   cursor: 'pointer',
-                  background: periode === key ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
-                  border: periode === key ? '1px solid rgba(212,175,55,0.35)' : '1px solid #16233d',
-                  color: periode === key ? '#D4AF37' : '#9ba8c4',
+                  background: periode === key ? 'rgba(227,160,15,0.15)' : 'rgba(255,255,255,0.04)',
+                  border: periode === key ? '1px solid rgba(227,160,15,0.35)' : '1px solid #496653',
+                  color: periode === key ? '#E3A00F' : '#D9DEC9',
                 }}
               >
                 {label}
@@ -163,7 +163,7 @@ export default function HistoriquePage() {
 
         {/* Mode paiement */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Filter size={14} style={{ color: '#7b89a8' }} />
+          <Filter size={14} style={{ color: '#B7C5AE' }} />
           <div style={{ display: 'flex', gap: '0.25rem' }}>
             {MODES_FILTRE.map(({ key, label }) => (
               <button
@@ -175,9 +175,9 @@ export default function HistoriquePage() {
                   fontSize: '0.75rem',
                   fontWeight: 600,
                   cursor: 'pointer',
-                  background: modeFiltre === key ? 'rgba(0,188,212,0.12)' : 'rgba(255,255,255,0.04)',
-                  border: modeFiltre === key ? '1px solid rgba(0,188,212,0.3)' : '1px solid #16233d',
-                  color: modeFiltre === key ? '#00BCD4' : '#9ba8c4',
+                  background: modeFiltre === key ? 'rgba(227,160,15,0.12)' : 'rgba(255,255,255,0.04)',
+                  border: modeFiltre === key ? '1px solid rgba(227,160,15,0.3)' : '1px solid #496653',
+                  color: modeFiltre === key ? '#E3A00F' : '#D9DEC9',
                 }}
               >
                 {label}
@@ -192,23 +192,23 @@ export default function HistoriquePage() {
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: '#0c1528',
-            border: '1px solid #16233d',
+            background: '#263F30',
+            border: '1px solid #496653',
             borderRadius: 10,
             padding: '0.3rem 0.75rem',
             minWidth: 200,
           }}
         >
-          <Search size={14} style={{ color: '#7b89a8', flexShrink: 0 }} />
+          <Search size={14} style={{ color: '#B7C5AE', flexShrink: 0 }} />
           <input
             type="text"
             placeholder="Client, article…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ background: 'transparent', border: 'none', outline: 'none', color: '#f5f0e8', fontSize: '0.8rem', flex: 1 }}
+            style={{ background: 'transparent', border: 'none', outline: 'none', color: '#F2EBCF', fontSize: '0.8rem', flex: 1 }}
           />
           {search && (
-            <button onClick={() => setSearch('')} aria-label="Effacer la recherche" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, color: '#7b89a8' }}>
+            <button onClick={() => setSearch('')} aria-label="Effacer la recherche" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, color: '#B7C5AE' }}>
               <X size={13} />
             </button>
           )}
@@ -220,7 +220,7 @@ export default function HistoriquePage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
-        style={{ background: '#0c1528', borderRadius: 14, border: '1px solid #16233d', overflow: 'hidden' }}
+        style={{ background: '#263F30', borderRadius: 14, border: '1px solid #496653', overflow: 'hidden' }}
       >
         {/* En-tête colonnes */}
         <div
@@ -228,8 +228,8 @@ export default function HistoriquePage() {
             display: 'grid',
             gridTemplateColumns: '1fr 1.4fr 1.8fr 1fr 0.8fr 0.9fr',
             padding: '0.75rem 1.25rem',
-            borderBottom: '1px solid #16233d',
-            color: '#7b89a8',
+            borderBottom: '1px solid #496653',
+            color: '#B7C5AE',
             fontSize: '0.75rem',
             fontWeight: 700,
             textTransform: 'uppercase',
@@ -246,7 +246,7 @@ export default function HistoriquePage() {
 
         {/* Lignes */}
         {filtered.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#7b89a8', fontSize: '0.85rem' }}>
+          <div style={{ padding: '3rem', textAlign: 'center', color: '#B7C5AE', fontSize: '0.85rem' }}>
             {ventesReelles.length === 0 ? 'Aucune vente enregistrée pour le moment. Faites votre première vente à la caisse.' : 'Aucune vente pour cette période.'}
           </div>
         ) : (
@@ -268,27 +268,27 @@ export default function HistoriquePage() {
                 }}
               >
                 {/* Date */}
-                <span style={{ color: '#9ba8c4', fontSize: '0.8rem', fontFamily: 'monospace' }}>
+                <span style={{ color: '#D9DEC9', fontSize: '0.8rem', fontFamily: 'monospace' }}>
                   {v.date}
                 </span>
 
                 {/* Client */}
-                <span style={{ color: '#f5f0e8', fontSize: '0.82rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {v.client || <span style={{ color: '#7b89a8', fontStyle: 'italic' }}>Client anonyme</span>}
+                <span style={{ color: '#F2EBCF', fontSize: '0.82rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {v.client || <span style={{ color: '#B7C5AE', fontStyle: 'italic' }}>Client anonyme</span>}
                 </span>
 
                 {/* Articles */}
-                <span style={{ color: '#9ba8c4', fontSize: '0.8rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span style={{ color: '#D9DEC9', fontSize: '0.8rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {getLignesLabel(v)}
                 </span>
 
                 {/* Total */}
-                <span style={{ color: '#D4AF37', fontSize: '0.85rem', fontWeight: 700 }}>
+                <span style={{ color: '#E3A00F', fontSize: '0.85rem', fontWeight: 700 }}>
                   {v.total.toLocaleString('fr-FR')} F
                 </span>
 
                 {/* Rendu monnaie */}
-                <span style={{ color: '#7b89a8', fontSize: '0.8rem' }}>—</span>
+                <span style={{ color: '#B7C5AE', fontSize: '0.8rem' }}>—</span>
 
                 {/* Mode */}
                 <span
@@ -299,9 +299,9 @@ export default function HistoriquePage() {
                     borderRadius: 99,
                     fontSize: '0.75rem',
                     fontWeight: 700,
-                    background: isCredit ? 'rgba(240,168,50,0.12)' : 'rgba(34,217,138,0.1)',
-                    color: isCredit ? '#f0a832' : '#22d98a',
-                    border: isCredit ? '1px solid rgba(240,168,50,0.25)' : '1px solid rgba(34,217,138,0.2)',
+                    background: isCredit ? 'rgba(227,160,15,0.12)' : 'rgba(145,217,163,0.1)',
+                    color: isCredit ? '#E3A00F' : '#91D9A3',
+                    border: isCredit ? '1px solid rgba(227,160,15,0.25)' : '1px solid rgba(145,217,163,0.2)',
                     width: 'fit-content',
                   }}
                 >

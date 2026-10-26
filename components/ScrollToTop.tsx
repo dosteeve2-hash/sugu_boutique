@@ -42,11 +42,11 @@ export default function ScrollToTop() {
             borderRadius: '0.75rem',
             background: '#0D1E38',
             border: '1px solid #243D68',
-            color: '#D4AF37',
+            color: '#E3A00F',
             cursor: 'pointer',
             boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
           }}
-          whileHover={{ background: '#D4AF37', color: '#0A1628', scale: 1.05 }}
+          whileHover={{ background: '#E3A00F', color: '#1F3A2B', scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <ArrowUp size={18} />

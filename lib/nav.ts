@@ -20,7 +20,7 @@ export type NavItem = {
   label: (t: Traduction) => string
 }
 
-export const NAV_ACCUEIL: NavItem = { href: '/', icon: LayoutDashboard, label: (t) => t.accueil }
+export const NAV_ACCUEIL: NavItem = { href: '/app', icon: LayoutDashboard, label: (t) => t.accueil }
 export const NAV_CAISSE: NavItem = { href: '/caisse', icon: Calculator, label: (t) => t.caisse }
 export const NAV_PRODUITS: NavItem = { href: '/produits', icon: Package, label: (t) => t.produits }
 export const NAV_CLIENTS: NavItem = { href: '/clients', icon: Users, label: (t) => t.clients }

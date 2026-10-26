@@ -68,10 +68,10 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
         }
         activerCompte(data.user.id, d.email, dejaDesDonnees)
         if (!dejaDesDonnees && boutiques.length === 0) {
-          ajouterBoutique({ nom: d.nomBoutique, type: 'Autre', emoji: '🏪', couleur: '#D4AF37' })
+          ajouterBoutique({ nom: d.nomBoutique, type: 'Autre', emoji: '🏪', couleur: '#E3A00F' })
         }
         toast.success(dejaDesDonnees ? 'Compte créé.' : 'Compte créé. Vos données sont sauvegardées en ligne.')
-        router.push('/')
+        router.push('/app')
       } else if (mode === 'connexion') {
         const d = valider(connexionSchema.safeParse({ email, motDePasse }))
         if (!d) return
@@ -83,7 +83,7 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
         }
         activerCompte(data.user.id, d.email, dejaDesDonnees)
         toast.success('Connecté. Vos données reviennent sur ce téléphone.')
-        router.push('/')
+        router.push('/app')
       } else {
         const d = valider(emailSchema.safeParse({ email }))
         if (!d) return
@@ -104,16 +104,16 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
   if (connecte) {
     return (
       <CompteCadre titre="Mon compte" sousTitre={emailActif ? `Connecté : ${emailActif}` : 'Vous êtes connecté.'}>
-        <div style={{ background: '#0c1528', border: '1px solid #16233d', borderRadius: 14, padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-          <p style={{ color: '#f5f0e8', margin: 0, lineHeight: 1.5 }}>
+        <div style={{ background: '#263F30', border: '1px solid #496653', borderRadius: 14, padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+          <p style={{ color: '#F2EBCF', margin: 0, lineHeight: 1.5 }}>
             Vos données sont sauvegardées en ligne. Vous pouvez les retrouver sur un autre téléphone avec votre e-mail.
           </p>
-          <button onClick={() => router.push('/')} style={boutonOrStyle}>
+          <button onClick={() => router.push('/app')} style={boutonOrStyle}>
             Retour à ma caisse
           </button>
           <button
             onClick={() => void deconnecter()}
-            style={{ minHeight: 52, borderRadius: 12, border: '1px solid #1f3054', background: 'transparent', color: '#9ba8c4', fontWeight: 700, cursor: 'pointer' }}
+            style={{ minHeight: 52, borderRadius: 12, border: '1px solid #5B755F', background: 'transparent', color: '#D9DEC9', fontWeight: 700, cursor: 'pointer' }}
           >
             Me déconnecter (vide ce téléphone)
           </button>
@@ -153,9 +153,9 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
                 borderRadius: 12,
                 fontWeight: 800,
                 cursor: 'pointer',
-                border: mode === m ? '2px solid #D4AF37' : '1px solid #1f3054',
-                background: mode === m ? 'rgba(212,175,55,0.1)' : 'transparent',
-                color: mode === m ? '#D4AF37' : '#9ba8c4',
+                border: mode === m ? '2px solid #E3A00F' : '1px solid #5B755F',
+                background: mode === m ? 'rgba(227,160,15,0.1)' : 'transparent',
+                color: mode === m ? '#E3A00F' : '#D9DEC9',
               }}
             >
               {m === 'inscription' ? 'Créer un compte' : 'Se connecter'}
@@ -165,12 +165,12 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
       )}
 
       {mode === 'oubli' && !courrielActif ? (
-        <div style={{ background: '#0c1528', border: '1px solid #f0a83266', borderRadius: 14, padding: '1.25rem' }}>
-          <p style={{ color: '#f5f0e8', lineHeight: 1.55, margin: '0 0 0.75rem' }}>
+        <div style={{ background: '#263F30', border: '1px solid #E3A00F66', borderRadius: 14, padding: '1.25rem' }}>
+          <p style={{ color: '#F2EBCF', lineHeight: 1.55, margin: '0 0 0.75rem' }}>
             L’envoi automatique de l’e-mail de récupération n’est pas encore activé.
           </p>
-          <p style={{ color: '#9ba8c4', lineHeight: 1.55, margin: '0 0 1rem' }}>
-            Écrivez-nous à <a href="mailto:docompaore2@gmail.com" style={{ color: '#00BCD4' }}>docompaore2@gmail.com</a> avec l’adresse de votre compte :
+          <p style={{ color: '#D9DEC9', lineHeight: 1.55, margin: '0 0 1rem' }}>
+            Écrivez-nous à <a href="mailto:docompaore2@gmail.com" style={{ color: '#E3A00F' }}>docompaore2@gmail.com</a> avec l’adresse de votre compte :
             nous remettons votre accès à zéro, vos données sont conservées.
           </p>
           <button onClick={() => setMode('connexion')} style={{ ...boutonOrStyle, minHeight: 52 }}>
@@ -178,8 +178,8 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
           </button>
         </div>
       ) : mode === 'oubli' && envoye ? (
-        <div style={{ background: '#0c1528', border: '1px solid #22d98a66', borderRadius: 14, padding: '1.25rem' }}>
-          <p style={{ color: '#f5f0e8', lineHeight: 1.55, margin: '0 0 1rem' }}>
+        <div style={{ background: '#263F30', border: '1px solid #91D9A366', borderRadius: 14, padding: '1.25rem' }}>
+          <p style={{ color: '#F2EBCF', lineHeight: 1.55, margin: '0 0 1rem' }}>
             Si cette adresse a un compte, un e-mail vient d’être envoyé. Ouvrez le lien (valable 1 heure).
           </p>
           <button
@@ -196,7 +196,7 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
         <form onSubmit={soumettre} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {mode === 'inscription' && (
             <div>
-              <label htmlFor="c-boutique" style={{ display: 'block', color: '#9ba8c4', fontWeight: 700, marginBottom: '0.4rem' }}>
+              <label htmlFor="c-boutique" style={{ display: 'block', color: '#D9DEC9', fontWeight: 700, marginBottom: '0.4rem' }}>
                 Nom de votre boutique
               </label>
               <input
@@ -211,7 +211,7 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
             </div>
           )}
           <div>
-            <label htmlFor="c-email" style={{ display: 'block', color: '#9ba8c4', fontWeight: 700, marginBottom: '0.4rem' }}>
+            <label htmlFor="c-email" style={{ display: 'block', color: '#D9DEC9', fontWeight: 700, marginBottom: '0.4rem' }}>
               Adresse e-mail
             </label>
             <input
@@ -228,7 +228,7 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
           </div>
           {mode !== 'oubli' && (
             <div>
-              <label htmlFor="c-mdp" style={{ display: 'block', color: '#9ba8c4', fontWeight: 700, marginBottom: '0.4rem' }}>
+              <label htmlFor="c-mdp" style={{ display: 'block', color: '#D9DEC9', fontWeight: 700, marginBottom: '0.4rem' }}>
                 Mot de passe
               </label>
               <input
@@ -255,7 +255,7 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
                 setErreurs({})
                 setErreurGlobale(null)
               }}
-              style={{ background: 'transparent', border: 'none', color: '#00BCD4', minHeight: 48, fontWeight: 700, cursor: 'pointer' }}
+              style={{ background: 'transparent', border: 'none', color: '#E3A00F', minHeight: 48, fontWeight: 700, cursor: 'pointer' }}
             >
               Mot de passe oublié ?
             </button>
@@ -264,7 +264,7 @@ export default function CompteClient({ courrielActif }: { courrielActif: boolean
             <button
               type="button"
               onClick={() => setMode('connexion')}
-              style={{ background: 'transparent', border: 'none', color: '#9ba8c4', minHeight: 48, fontWeight: 700, cursor: 'pointer' }}
+              style={{ background: 'transparent', border: 'none', color: '#D9DEC9', minHeight: 48, fontWeight: 700, cursor: 'pointer' }}
             >
               Retour
             </button>

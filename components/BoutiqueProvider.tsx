@@ -12,7 +12,7 @@ export const TYPES_BOUTIQUE: { type: TypeBoutique; emoji: string }[] = [
   { type: 'Autre', emoji: '🏪' },
 ]
 
-export const COULEURS_BOUTIQUE = ['#D4AF37', '#00BCD4', '#22d98a', '#ef4444', '#f0a832', '#a855f7']
+export const COULEURS_BOUTIQUE = ['#E3A00F', '#E3A00F', '#91D9A3', '#ef4444', '#E3A00F', '#a855f7']
 
 const KEY_BOUTIQUES = 'sugu_boutiques'
 const KEY_ACTIVE = 'sugu_boutique_active'
@@ -52,7 +52,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
           nom: 'Ma Boutique',
           type: 'Autre',
           emoji: '🏪',
-          couleur: '#D4AF37',
+          couleur: '#E3A00F',
           dateCreation: new Date().toISOString().slice(0, 10),
         }
         list = [migree]

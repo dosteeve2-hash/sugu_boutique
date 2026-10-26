@@ -24,7 +24,7 @@ SUGU est la filiale **Retail** de l'écosystème FORGE Afrika (référencée dan
 
 ## Fonctionnalités clés (MVP)
 Construites (code présent) :
-- **Tableau de bord** (`app/page.tsx`) — KPIs dynamiques calculés depuis les données locales.
+- **Tableau de bord** (`app/app/page.tsx`) — KPIs dynamiques calculés depuis les données locales.
 - **Produits** (`app/produits/page.tsx`) — CRUD catalogue avec `prixAchat`, `prixVente`, `stock`, `stockMin`.
 - **Ventes** (`app/ventes/page.tsx`) — CRUD ventes multi-lignes, 5 modes de paiement (Espèces, Orange Money, Wave, Moov Money, Crédit), décrémente le stock, met à jour le solde dû du client si vente à crédit.
 - **Achats** (`app/achats/page.tsx`) — CRUD achats fournisseurs, incrémente le stock quand le statut passe à "Livré".

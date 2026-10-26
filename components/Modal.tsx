@@ -54,7 +54,7 @@ export default function Modal({
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(7,14,31,0.75)',
+            background: 'rgba(31,58,43,0.75)',
             display: 'flex',
             alignItems: isMobile ? 'flex-end' : 'center',
             justifyContent: 'center',
@@ -69,8 +69,8 @@ export default function Modal({
             exit={isMobile ? { y: '100%' } : { y: 24, opacity: 0, scale: 0.97 }}
             transition={isMobile ? { type: 'spring', stiffness: 320, damping: 32 } : { duration: 0.2 }}
             style={{
-              background: '#0c1528',
-              border: '1px solid #16233d',
+              background: '#263F30',
+              border: '1px solid #496653',
               borderRadius: isMobile ? '16px 16px 0 0' : 12,
               padding: '1.5rem',
               width: '100%',
@@ -81,14 +81,14 @@ export default function Modal({
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: isMobile ? '0.75rem' : 0 }}>
-              {isMobile && <div style={{ width: 36, height: 4, borderRadius: 99, background: '#16233d' }} />}
+              {isMobile && <div style={{ width: 36, height: 4, borderRadius: 99, background: '#496653' }} />}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-              <h3 style={{ color: '#D4AF37', fontSize: '1.1rem', fontWeight: 800, margin: 0 }}>{title}</h3>
+              <h3 style={{ color: '#E3A00F', fontSize: '1.1rem', fontWeight: 800, margin: 0 }}>{title}</h3>
               <button
                 onClick={onClose}
                 aria-label="Fermer"
-                style={{ background: 'transparent', border: 'none', color: '#9ba8c4', cursor: 'pointer', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ background: 'transparent', border: 'none', color: '#D9DEC9', cursor: 'pointer', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <X size={20} />
               </button>

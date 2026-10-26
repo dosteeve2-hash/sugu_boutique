@@ -42,7 +42,7 @@ export default function ReinitialiserClient() {
         <p style={{ color: '#ef4444', textAlign: 'center' }}>Lien non valide. Demandez-en un nouveau depuis « Mot de passe oublié ».</p>
       ) : fini ? (
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: '#22d98a', fontWeight: 700 }}>Mot de passe changé.</p>
+          <p style={{ color: '#91D9A3', fontWeight: 700 }}>Mot de passe changé.</p>
           <Link href="/compte" style={{ ...boutonOrStyle, display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
             Me connecter
           </Link>
@@ -50,7 +50,7 @@ export default function ReinitialiserClient() {
       ) : (
         <form onSubmit={soumettre} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
-            <label htmlFor="r-mdp" style={{ display: 'block', color: '#9ba8c4', fontWeight: 700, marginBottom: '0.4rem' }}>
+            <label htmlFor="r-mdp" style={{ display: 'block', color: '#D9DEC9', fontWeight: 700, marginBottom: '0.4rem' }}>
               Nouveau mot de passe
             </label>
             <input

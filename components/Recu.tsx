@@ -26,8 +26,8 @@ export default function Recu({
     <div
       className="sugu-recu-print"
       style={{
-        background: '#F8F9FA',
-        color: '#0A1628',
+        background: '#F2EBCF',
+        color: '#1F3A2B',
         borderRadius: 12,
         padding: '1.5rem',
         maxWidth: 380,
@@ -35,8 +35,8 @@ export default function Recu({
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
       }}
     >
-      <div style={{ textAlign: 'center', marginBottom: '1rem', borderBottom: '2px dashed #0A1628', paddingBottom: '1rem' }}>
-        <p style={{ color: '#0A1628', fontSize: '1.75rem', fontWeight: 900, margin: 0, letterSpacing: '0.05em' }}>SUGU</p>
+      <div style={{ textAlign: 'center', marginBottom: '1rem', borderBottom: '2px dashed #1F3A2B', paddingBottom: '1rem' }}>
+        <p style={{ color: '#1F3A2B', fontSize: '1.75rem', fontWeight: 900, margin: 0, letterSpacing: '0.05em' }}>SUGU</p>
         <p style={{ fontSize: '0.75rem', margin: '0.25rem 0 0', opacity: 0.7 }}>{t.tagline}</p>
         <p style={{ fontSize: '0.8rem', margin: '0.5rem 0 0' }}>{dateHeure}</p>
         <p style={{ fontSize: '0.75rem', margin: '0.15rem 0 0', opacity: 0.6 }}>#{vente.id.toString().slice(-6)}</p>
@@ -55,7 +55,7 @@ export default function Recu({
         ))}
       </div>
 
-      <div style={{ borderTop: '2px dashed #0A1628', paddingTop: '0.75rem', marginBottom: '0.75rem' }}>
+      <div style={{ borderTop: '2px dashed #1F3A2B', paddingTop: '0.75rem', marginBottom: '0.75rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.1rem', fontWeight: 900 }}>
           <span>{t.total}</span>
           <span>{vente.total.toLocaleString('fr-FR')} FCFA</span>
@@ -87,7 +87,7 @@ export default function Recu({
         )}
       </div>
 
-      <p style={{ textAlign: 'center', fontSize: '0.85rem', fontWeight: 700, margin: 0, borderTop: '2px dashed #0A1628', paddingTop: '0.75rem' }}>
+      <p style={{ textAlign: 'center', fontSize: '0.85rem', fontWeight: 700, margin: 0, borderTop: '2px dashed #1F3A2B', paddingTop: '0.75rem' }}>
         {t.recuMerci}
       </p>
     </div>

@@ -135,57 +135,57 @@ export default function SauvegardePanel() {
   return (
     <section
       id="sauvegarde"
-      style={{ background: '#0c1528', borderRadius: 12, padding: '1.25rem', border: connecte ? '1px solid #22d98a55' : '1px solid #f0a83266', marginBottom: '2rem' }}
+      style={{ background: '#263F30', borderRadius: 12, padding: '1.25rem', border: connecte ? '1px solid #91D9A355' : '1px solid #E3A00F66', marginBottom: '2rem' }}
     >
-      <h3 style={{ color: '#f5f0e8', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 0.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        {connecte ? <Cloud size={18} color="#22d98a" /> : <ShieldAlert size={18} color="#f0a832" />} Sauvegarde de vos données
+      <h3 style={{ color: '#F2EBCF', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 0.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        {connecte ? <Cloud size={18} color="#91D9A3" /> : <ShieldAlert size={18} color="#E3A00F" />} Sauvegarde de vos données
       </h3>
       {connecte ? (
         <>
-          <p style={{ color: '#22d98a', fontWeight: 700, fontSize: '0.95rem', margin: '0 0 0.4rem' }}>
+          <p style={{ color: '#91D9A3', fontWeight: 700, fontSize: '0.95rem', margin: '0 0 0.4rem' }}>
             Vos données sont sauvegardées en ligne{email ? ` (${email})` : ''}.
           </p>
-          <p style={{ color: '#9ba8c4', fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 0.4rem' }}>
+          <p style={{ color: '#D9DEC9', fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 0.4rem' }}>
             Sans réseau, vous continuez à vendre : tout est gardé sur le téléphone puis envoyé quand le réseau revient.
             {enAttente > 0 ? ` ${enAttente} modification${enAttente > 1 ? 's' : ''} en attente d’envoi.` : ''}
           </p>
           {rejets > 0 && (
-            <p style={{ color: '#f0a832', fontSize: '0.85rem', margin: '0 0 0.4rem' }}>
+            <p style={{ color: '#E3A00F', fontSize: '0.85rem', margin: '0 0 0.4rem' }}>
               {rejets} élément{rejets > 1 ? 's' : ''} n’{rejets > 1 ? 'ont' : 'a'} pas pu être sauvegardé{rejets > 1 ? 's' : ''} (données invalides).
             </p>
           )}
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', margin: '0.75rem 0 1rem' }}>
-            <button onClick={() => void synchroniser()} style={{ ...boutonStyle, background: '#D4AF37', color: '#0A1628', border: 'none' }}>
+            <button onClick={() => void synchroniser()} style={{ ...boutonStyle, background: '#E3A00F', color: '#1F3A2B', border: 'none' }}>
               Synchroniser maintenant
             </button>
-            <button onClick={() => void deconnecter()} style={{ ...boutonStyle, background: '#111d34', color: '#f5f0e8', border: '1px solid #1f3054' }}>
+            <button onClick={() => void deconnecter()} style={{ ...boutonStyle, background: '#284334', color: '#F2EBCF', border: '1px solid #5B755F' }}>
               Me déconnecter
             </button>
           </div>
         </>
       ) : (
         <>
-          <p style={{ color: '#f0a832', fontWeight: 700, fontSize: '0.95rem', margin: '0 0 0.4rem' }}>
+          <p style={{ color: '#E3A00F', fontWeight: 700, fontSize: '0.95rem', margin: '0 0 0.4rem' }}>
             Vos données sont enregistrées sur ce téléphone seulement.
           </p>
-          <p style={{ color: '#9ba8c4', fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 0.75rem' }}>
+          <p style={{ color: '#D9DEC9', fontSize: '0.88rem', lineHeight: 1.5, margin: '0 0 0.75rem' }}>
             Si vous changez de téléphone, effacez les données du navigateur ou désinstallez l&apos;application, tout est perdu.
             Créez un compte gratuit pour tout sauvegarder en ligne, ou téléchargez un fichier de sauvegarde.
           </p>
           <Link
             href="/compte"
-            style={{ ...boutonStyle, background: '#D4AF37', color: '#0A1628', textDecoration: 'none', marginBottom: '1rem' }}
+            style={{ ...boutonStyle, background: '#E3A00F', color: '#1F3A2B', textDecoration: 'none', marginBottom: '1rem' }}
           >
             Créer mon compte gratuit
           </Link>
         </>
       )}
-      <p style={{ color: '#9ba8c4', fontSize: '0.85rem', margin: '0 0 0.75rem' }}>{statutExport}</p>
+      <p style={{ color: '#D9DEC9', fontSize: '0.85rem', margin: '0 0 0.75rem' }}>{statutExport}</p>
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-        <button onClick={exporter} style={{ ...boutonStyle, background: '#111d34', color: '#f5f0e8', border: '1px solid #1f3054' }}>
+        <button onClick={exporter} style={{ ...boutonStyle, background: '#284334', color: '#F2EBCF', border: '1px solid #5B755F' }}>
           <Download size={20} style={{ flexShrink: 0 }} /> Exporter un fichier
         </button>
-        <button onClick={ouvrir} style={{ ...boutonStyle, background: '#111d34', color: '#f5f0e8', border: '1px solid #1f3054' }}>
+        <button onClick={ouvrir} style={{ ...boutonStyle, background: '#284334', color: '#F2EBCF', border: '1px solid #5B755F' }}>
           <Upload size={20} style={{ flexShrink: 0 }} /> Importer
         </button>
       </div>

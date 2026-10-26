@@ -25,7 +25,7 @@ export default function BoutiqueWelcome() {
         padding: '2rem 1.5rem',
         textAlign: 'center',
         background:
-          'radial-gradient(circle at 20% 20%, rgba(212,175,55,0.08), transparent 45%), radial-gradient(circle at 80% 80%, rgba(0,188,212,0.08), transparent 45%), #0A1628',
+          'radial-gradient(circle at 20% 20%, rgba(227,160,15,0.08), transparent 45%), radial-gradient(circle at 80% 80%, rgba(227,160,15,0.08), transparent 45%), #1F3A2B',
       }}
     >
       <motion.div
@@ -42,21 +42,21 @@ export default function BoutiqueWelcome() {
             width: 88,
             height: 88,
             margin: '0 auto 1.5rem',
-            boxShadow: '0 12px 32px rgba(212,175,55,0.35)',
+            boxShadow: '0 12px 32px rgba(227,160,15,0.35)',
             borderRadius: 24,
             overflow: 'hidden',
           }}
         >
-          <img src="/logo-sugu-icon.svg" alt="SUGU" width={88} height={88} style={{ display: 'block' }} />
+          <img src="/brand/mark.svg" alt="SUGU" width={88} height={88} style={{ display: 'block', width: 88, height: 88, padding: 12, boxSizing: 'border-box', background: '#F2EBCF' }} />
         </motion.div>
 
-        <h1 style={{ color: '#D4AF37', fontSize: '1.9rem', fontWeight: 900, margin: '0 0 0.5rem', letterSpacing: '0.02em' }}>
+        <h1 style={{ color: '#E3A00F', fontSize: '1.9rem', fontWeight: 900, margin: '0 0 0.5rem', letterSpacing: '0.02em' }}>
           SUGU
         </h1>
-        <p style={{ color: '#f5f0e8', fontSize: '1.1rem', fontWeight: 600, margin: '0 0 0.5rem' }}>
+        <p style={{ color: '#F2EBCF', fontSize: '1.1rem', fontWeight: 600, margin: '0 0 0.5rem' }}>
           {t.bienvenueSugu}
         </p>
-        <p style={{ color: '#9ba8c4', fontSize: '0.9rem', margin: '0 0 2rem', maxWidth: 340, lineHeight: 1.6 }}>
+        <p style={{ color: '#D9DEC9', fontSize: '0.9rem', margin: '0 0 2rem', maxWidth: 340, lineHeight: 1.6 }}>
           {t.bienvenueSuguMessage}
         </p>
 
@@ -68,26 +68,26 @@ export default function BoutiqueWelcome() {
             alignItems: 'center',
             gap: '0.6rem',
             margin: '0 auto',
-            background: 'linear-gradient(135deg, #D4AF37, #f7c060)',
-            color: '#0A1628',
+            background: 'linear-gradient(135deg, #E3A00F, #F2B01E)',
+            color: '#1F3A2B',
             border: 'none',
             borderRadius: 14,
             padding: '1rem 1.75rem',
             fontWeight: 800,
             fontSize: '1rem',
             cursor: 'pointer',
-            boxShadow: '0 10px 28px rgba(212,175,55,0.3)',
+            boxShadow: '0 10px 28px rgba(227,160,15,0.3)',
           }}
         >
           <Plus size={20} /> {t.essayerSugu}
         </motion.button>
 
-        <p style={{ color: '#f0a832', fontSize: '0.85rem', fontWeight: 600, margin: '1.75rem auto 0.5rem', maxWidth: 320, lineHeight: 1.5 }}>
+        <p style={{ color: '#E3A00F', fontSize: '0.85rem', fontWeight: 600, margin: '1.75rem auto 0.5rem', maxWidth: 320, lineHeight: 1.5 }}>
           Vos données sont enregistrées sur ce téléphone seulement.
         </p>
         <button
           onClick={ouvrir}
-          style={{ background: 'transparent', border: '1px solid #1f3054', color: '#f5f0e8', borderRadius: 12, minHeight: 52, padding: '0 1.25rem', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
+          style={{ background: 'transparent', border: '1px solid #5B755F', color: '#F2EBCF', borderRadius: 12, minHeight: 52, padding: '0 1.25rem', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}
         >
           J&apos;ai déjà une sauvegarde : l&apos;importer
         </button>

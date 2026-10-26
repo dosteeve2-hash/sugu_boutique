@@ -45,7 +45,7 @@ export default function Parametres() {
   return (
     <div>
       <div style={{ marginBottom: '1.5rem' }}>
-        <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>{t.parametres}</h2>
+        <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>{t.parametres}</h2>
       </div>
 
       <SauvegardePanel />
@@ -53,14 +53,14 @@ export default function Parametres() {
       {/* Mes Boutiques */}
       <section style={{ marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h3 style={{ color: '#f5f0e8', fontSize: '1rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Store size={17} color="#D4AF37" /> {t.mesBoutiques}
+          <h3 style={{ color: '#F2EBCF', fontSize: '1rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Store size={17} color="#E3A00F" /> {t.mesBoutiques}
           </h3>
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={ouvrirAjout}
             className="sugu-gold-fab"
-            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0A1628', border: 'none', borderRadius: 8, padding: '0.55rem 0.9rem', fontWeight: 700, cursor: 'pointer', fontSize: '0.82rem' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#1F3A2B', border: 'none', borderRadius: 8, padding: '0.55rem 0.9rem', fontWeight: 700, cursor: 'pointer', fontSize: '0.82rem' }}
           >
             <Plus size={15} /> {t.ajouterBoutique}
           </motion.button>
@@ -76,8 +76,8 @@ export default function Parametres() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: i * 0.05 }}
                 style={{
-                  background: '#0c1528',
-                  border: active ? `2px solid ${b.couleur}` : '1px solid #16233d',
+                  background: '#263F30',
+                  border: active ? `2px solid ${b.couleur}` : '1px solid #496653',
                   borderRadius: 12,
                   padding: '1rem',
                 }}
@@ -85,11 +85,11 @@ export default function Parametres() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
                   <span style={{ fontSize: '1.5rem' }}>{b.emoji}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ color: '#f5f0e8', fontWeight: 700, margin: 0, fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.nom}</p>
-                    <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.15rem 0 0' }}>{b.type}</p>
+                    <p style={{ color: '#F2EBCF', fontWeight: 700, margin: 0, fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.nom}</p>
+                    <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0.15rem 0 0' }}>{b.type}</p>
                   </div>
                   {active && (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#22d98a', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(34,217,138,0.1)', padding: '0.2rem 0.5rem', borderRadius: 99 }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#91D9A3', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(145,217,163,0.1)', padding: '0.2rem 0.5rem', borderRadius: 99 }}>
                       <Check size={12} /> Actif
                     </span>
                   )}
@@ -98,7 +98,7 @@ export default function Parametres() {
                   {!active && (
                     <button
                       onClick={() => changerBoutique(b.id)}
-                      style={{ flex: 1, background: 'rgba(212,175,55,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#D4AF37', fontSize: '0.78rem', fontWeight: 700 }}
+                      style={{ flex: 1, background: 'rgba(227,160,15,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#E3A00F', fontSize: '0.78rem', fontWeight: 700 }}
                     >
                       Activer
                     </button>
@@ -106,7 +106,7 @@ export default function Parametres() {
                   <button
                     onClick={() => ouvrirEdition(b)}
                     aria-label={`Modifier la boutique ${b.nom}`}
-                    style={{ background: 'rgba(0,188,212,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#00BCD4', width: active ? '100%' : 48, flex: active ? 1 : undefined }}
+                    style={{ background: 'rgba(227,160,15,0.1)', border: 'none', borderRadius: 8, padding: '0.45rem', cursor: 'pointer', color: '#E3A00F', width: active ? '100%' : 48, flex: active ? 1 : undefined }}
                   >
                     <Edit2 size={14} style={{ margin: '0 auto' }} />
                   </button>
@@ -127,8 +127,8 @@ export default function Parametres() {
       </section>
 
       {/* Langue */}
-      <section style={{ marginBottom: '2rem', background: '#0c1528', borderRadius: 12, padding: '1.25rem', border: '1px solid #16233d' }}>
-        <h3 style={{ color: '#f5f0e8', fontSize: '1rem', fontWeight: 700, margin: '0 0 1rem' }}>{t.langue}</h3>
+      <section style={{ marginBottom: '2rem', background: '#263F30', borderRadius: 12, padding: '1.25rem', border: '1px solid #496653' }}>
+        <h3 style={{ color: '#F2EBCF', fontSize: '1rem', fontWeight: 700, margin: '0 0 1rem' }}>{t.langue}</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.6rem' }}>
           {LANGUES.map((l) => {
             const selectionne = langue === l.code
@@ -142,9 +142,9 @@ export default function Parametres() {
                   gap: '0.5rem',
                   padding: '0.65rem 0.85rem',
                   borderRadius: 10,
-                  border: selectionne ? '2px solid #D4AF37' : '1px solid #16233d',
-                  background: selectionne ? 'rgba(212,175,55,0.1)' : '#070e1f',
-                  color: selectionne ? '#D4AF37' : '#9ba8c4',
+                  border: selectionne ? '2px solid #E3A00F' : '1px solid #496653',
+                  background: selectionne ? 'rgba(227,160,15,0.1)' : '#1F3A2B',
+                  color: selectionne ? '#E3A00F' : '#D9DEC9',
                   fontWeight: 600,
                   fontSize: '0.85rem',
                   cursor: 'pointer',
@@ -158,13 +158,13 @@ export default function Parametres() {
       </section>
 
       {/* A propos */}
-      <section style={{ background: '#0c1528', borderRadius: 12, padding: '1.25rem', border: '1px solid #16233d' }}>
-        <h3 style={{ color: '#f5f0e8', fontSize: '1rem', fontWeight: 700, margin: '0 0 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Info size={16} color="#00BCD4" /> {t.aPropos}
+      <section style={{ background: '#263F30', borderRadius: 12, padding: '1.25rem', border: '1px solid #496653' }}>
+        <h3 style={{ color: '#F2EBCF', fontSize: '1rem', fontWeight: 700, margin: '0 0 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Info size={16} color="#E3A00F" /> {t.aPropos}
         </h3>
-        <p style={{ color: '#D4AF37', fontWeight: 900, fontSize: '1.3rem', margin: '0 0 0.25rem', fontFeatureSettings: '"kern" 1' }}>SUGU</p>
-        <p style={{ color: '#9ba8c4', fontSize: '0.85rem', margin: '0 0 0.75rem' }}>{t.tagline} — FORGE Afrika</p>
-        <p style={{ color: '#7b89a8', fontSize: '0.78rem', margin: 0 }}>{t.version} 1.0.0</p>
+        <p style={{ color: '#E3A00F', fontWeight: 900, fontSize: '1.3rem', margin: '0 0 0.25rem', fontFeatureSettings: '"kern" 1' }}>SUGU</p>
+        <p style={{ color: '#D9DEC9', fontSize: '0.85rem', margin: '0 0 0.75rem' }}>{t.tagline} — FORGE Afrika</p>
+        <p style={{ color: '#B7C5AE', fontSize: '0.78rem', margin: 0 }}>{t.version} 1.0.0</p>
       </section>
 
       <BoutiqueFormModal open={showForm} onClose={() => setShowForm(false)} onSubmit={soumettre} edition={edition} />

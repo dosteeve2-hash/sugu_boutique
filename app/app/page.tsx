@@ -17,7 +17,7 @@ import { calculerBenefice, produitsEnAlerte } from '@/lib/calculs'
 
 const VentesChart = dynamic(() => import('@/components/VentesChart'), {
   ssr: false,
-  loading: () => <div aria-hidden="true" style={{ height: 220, borderRadius: 8, background: '#111d34' }} />,
+  loading: () => <div aria-hidden="true" style={{ height: 220, borderRadius: 8, background: '#284334' }} />,
 })
 
 const JOURS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
@@ -58,10 +58,10 @@ export default function Dashboard() {
         : `Marge : ${resumeBenefice.margePct} %${resumeBenefice.lignesIgnorees > 0 ? ' (hors produits sans prix d’achat)' : ''}`
 
   const kpis = [
-    { label: 'Ventes du Jour', value: ventesAujourdhui, format: (v: number) => `${Math.round(v).toLocaleString('fr-FR')} FCFA`, sub: `${ventes.filter((v) => v.date === today()).length} transaction(s)`, color: '#D4AF37' },
-    { label: 'Produits en Stock', value: produits.length, format: (v: number) => `${Math.round(v)}`, sub: stockFaible === 0 ? 'Aucune alerte' : `${ruptures.length} en rupture · ${faibles.length} à renouveler`, color: '#00BCD4' },
-    { label: 'Clients', value: clients.length, format: (v: number) => `${Math.round(v)}`, sub: `${clientsCredit} avec crédit`, color: '#D4AF37' },
-    { label: 'Bénéfice estimé du jour', value: resumeBenefice.benefice, format: (v: number) => `${Math.round(v).toLocaleString('fr-FR')} FCFA`, sub: sousTitreBenefice, color: '#22d98a' },
+    { label: 'Ventes du Jour', value: ventesAujourdhui, format: (v: number) => `${Math.round(v).toLocaleString('fr-FR')} FCFA`, sub: `${ventes.filter((v) => v.date === today()).length} transaction(s)`, color: '#E3A00F' },
+    { label: 'Produits en Stock', value: produits.length, format: (v: number) => `${Math.round(v)}`, sub: stockFaible === 0 ? 'Aucune alerte' : `${ruptures.length} en rupture · ${faibles.length} à renouveler`, color: '#E3A00F' },
+    { label: 'Clients', value: clients.length, format: (v: number) => `${Math.round(v)}`, sub: `${clientsCredit} avec crédit`, color: '#E3A00F' },
+    { label: 'Bénéfice estimé du jour', value: resumeBenefice.benefice, format: (v: number) => `${Math.round(v).toLocaleString('fr-FR')} FCFA`, sub: sousTitreBenefice, color: '#91D9A3' },
   ]
 
   const salesData = Array.from({ length: 7 }).map((_, i) => {
@@ -91,17 +91,17 @@ export default function Dashboard() {
   return (
     <div>
       <div
-        className="sugu-kente-bg"
-        style={{ marginBottom: '1.5rem', borderRadius: 16, padding: '1.25rem 1.5rem', border: '1px solid #16233d' }}
+        className="sugu-ledger-bg"
+        style={{ marginBottom: '1.5rem', borderRadius: 16, padding: '1.25rem 1.5rem', border: '1px solid #496653' }}
       >
-        <h2 style={{ color: '#D4AF37', fontSize: '1.5rem', fontWeight: 800, margin: 0, fontFeatureSettings: '"kern" 1' }}>
+        <h2 style={{ color: '#E3A00F', fontSize: '1.5rem', fontWeight: 800, margin: 0, fontFeatureSettings: '"kern" 1' }}>
           {t.bonjour} {boutiqueActive?.emoji} {boutiqueActive?.nom} 👋
         </h2>
-        <p style={{ color: '#7b89a8', fontSize: '0.8rem', margin: '0.35rem 0 0', textTransform: 'capitalize' }}>
+        <p style={{ color: '#B7C5AE', fontSize: '0.8rem', margin: '0.35rem 0 0', textTransform: 'capitalize' }}>
           {dateAujourdhui}
         </p>
         {pctBien !== null && (
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.75rem', background: 'rgba(34,217,138,0.1)', color: '#22d98a', padding: '0.3rem 0.7rem', borderRadius: 99, fontSize: '0.75rem', fontWeight: 700 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.75rem', background: 'rgba(145,217,163,0.1)', color: '#91D9A3', padding: '0.3rem 0.7rem', borderRadius: 99, fontSize: '0.75rem', fontWeight: 700 }}>
             <Smile size={14} /> {pctBien}% {t.satisfactionSemaine}
           </div>
         )}
@@ -124,33 +124,33 @@ export default function Dashboard() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: i * 0.05 }}
-                style={{ background: '#0c1528', borderRadius: 12, padding: '1.25rem', border: `1px solid ${kpi.color}22` }}
+                style={{ background: '#263F30', borderRadius: 12, padding: '1.25rem', border: `1px solid ${kpi.color}22` }}
               >
-                <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0 0 0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0 0 0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   {kpi.label}
                 </p>
                 <p style={{ color: kpi.color, fontSize: '1.3rem', fontWeight: 700, margin: '0 0 0.25rem' }}>
                   <CountUp value={kpi.value} format={kpi.format} />
                 </p>
-                <p style={{ color: '#9ba8c4', fontSize: '0.75rem', margin: 0 }}>{kpi.sub}</p>
+                <p style={{ color: '#D9DEC9', fontSize: '0.75rem', margin: 0 }}>{kpi.sub}</p>
               </motion.div>
             ))}
           </div>
 
           <div className="sugu-two-col" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
-            <div style={{ background: '#0c1528', borderRadius: 12, padding: '1.25rem', border: '1px solid #16233d' }}>
-              <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 1rem' }}>
+            <div style={{ background: '#263F30', borderRadius: 12, padding: '1.25rem', border: '1px solid #496653' }}>
+              <h3 style={{ color: '#F2EBCF', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 1rem' }}>
                 Ventes — 7 Derniers Jours
               </h3>
               <VentesChart data={salesData} />
             </div>
 
-            <div style={{ background: '#0c1528', borderRadius: 12, padding: '1.25rem', border: '1px solid #16233d' }}>
-              <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 1rem' }}>
+            <div style={{ background: '#263F30', borderRadius: 12, padding: '1.25rem', border: '1px solid #496653' }}>
+              <h3 style={{ color: '#F2EBCF', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 1rem' }}>
                 Top Produits
               </h3>
               {topProduits.length === 0 ? (
-                <p style={{ color: '#7b89a8', fontSize: '0.82rem' }}>Aucune vente enregistrée.</p>
+                <p style={{ color: '#B7C5AE', fontSize: '0.82rem' }}>Aucune vente enregistrée.</p>
               ) : (
                 topProduits.map((p, i) => (
                   <motion.div
@@ -163,16 +163,16 @@ export default function Dashboard() {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       padding: '0.6rem 0',
-                      borderBottom: i < topProduits.length - 1 ? '1px solid #16233d' : 'none',
+                      borderBottom: i < topProduits.length - 1 ? '1px solid #496653' : 'none',
                     }}
                   >
                     <div>
-                      <p style={{ color: '#9ba8c4', fontSize: '0.82rem', margin: 0 }}>{p.nom}</p>
-                      <p style={{ color: '#7b89a8', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>
+                      <p style={{ color: '#D9DEC9', fontSize: '0.82rem', margin: 0 }}>{p.nom}</p>
+                      <p style={{ color: '#B7C5AE', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>
                         {p.revenue.toLocaleString('fr-FR')} FCFA
                       </p>
                     </div>
-                    <span style={{ background: 'rgba(0,188,212,0.1)', color: '#00BCD4', padding: '0.15rem 0.5rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 700 }}>
+                    <span style={{ background: 'rgba(227,160,15,0.1)', color: '#E3A00F', padding: '0.15rem 0.5rem', borderRadius: 99, fontSize: '0.8rem', fontWeight: 700 }}>
                       {p.ventes}
                     </span>
                   </motion.div>
@@ -181,16 +181,16 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div style={{ background: '#0c1528', borderRadius: 12, padding: '1.25rem', border: '1px solid #16233d' }}>
-            <h3 style={{ color: '#f5f0e8', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 0.75rem' }}>
+          <div style={{ background: '#263F30', borderRadius: 12, padding: '1.25rem', border: '1px solid #496653' }}>
+            <h3 style={{ color: '#F2EBCF', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 0.75rem' }}>
               Alertes
             </h3>
             {alertes.length === 0 ? (
-              <p style={{ color: '#22d98a', fontSize: '0.82rem', margin: 0 }}>Tout est en ordre — aucune alerte.</p>
+              <p style={{ color: '#91D9A3', fontSize: '0.82rem', margin: 0 }}>Tout est en ordre — aucune alerte.</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {alertes.map((a, i) => {
-                  const colors: Record<string, string> = { error: '#ef4444', warn: '#f0a832', info: '#00BCD4' }
+                  const colors: Record<string, string> = { error: '#ef4444', warn: '#E3A00F', info: '#E3A00F' }
                   const c = colors[a.type]
                   return (
                     <motion.div
@@ -219,8 +219,8 @@ export default function Dashboard() {
       )}
 
       {!aucuneDonnee && produits.length === 0 && (
-        <p style={{ color: '#7b89a8', fontSize: '0.8rem', marginTop: '1rem' }}>
-          <Link href="/produits" style={{ color: '#00BCD4' }}>Ajoutez vos produits</Link> pour activer le suivi de stock.
+        <p style={{ color: '#B7C5AE', fontSize: '0.8rem', marginTop: '1rem' }}>
+          <Link href="/produits" style={{ color: '#E3A00F' }}>Ajoutez vos produits</Link> pour activer le suivi de stock.
         </p>
       )}
 
