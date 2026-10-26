@@ -40,8 +40,8 @@ export const viewport: Viewport = { themeColor: '#1F3A2B', width: 'device-width'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
-      <body className={`${fredoka.variable} ${dmSans.variable}`}>
+    <html lang="fr" className={`${fredoka.variable} ${dmSans.variable}`}>
+      <body>
         <RouteProviders>{children}</RouteProviders>
         <EnregistrementSW />
         <Toaster
