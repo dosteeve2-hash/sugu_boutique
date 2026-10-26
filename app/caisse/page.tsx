@@ -34,9 +34,9 @@ const MODES_CAISSE: ModePaiement[] = ['Espèces', 'Orange Money', 'Wave', 'Moov 
 
 const MODE_STYLE: Record<ModePaiement, { bg: string; color: string; border: string }> = {
   'Espèces': { bg: 'rgba(145,217,163,0.1)', color: '#91D9A3', border: '#91D9A3' },
-  'Orange Money': { bg: 'rgba(227,160,15,0.12)', color: '#E3A00F', border: '#E3A00F' },
-  'Wave': { bg: 'rgba(227,160,15,0.12)', color: '#E3A00F', border: '#E3A00F' },
-  'Moov Money': { bg: 'rgba(227,160,15,0.12)', color: '#E3A00F', border: '#E3A00F' },
+  'Orange Money': { bg: 'rgba(255,138,61,0.14)', color: '#FF8A3D', border: '#FF8A3D' },
+  'Wave': { bg: 'rgba(79,195,247,0.14)', color: '#4FC3F7', border: '#4FC3F7' },
+  'Moov Money': { bg: 'rgba(199,146,234,0.14)', color: '#C792EA', border: '#C792EA' },
   'Crédit': { bg: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '#ef4444' },
 }
 
