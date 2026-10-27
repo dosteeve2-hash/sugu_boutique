@@ -1,4 +1,6 @@
-# SUGU
+<p align="center"><img src="public/brand/mark.svg" alt="SUGU" width="72" height="72"></p>
+
+<h1 align="center">SUGU</h1>
 
 **FORGE Afrika** — Logiciel de gestion pour le secteur informel africain. "Sugu" signifie *marché* en langues africaines.
 
