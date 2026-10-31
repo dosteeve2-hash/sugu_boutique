@@ -13,7 +13,8 @@ function origines(): string[] {
   return [...liste]
 }
 
-export const auth = betterAuth({
+function creerAuth() {
+  return betterAuth({
   database: obtenirPool(),
   baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins: origines(),
@@ -47,4 +48,13 @@ export const auth = betterAuth({
   },
   advanced: { useSecureCookies: process.env.NODE_ENV === 'production' },
   plugins: [nextCookies()],
-})
+  })
+}
+
+type Auth = ReturnType<typeof creerAuth>
+let memo: Auth | null = null
+
+/** Créée à la première requête : le build n'exige pas DATABASE_URL. */
+export function getAuth(): Auth {
+  return (memo ??= creerAuth())
+}
