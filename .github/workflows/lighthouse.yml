@@ -1,0 +1,55 @@
+name: Lighthouse (manuel)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: postgres://u:p@localhost:5432/d
+      BETTER_AUTH_SECRET: ci-secret-factice-ne-sert-a-rien-0123456789
+      BETTER_AUTH_URL: http://localhost:3000
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Démarrer l'application
+        run: |
+          nohup npm start > server.log 2>&1 &
+          npx --yes wait-on@8 http://localhost:3000 --timeout 60000
+      - name: Mesurer (mobile par défaut) accueil, tarifs, fonctionnalités
+        run: |
+          mkdir -p lh
+          for page in "" tarifs fonctionnalites; do
+            name="${page:-accueil}"
+            npx --yes lighthouse@12 "http://localhost:3000/$page" \
+              --chrome-flags="--headless=new --no-sandbox" \
+              --only-categories=performance,accessibility,best-practices,seo \
+              --output=html --output=json --output-path="lh/$name" --quiet
+          done
+          for f in lh/*.report.json; do
+            node -e "const r=require('./$f');const c=r.categories;console.log('$f',Object.entries(c).map(([k,v])=>k+'='+Math.round(v.score*100)).join(' '))"
+            node -e "const c=require('./$f').categories;const t={performance:0.8,accessibility:0.9};for(const k in t){if(c[k].score<t[k])console.log('::warning::$f '+k+' '+Math.round(c[k].score*100)+' sous le seuil '+t[k]*100)}"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rapports-lighthouse
+          path: |
+            lh/
+            server.log
+          retention-days: 7

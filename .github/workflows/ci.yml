@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # lundi 06:00 UTC : audit hebdomadaire uniquement
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verifier:
+    # Ne tourne pas sur le cron hebdomadaire (réservé à l'audit) pour économiser les minutes.
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: postgres://u:p@localhost:5432/d
+      BETTER_AUTH_SECRET: ci-secret-factice-ne-sert-a-rien-0123456789
+      BETTER_AUTH_URL: http://localhost:3000
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Types (tsc)
+        run: npx tsc --noEmit
+      - name: Lint (non bloquant)
+        # Note : à rendre bloquant quand le lint sera propre (retirer continue-on-error).
+        run: npm run lint --if-present
+        continue-on-error: true
+      - name: Tests (vitest)
+        run: npm test
+      - name: Build
+        run: npm run build
+
+  audit:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Audit des dépendances de production
+        run: npm audit --omit=dev --audit-level=high
+        continue-on-error: true
