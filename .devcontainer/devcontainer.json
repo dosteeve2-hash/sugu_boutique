@@ -1,0 +1,16 @@
+{
+  "name": "SUGU (Next.js)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "postCreateCommand": "npm ci",
+  "forwardPorts": [3000],
+  "hostRequirements": { "cpus": 2, "memory": "8gb" },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
